@@ -1,0 +1,6 @@
+[submodule "docs"]
+	path = docs
+	url = https://github.com/microsoft/vscode-docs.git
+[submodule "wiki"]
+	path = wiki
+	url = https://github.com/microsoft/vscode.wiki.git
