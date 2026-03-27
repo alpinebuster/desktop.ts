@@ -7,6 +7,8 @@ if [ "$VSCODE_ARCH" == "arm64" ]; then
   TRIPLE="aarch64-linux-gnu"
 elif [ "$VSCODE_ARCH" == "armhf" ]; then
   TRIPLE="arm-rpi-linux-gnueabihf"
+elif [ "$VSCODE_ARCH" == "ppc64le" ]; then
+  TRIPLE="powerpc64le-linux-gnu"
 fi
 
 # Get all files with .node extension from server folder

@@ -16,6 +16,7 @@ import { RunOnceScheduler } from '../../../../base/common/async.js';
 import { CancellationToken, CancellationTokenSource } from '../../../../base/common/cancellation.js';
 import { Codicon } from '../../../../base/common/codicons.js';
 import { FuzzyScore, createMatches } from '../../../../base/common/filters.js';
+import { FONT } from '../../../../base/common/font.js';
 import { IDisposable, toDisposable } from '../../../../base/common/lifecycle.js';
 import { ThemeIcon } from '../../../../base/common/themables.js';
 import { localize } from '../../../../nls.js';
@@ -368,7 +369,7 @@ interface IScopeTemplateData {
 class VariablesDelegate implements IListVirtualDelegate<IExpression | IScope> {
 
 	getHeight(element: IExpression | IScope): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: IExpression | IScope): string {

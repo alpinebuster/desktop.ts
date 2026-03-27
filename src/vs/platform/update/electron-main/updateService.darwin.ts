@@ -14,12 +14,13 @@ import { IEnvironmentMainService } from '../../environment/electron-main/environ
 import { ILifecycleMainService, IRelaunchHandler, IRelaunchOptions } from '../../lifecycle/electron-main/lifecycleMainService.js';
 import { ILogService } from '../../log/common/log.js';
 import { IProductService } from '../../product/common/productService.js';
-import { asJson, IRequestService } from '../../request/common/request.js';
+import { asJson, IRequestService, NO_FETCH_TELEMETRY } from '../../request/common/request.js';
 import { ITelemetryService } from '../../telemetry/common/telemetry.js';
 import { AvailableForDownload, IUpdate, State, StateType, UpdateType } from '../common/update.js';
 import { IMeteredConnectionService } from '../../meteredConnection/common/meteredConnection.js';
 import { AbstractUpdateService, createUpdateURL, getUpdateRequestHeaders, IUpdateURLOptions, UpdateErrorClassification } from './abstractUpdateService.js';
 import { INodeProcess } from '../../../base/common/platform.js';
+import * as semver from 'semver';
 
 export class DarwinUpdateService extends AbstractUpdateService implements IRelaunchHandler {
 
@@ -97,19 +98,8 @@ export class DarwinUpdateService extends AbstractUpdateService implements IRelau
 		this.setState(State.Idle(UpdateType.Archive, message));
 	}
 
-	protected buildUpdateFeedUrl(quality: string, commit: string, options?: IUpdateURLOptions): string | undefined {
-		const assetID = this.productService.darwinUniversalAssetId ?? (process.arch === 'x64' ? 'darwin' : 'darwin-arm64');
-		const url = createUpdateURL(this.productService.updateUrl!, assetID, quality, commit, options);
-		const headers = getUpdateRequestHeaders(this.productService.version);
-		try {
-			this.logService.trace('update#buildUpdateFeedUrl - setting feed URL for Electron autoUpdater', { url, assetID, quality, commit, headers });
-			electron.autoUpdater.setFeedURL({ url, headers });
-		} catch (e) {
-			// application is very likely not signed
-			this.logService.error('Failed to set update feed URL', e);
-			return undefined;
-		}
-		return url;
+	protected buildUpdateFeedUrl(quality: string, _commit: string, _options?: IUpdateURLOptions): string | undefined {
+		return createUpdateURL(this.productService, quality, process.platform, process.arch);
 	}
 
 	override async checkForUpdates(explicit: boolean): Promise<void> {
@@ -152,7 +142,34 @@ export class DarwinUpdateService extends AbstractUpdateService implements IRelau
 		}
 
 		this.logService.trace('update#doCheckForUpdates - using Electron autoUpdater', { url, explicit, background });
-		electron.autoUpdater.checkForUpdates();
+		this.requestService.request({ url, callSite: NO_FETCH_TELEMETRY }, CancellationToken.None)
+			.then<IUpdate | null>(asJson)
+			.then(update => {
+				if (!update || !update.url || !update.version || !update.productVersion) {
+					this.setState(State.Idle(UpdateType.Setup, undefined, explicit || undefined));
+
+					return Promise.resolve(null);
+				}
+
+				const fetchedVersion = /\d+\.\d+\.\d+\.\d+/.test(update.productVersion) ? update.productVersion.replace(/(\d+\.\d+\.\d+)\.\d+(\-\w+)?/, '$1$2') : update.productVersion.replace(/(\d+\.\d+\.)0+(\d+)(\-\w+)?/, '$1$2$3')
+				const currentVersion = this.productService.version.replace(/(\d+\.\d+\.)0+(\d+)(\-\w+)?/, '$1$2$3')
+
+				if(semver.compareBuild(currentVersion, fetchedVersion) >= 0) {
+					this.setState(State.Idle(UpdateType.Setup, undefined, explicit || undefined));
+				}
+				else {
+					electron.autoUpdater.setFeedURL({ url });
+					electron.autoUpdater.checkForUpdates();
+				}
+
+				return Promise.resolve(null);
+			})
+			.then(undefined, err => {
+				this.logService.error(err);
+				// only show message when explicitly checking for updates
+				const message: string | undefined = explicit ? (err.message || err) : undefined;
+				this.setState(State.Idle(UpdateType.Setup, message));
+			});
 	}
 
 	/**
@@ -165,7 +182,7 @@ export class DarwinUpdateService extends AbstractUpdateService implements IRelau
 		this.logService.trace('update#checkForUpdateNoDownload - checking update server', { url, headers });
 
 		try {
-			const context = await this.requestService.request({ url, headers, callSite: 'updateService.darwin.checkForUpdates' }, CancellationToken.None);
+			const context = await this.requestService.request({ url, headers, callSite: NO_FETCH_TELEMETRY }, CancellationToken.None);
 			const statusCode = context.res.statusCode;
 			this.logService.trace('update#checkForUpdateNoDownload - response', { statusCode });
 

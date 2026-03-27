@@ -32,6 +32,7 @@ import { IPaneCompositeBarOptions } from '../paneCompositeBar.js';
 import { IHoverService } from '../../../../platform/hover/browser/hover.js';
 import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
 import { Extensions } from '../../panecomposite.js';
+import { FONT, getFontSize, updatePanelSize as updateBottomPaneSize } from '../../../../base/common/font.js';
 
 export class PanelPart extends AbstractPaneCompositePart {
 
@@ -115,6 +116,12 @@ export class PanelPart extends AbstractPaneCompositePart {
 			if (e.affectsConfiguration('workbench.panel.showLabels')) {
 				this.updateCompositeBar(true);
 			}
+			if (e.affectsConfiguration('workbench.bottomPane.experimental.fontFamily')) {
+				this.applyPanelFontFamily();
+			}
+			if (e.affectsConfiguration('workbench.bottomPane.experimental.fontSize')) {
+				this.applyPanelFontSize();
+			}
 		}));
 	}
 
@@ -131,6 +138,41 @@ export class PanelPart extends AbstractPaneCompositePart {
 		if (this.titleArea) {
 			this.titleArea.style.borderTopColor = this.getColor(PANEL_BORDER) || this.getColor(contrastBorder) || '';
 		}
+
+		this.applyPanelFontFamily(container);
+		this.applyPanelFontSize(container);
+	}
+
+	private applyPanelFontFamily(container?: HTMLElement): void {
+		const target = container ?? this.getContainer();
+		if (!target) {
+			return;
+		}
+
+		const family = this.configurationService.getValue<string>('workbench.bottomPane.experimental.fontFamily');
+
+		if (family) {
+			target.style.setProperty('--vscode-workbench-bottompane-font-family', family);
+		} else {
+			target.style.removeProperty('--vscode-workbench-bottompane-font-family');
+		}
+
+		this._onDidChange.fire(undefined); // Signal grid that size constraints changed
+	}
+
+	private applyPanelFontSize(container?: HTMLElement): void {
+		const target = container ?? this.getContainer();
+		if (!target) {
+			return;
+		}
+
+		const configuredSize = getFontSize(this.configurationService, 'workbench.bottomPane.experimental.fontSize', FONT.defaultBottomPaneSize);
+
+		updateBottomPaneSize(configuredSize);
+
+		target.style.setProperty('--vscode-workbench-bottompane-font-size', `${FONT.bottomPaneSize}px`);
+
+		this._onDidChange.fire(undefined); // Signal grid that size constraints changed
 	}
 
 	protected getCompositeBarOptions(): IPaneCompositeBarOptions {

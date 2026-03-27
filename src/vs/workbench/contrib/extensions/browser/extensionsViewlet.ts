@@ -67,6 +67,7 @@ import { KeyCode } from '../../../../base/common/keyCodes.js';
 import { IExtensionGalleryManifest, IExtensionGalleryManifestService, ExtensionGalleryManifestStatus } from '../../../../platform/extensionManagement/common/extensionGalleryManifest.js';
 import { URI } from '../../../../base/common/uri.js';
 import { DEFAULT_ACCOUNT_SIGN_IN_COMMAND } from '../../../services/accounts/browser/defaultAccount.js';
+import { FONT } from '../../../../base/common/font.js';
 
 export const ExtensionsSortByContext = new RawContextKey<string>('extensionsSortByValue', '');
 export const SearchMarketplaceExtensionsContext = new RawContextKey<boolean>('searchMarketplaceExtensions', false);
@@ -733,9 +734,9 @@ export class ExtensionsViewPaneContainer extends ViewPaneContainer<IExtensionsVi
 			this.root.classList.toggle('narrow', dimension.width <= 250);
 			this.root.classList.toggle('mini', dimension.width <= 200);
 		}
-		this.searchBox?.layout(new Dimension(dimension.width - 34 - /*padding*/8 - (24 * 2), 20));
-		const searchBoxHeight = 20 + 21 /*margin*/;
-		const headerHeight = this.header && !!this.notificationContainer?.childNodes.length ? this.notificationContainer.clientHeight + searchBoxHeight + 10 /*margin*/ : searchBoxHeight;
+		this.searchBox?.layout(new Dimension(dimension.width - FONT.sidebarSize34 - /*padding*/FONT.sidebarSize8 - (FONT.sidebarSize24 * 2), FONT.sidebarSize20));
+		const searchBoxHeight = FONT.sidebarSize20 + FONT.sidebarSize20 + 1 /*margin*/;
+		const headerHeight = this.header && !!this.notificationContainer?.childNodes.length ? this.notificationContainer.clientHeight + searchBoxHeight + FONT.sidebarSize10 /*margin*/ : searchBoxHeight;
 		this.header!.style.height = `${headerHeight}px`;
 		super.layout(new Dimension(dimension.width, dimension.height - headerHeight));
 	}

@@ -63,11 +63,11 @@ fsevents/test/**
 !@vscode/tree-sitter-wasm/wasm/tree-sitter-powershell.wasm
 !@vscode/tree-sitter-wasm/wasm/tree-sitter-bash.wasm
 
-native-keymap/binding.gyp
-native-keymap/build/**
-native-keymap/src/**
-native-keymap/deps/**
-!native-keymap/build/Release/*.node
+@vscodium/native-keymap/binding.gyp
+@vscodium/native-keymap/build/**
+@vscodium/native-keymap/src/**
+@vscodium/native-keymap/deps/**
+!@vscodium/native-keymap/build/Release/*.node
 
 native-is-elevated/binding.gyp
 native-is-elevated/build/**
@@ -80,11 +80,11 @@ native-is-elevated/deps/**
 @vscode/native-watchdog/src/**
 !@vscode/native-watchdog/build/Release/*.node
 
-@vscode/vsce-sign/**
-!@vscode/vsce-sign/src/main.d.ts
-!@vscode/vsce-sign/src/main.js
-!@vscode/vsce-sign/package.json
-!@vscode/vsce-sign/bin/**
+@vscodium/vsce-sign/**
+!@vscodium/vsce-sign/src/main.d.ts
+!@vscodium/vsce-sign/src/main.js
+!@vscodium/vsce-sign/package.json
+!@vscodium/vsce-sign/bin/**
 
 windows-foreground-love/binding.gyp
 windows-foreground-love/build/**
@@ -126,13 +126,15 @@ vsda/**
 !vsda/rust/web/**
 !vsda/rust/bundler/**
 
-@vscode/policy-watcher/build/**
-@vscode/policy-watcher/.husky/**
-@vscode/policy-watcher/src/**
-@vscode/policy-watcher/binding.gyp
-@vscode/policy-watcher/README.md
-@vscode/policy-watcher/index.d.ts
-!@vscode/policy-watcher/build/Release/vscode-policy-watcher.node
+@vscodium/policy-watcher/.github/**
+@vscodium/policy-watcher/.husky/**
+@vscodium/policy-watcher/build/**
+@vscodium/policy-watcher/src/**
+@vscodium/policy-watcher/.release-it.yml
+@vscodium/policy-watcher/binding.gyp
+@vscodium/policy-watcher/README.md
+@vscodium/policy-watcher/index.d.ts
+!@vscodium/policy-watcher/build/Release/vscodium-policy-watcher.node
 
 @vscode/windows-ca-certs/**/*
 !@vscode/windows-ca-certs/package.json

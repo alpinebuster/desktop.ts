@@ -9,6 +9,7 @@ import { Button } from '../../../../../../base/browser/ui/button/button.js';
 import { IconLabel } from '../../../../../../base/browser/ui/iconLabel/iconLabel.js';
 import { IListRenderer, IListVirtualDelegate } from '../../../../../../base/browser/ui/list/list.js';
 import { Codicon } from '../../../../../../base/common/codicons.js';
+import { FONT } from '../../../../../../base/common/font.js';
 import { Disposable, DisposableStore } from '../../../../../../base/common/lifecycle.js';
 import { isEqual } from '../../../../../../base/common/resources.js';
 import { URI } from '../../../../../../base/common/uri.js';
@@ -21,7 +22,7 @@ import { IChatTodo, IChatTodoListService } from '../../../common/tools/chatTodoL
 
 class TodoListDelegate implements IListVirtualDelegate<IChatTodo> {
 	getHeight(element: IChatTodo): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: IChatTodo): string {

@@ -10,7 +10,7 @@ import { asCSSUrl } from '../../../../base/browser/cssValue.js';
 import { ActionBar } from '../../../../base/browser/ui/actionbar/actionbar.js';
 import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
 import { IInstantiationService, ServicesAccessor } from '../../../../platform/instantiation/common/instantiation.js';
-import { IStorageService } from '../../../../platform/storage/common/storage.js';
+import { IStorageService, StorageScope } from '../../../../platform/storage/common/storage.js';
 import { IThemeService } from '../../../../platform/theme/common/themeService.js';
 import { ThemeIcon } from '../../../../base/common/themables.js';
 import { Part } from '../../part.js';
@@ -29,6 +29,7 @@ import { IContextKeyService } from '../../../../platform/contextkey/common/conte
 import { URI } from '../../../../base/common/uri.js';
 import { widgetClose } from '../../../../platform/theme/common/iconRegistry.js';
 import { BannerFocused } from '../../../common/contextkeys.js';
+import { INeverShowAgainOptions, NeverShowAgainScope } from '../../../../platform/notification/common/notification.js';
 
 // Banner Part
 
@@ -65,7 +66,7 @@ export class BannerPart extends Part implements IBannerService {
 	constructor(
 		@IThemeService themeService: IThemeService,
 		@IWorkbenchLayoutService layoutService: IWorkbenchLayoutService,
-		@IStorageService storageService: IStorageService,
+		@IStorageService private readonly storageService: IStorageService,
 		@IContextKeyService private readonly contextKeyService: IContextKeyService,
 		@IInstantiationService private readonly instantiationService: IInstantiationService,
 		@IMarkdownRendererService private readonly markdownRendererService: IMarkdownRendererService,
@@ -184,6 +185,18 @@ export class BannerPart extends Part implements IBannerService {
 			return;
 		}
 
+		if (item.neverShowAgain) {
+			const scope = this.toStorageScope(item.neverShowAgain);
+			const id = item.neverShowAgain.id;
+
+			// If the user already picked to not show the notification
+			// again, we return with a no-op notification here
+			if (this.storageService.getBoolean(id, scope)) {
+				this.close(item);
+				return;
+			}
+		}
+
 		// Clear previous item
 		clearNode(this.element);
 
@@ -230,6 +243,19 @@ export class BannerPart extends Part implements IBannerService {
 
 		this.setVisibility(true);
 		this.item = item;
+	}
+
+	private toStorageScope(options: INeverShowAgainOptions): StorageScope {
+		switch (options.scope) {
+			case NeverShowAgainScope.APPLICATION:
+				return StorageScope.APPLICATION;
+			case NeverShowAgainScope.PROFILE:
+				return StorageScope.PROFILE;
+			case NeverShowAgainScope.WORKSPACE:
+				return StorageScope.WORKSPACE;
+			default:
+				return StorageScope.APPLICATION;
+		}
 	}
 
 	toJSON(): object {

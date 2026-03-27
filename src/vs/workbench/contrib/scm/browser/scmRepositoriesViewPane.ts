@@ -47,13 +47,14 @@ import { Codicon } from '../../../../base/common/codicons.js';
 import { IStorageService, StorageScope, StorageTarget } from '../../../../platform/storage/common/storage.js';
 import { IActionViewItemProvider } from '../../../../base/browser/ui/actionbar/actionbar.js';
 import { fromNow } from '../../../../base/common/date.js';
+import { FONT } from '../../../../base/common/font.js';
 
 type TreeElement = ISCMRepository | SCMArtifactGroupTreeElement | SCMArtifactTreeElement | IResourceNode<SCMArtifactTreeElement, SCMArtifactGroupTreeElement>;
 
 class ListDelegate implements IListVirtualDelegate<ISCMRepository> {
 
 	getHeight(): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: TreeElement): string {

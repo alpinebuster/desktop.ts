@@ -75,6 +75,7 @@ import { SCMHistoryItemTransferData } from './scmHistoryChatContext.js';
 import { CancellationToken } from '../../../../base/common/cancellation.js';
 import { IMarkdownRendererService } from '../../../../platform/markdown/browser/markdownRenderer.js';
 import { MarkdownString } from '../../../../base/common/htmlContent.js';
+import { FONT } from '../../../../base/common/font.js';
 
 const PICK_REPOSITORY_ACTION_ID = 'workbench.scm.action.graph.pickRepository';
 const PICK_HISTORY_ITEM_REFS_ACTION_ID = 'workbench.scm.action.graph.pickHistoryItemRefs';
@@ -410,7 +411,7 @@ registerAction2(class extends Action2 {
 class ListDelegate implements IListVirtualDelegate<TreeElement> {
 
 	getHeight(): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: TreeElement): string {

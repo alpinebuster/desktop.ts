@@ -15,6 +15,7 @@ import { Range } from '../../../../editor/common/core/range.js';
 import { IListAccessibilityProvider } from '../../../../base/browser/ui/list/listWidget.js';
 import { localize } from '../../../../nls.js';
 import { ThemeIcon } from '../../../../base/common/themables.js';
+import { FONT } from '../../../../base/common/font.js';
 
 export class Type {
 	constructor(
@@ -130,7 +131,7 @@ export class TypeRenderer implements ITreeRenderer<Type, FuzzyScore, TypeRenderi
 export class VirtualDelegate implements IListVirtualDelegate<Type> {
 
 	getHeight(_element: Type): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(_element: Type): string {

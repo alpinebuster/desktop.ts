@@ -52,6 +52,7 @@ import Severity from '../../../../base/common/severity.js';
 import { getDefaultHoverDelegate } from '../../../../base/browser/ui/hover/hoverDelegateFactory.js';
 import type { IManagedHover } from '../../../../base/browser/ui/hover/hover.js';
 import { IHoverService } from '../../../../platform/hover/browser/hover.js';
+import { FONT } from '../../../../base/common/font.js';
 
 interface IResourceMarkersTemplateData {
 	readonly resourceLabel: IResourceLabel;
@@ -99,17 +100,15 @@ const enum TemplateId {
 
 export class VirtualDelegate implements IListVirtualDelegate<MarkerElement> {
 
-	static LINE_HEIGHT: number = 22;
-
 	constructor(private readonly markersViewState: MarkersViewModel) { }
 
 	getHeight(element: MarkerElement): number {
 		if (element instanceof Marker) {
 			const viewModel = this.markersViewState.getViewModel(element);
 			const noOfLines = !viewModel || viewModel.multiline ? element.lines.length : 1;
-			return noOfLines * VirtualDelegate.LINE_HEIGHT;
+			return noOfLines * FONT.sidebarSize22;
 		}
-		return VirtualDelegate.LINE_HEIGHT;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: MarkerElement): string {
@@ -375,7 +374,7 @@ class MarkerWidget extends Disposable {
 			const highlightedLabel = this.disposables.add(new HighlightedLabel(messageElement));
 			highlightedLabel.set(lines[index].length > 1000 ? `${lines[index].substring(0, 1000)}...` : lines[index], lineMatches[index]);
 			if (lines[index] === '') {
-				lineElement.style.height = `${VirtualDelegate.LINE_HEIGHT}px`;
+				lineElement.style.height = `${FONT.sidebarSize22}px`;
 			}
 			lineElements.push(lineElement);
 		}

@@ -10,6 +10,7 @@ import { ICompressedTreeNode } from '../../../../../../base/browser/ui/tree/comp
 import { ICompressibleTreeRenderer } from '../../../../../../base/browser/ui/tree/objectTree.js';
 import { IAsyncDataSource, ITreeNode } from '../../../../../../base/browser/ui/tree/tree.js';
 import { Event } from '../../../../../../base/common/event.js';
+import { FONT } from '../../../../../../base/common/font.js';
 import { Disposable, DisposableStore, IDisposable } from '../../../../../../base/common/lifecycle.js';
 import { localize } from '../../../../../../nls.js';
 import { IConfigurationService } from '../../../../../../platform/configuration/common/configuration.js';
@@ -153,10 +154,9 @@ export class TreePool extends Disposable {
 }
 
 class ChatListTreeDelegate implements IListVirtualDelegate<IChatResponseProgressFileTreeData> {
-	static readonly ITEM_HEIGHT = 22;
 
 	getHeight(element: IChatResponseProgressFileTreeData): number {
-		return ChatListTreeDelegate.ITEM_HEIGHT;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: IChatResponseProgressFileTreeData): string {

@@ -6,7 +6,7 @@
 import { AbstractPolicyService, IPolicyService, PolicyDefinition, PolicyValue } from '../common/policy.js';
 import { IStringDictionary } from '../../../base/common/collections.js';
 import { Throttler } from '../../../base/common/async.js';
-import type { PolicyUpdate, Watcher } from '@vscode/policy-watcher';
+import type { PolicyUpdate, Watcher } from '@vscodium/policy-watcher';
 import { MutableDisposable } from '../../../base/common/lifecycle.js';
 import { ILogService } from '../../log/common/log.js';
 
@@ -25,11 +25,11 @@ export class NativePolicyService extends AbstractPolicyService implements IPolic
 	protected async _updatePolicyDefinitions(policyDefinitions: IStringDictionary<PolicyDefinition>): Promise<void> {
 		this.logService.trace(`NativePolicyService#_updatePolicyDefinitions - Found ${Object.keys(policyDefinitions).length} policy definitions`);
 
-		const { createWatcher } = await import('@vscode/policy-watcher');
+		const { createWatcher } = await import('@vscodium/policy-watcher');
 
 		await this.throttler.queue(() => new Promise<void>((c, e) => {
 			try {
-				this.watcher.value = createWatcher(this.productName, policyDefinitions, update => {
+				this.watcher.value = createWatcher('VSCodium', this.productName, policyDefinitions, update => {
 					this._onDidPolicyChange(update);
 					c();
 				});

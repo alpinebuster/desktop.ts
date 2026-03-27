@@ -20,6 +20,7 @@ import { RunOnceScheduler } from '../../../../base/common/async.js';
 import { Codicon } from '../../../../base/common/codicons.js';
 import { Event } from '../../../../base/common/event.js';
 import { createMatches, FuzzyScore, IMatch } from '../../../../base/common/filters.js';
+import { FONT } from '../../../../base/common/font.js';
 import { DisposableStore, dispose, IDisposable } from '../../../../base/common/lifecycle.js';
 import { posix } from '../../../../base/common/path.js';
 import { commonSuffixLength } from '../../../../base/common/strings.js';
@@ -896,13 +897,13 @@ class CallStackDelegate implements IListVirtualDelegate<CallStackItem> {
 
 	getHeight(element: CallStackItem): number {
 		if (element instanceof StackFrame && element.presentationHint === 'label') {
-			return 16;
+			return FONT.sidebarSize16;
 		}
 		if (element instanceof ThreadAndSessionIds || element instanceof Array) {
-			return 16;
+			return FONT.sidebarSize16;
 		}
 
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: CallStackItem): string {

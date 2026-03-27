@@ -1837,9 +1837,11 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
 			}
 		};
 
+		const version = initData.version.replace(/^([0-9]+\.[0-9]+\.[0-5]).*$/, '$1');
+
 		// eslint-disable-next-line local/code-no-dangerous-type-assertions
 		return <typeof vscode>{
-			version: initData.version,
+			version,
 			// namespaces
 			ai,
 			authentication,

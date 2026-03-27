@@ -7,9 +7,11 @@ import { safeStringify } from '../../../../base/common/objects.js';
 import * as nls from '../../../../nls.js';
 import { Action2, registerAction2 } from '../../../../platform/actions/common/actions.js';
 import { ICommandService } from '../../../../platform/commands/common/commands.js';
+import { ConfigurationScope, IConfigurationRegistry } from '../../../../platform/configuration/common/configurationRegistry.js';
 import { ServicesAccessor } from '../../../../platform/instantiation/common/instantiation.js';
 import { ILogService } from '../../../../platform/log/common/log.js';
 import { INotificationService } from '../../../../platform/notification/common/notification.js';
+import { Registry } from '../../../../platform/registry/common/platform.js';
 
 type RunnableCommand = string | { command: string; args: any[] };
 
@@ -153,5 +155,33 @@ class RunCommands extends Action2 {
 		}
 	}
 }
+
+Registry.as<IConfigurationRegistry>('base.contributions.configuration')
+	.registerConfiguration({
+		id: 'commands',
+		order: 30,
+		title: nls.localize('commandsConfigurationTitle', "Commands"),
+		type: 'object',
+		properties: {
+			'commands.filters': {
+				additionalProperties: {
+					type: 'string',
+					enum: ['ask', 'off', 'on'],
+					enumDescriptions: [
+						nls.localize('commands.filters.ask', 'Ask the user before executing the command.'),
+						nls.localize('commands.filters.off', 'The command is never authorized.'),
+						nls.localize('commands.filters.on', 'The command is always authorized.'),
+					],
+					description: nls.localize('commands.filters.value', "Authorization for the command."),
+				},
+				description: nls.localize('commands.filters', "Controls which commands are authorized to be executed."),
+				default: {
+					'workbench.action.terminal.newLocal': 'off'
+				},
+				scope: ConfigurationScope.APPLICATION,
+				tags: []
+			},
+		}
+	});
 
 registerAction2(RunCommands);

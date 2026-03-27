@@ -369,3 +369,105 @@
 	display: flex;
 	align-items: center;
 }
+
+/*** Handcrafted for Custom Font Size ***/
+
+.monaco-workbench .part.sidebar .debug-pane .debug-breakpoints .breakpoint-folder,
+.monaco-workbench .part.sidebar .debug-pane .debug-breakpoints .exception  {
+	margin-left: 0 !important;
+}
+
+
+
+/*** Generated for Custom Font Size ***/
+
+.monaco-workbench .debug-action.notification:after .part.sidebar, .monaco-workbench .debug-action.notification:after .part.auxiliarybar {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 0.461538);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 0.461538);
+    top: calc(var(--vscode-workbench-sidebar-font-size) * 0.769231);
+    right: calc(var(--vscode-workbench-sidebar-font-size) * 0.461538)
+}
+.monaco-workbench .part.sidebar > .title > .title-actions .start-debug-action-item, .monaco-workbench .part.auxiliarybar > .title > .title-actions .start-debug-action-item {
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.538462)
+}
+.monaco-workbench .part.sidebar > .title > .title-actions .start-debug-action-item .codicon-debug-start, .monaco-workbench .part.auxiliarybar > .title > .title-actions .start-debug-action-item .codicon-debug-start {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.384615);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308);
+    padding-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846);
+    padding-right: 1px;
+    margin-left: 1px
+}
+.monaco-workbench .monaco-action-bar .part.sidebar .start-debug-action-item .configuration .monaco-select-box, .monaco-workbench .monaco-action-bar .part.auxiliarybar .start-debug-action-item .configuration .monaco-select-box {
+    margin-top: calc(var(--vscode-workbench-sidebar-font-size) * 0);
+    min-width: calc(var(--vscode-workbench-sidebar-font-size) * 6.923077)
+}
+.monaco-workbench.safari .monaco-action-bar .part.sidebar .start-debug-action-item .configuration .monaco-select-box, .monaco-workbench.safari .monaco-action-bar .part.auxiliarybar .start-debug-action-item .configuration .monaco-select-box {
+    margin-bottom: calc(var(--vscode-workbench-sidebar-font-size) * 0)
+}
+.monaco-workbench .part.sidebar .debug-pane .line-number, .monaco-workbench .part.auxiliarybar .debug-pane .line-number {
+    padding-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692);
+    padding-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .debug-pane .call-stack-state-message, .monaco-workbench .part.auxiliarybar .debug-pane .call-stack-state-message {
+    margin: calc(var(--vscode-workbench-sidebar-font-size) * 0) calc(var(--vscode-workbench-sidebar-font-size) * 0.769231)
+}
+.monaco-workbench .part.sidebar .debug-pane .call-stack-state-message > .label, .monaco-workbench .part.auxiliarybar .debug-pane .call-stack-state-message > .label {
+    padding: 1px calc(var(--vscode-workbench-sidebar-font-size) * 0.153846);
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.692308)
+}
+.monaco-workbench .part.sidebar .debug-pane .debug-call-stack .thread, .monaco-workbench .part.sidebar .debug-pane .debug-call-stack .session, .monaco-workbench .part.sidebar .debug-pane .debug-call-stack .stack-frame, .monaco-workbench .part.auxiliarybar .debug-pane .debug-call-stack .thread, .monaco-workbench .part.auxiliarybar .debug-pane .debug-call-stack .session, .monaco-workbench .part.auxiliarybar .debug-pane .debug-call-stack .stack-frame {
+    padding-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.923077)
+}
+.monaco-workbench .part.sidebar .debug-pane .debug-call-stack .thread > .state.label, .monaco-workbench .part.sidebar .debug-pane .debug-call-stack .session > .state.label, .monaco-workbench .part.auxiliarybar .debug-pane .debug-call-stack .thread > .state.label, .monaco-workbench .part.auxiliarybar .debug-pane .debug-call-stack .session > .state.label {
+    margin: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.769231)
+}
+.monaco-workbench .part.sidebar .debug-pane .monaco-list-row .monaco-action-bar .action-label, .monaco-workbench .part.auxiliarybar .debug-pane .monaco-list-row .monaco-action-bar .action-label {
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .part.sidebar .debug-pane .session .codicon, .monaco-workbench .part.auxiliarybar .debug-pane .session .codicon {
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308);
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .part.sidebar .debug-pane .scope, .monaco-workbench .part.auxiliarybar .debug-pane .scope {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.846154)
+}
+.monaco-workbench .part.sidebar .debug-pane .monaco-list-row .expression .value, .monaco-workbench .part.auxiliarybar .debug-pane .monaco-list-row .expression .value {
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308)
+}
+.monaco-workbench .part.sidebar .debug-pane .monaco-inputbox > .ibwrapper, .monaco-workbench .part.auxiliarybar .debug-pane .monaco-inputbox > .ibwrapper {
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.461538)
+}
+.monaco-workbench .part.sidebar .debug-pane .monaco-inputbox > .ibwrapper > .input, .monaco-workbench .part.auxiliarybar .debug-pane .monaco-inputbox > .ibwrapper > .input {
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0)
+}
+.monaco-workbench .part.sidebar .debug-view-content .monaco-tl-contents .highlight, .monaco-workbench .part.auxiliarybar .debug-view-content .monaco-tl-contents .highlight {
+    outline: 1px dotted var(--vscode-list-filterMatchBorder);
+    outline-offset: calc(var(--vscode-workbench-sidebar-font-size) * -0.076923)
+}
+.monaco-workbench .part.sidebar .debug-pane .monaco-list-row, .monaco-workbench .part.auxiliarybar .debug-pane .monaco-list-row {
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308)
+}
+.monaco-workbench .part.sidebar .debug-pane .debug-breakpoints .breakpoint, .monaco-workbench .part.auxiliarybar .debug-pane .debug-breakpoints .breakpoint {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * -1.461538)
+}
+.monaco-workbench .part.sidebar .debug-pane .debug-breakpoints .breakpoint .monaco-custom-toggle, .monaco-workbench .part.auxiliarybar .debug-pane .debug-breakpoints .breakpoint .monaco-custom-toggle {
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .debug-pane .debug-breakpoints .breakpoint .monaco-custom-toggle.monaco-checkbox, .monaco-workbench .part.auxiliarybar .debug-pane .debug-breakpoints .breakpoint .monaco-custom-toggle.monaco-checkbox {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.384615);
+    min-width: calc(var(--vscode-workbench-sidebar-font-size) * 1.384615);
+    max-width: calc(var(--vscode-workbench-sidebar-font-size) * 1.384615);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.384615);
+    padding: 0
+}
+.monaco-workbench .part.sidebar .debug-pane .debug-breakpoints .breakpoint .monaco-custom-toggle.monaco-checkbox::before, .monaco-workbench .part.auxiliarybar .debug-pane .debug-breakpoints .breakpoint .monaco-custom-toggle.monaco-checkbox::before {
+    margin: 0
+}
+.monaco-workbench .part.sidebar .debug-pane .debug-breakpoints .breakpoint > .codicon, .monaco-workbench .part.auxiliarybar .debug-pane .debug-breakpoints .breakpoint > .codicon {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.461538);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.461538);
+    min-width: calc(var(--vscode-workbench-sidebar-font-size) * 1.461538)
+}
+.monaco-workbench .part.sidebar .debug-pane .pane-header .breakpoint-warning, .monaco-workbench .part.auxiliarybar .debug-pane .pane-header .breakpoint-warning {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.230769)
+}

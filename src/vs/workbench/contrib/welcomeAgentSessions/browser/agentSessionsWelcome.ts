@@ -47,7 +47,6 @@ import { ChatSessionPosition, getResourceForNewChatSession } from '../../chat/br
 import { IChatEntitlementService } from '../../../services/chat/common/chatEntitlementService.js';
 import { AgentSessionsControl, IAgentSessionsControlOptions } from '../../chat/browser/agentSessions/agentSessionsControl.js';
 import { AgentSessionsFilter } from '../../chat/browser/agentSessions/agentSessionsFilter.js';
-import { AgentSessionsListDelegate } from '../../chat/browser/agentSessions/agentSessionsViewer.js';
 import { HoverPosition } from '../../../../base/browser/ui/hover/hoverWidget.js';
 import { IResolvedWalkthrough, IWalkthroughsService } from '../../welcomeGettingStarted/browser/gettingStartedService.js';
 import { GettingStartedEditorOptions, GettingStartedInput } from '../../welcomeGettingStarted/browser/gettingStartedInput.js';
@@ -60,6 +59,7 @@ import { IWorkspaceTrustManagementService } from '../../../../platform/workspace
 import { IViewDescriptorService, ViewContainerLocation } from '../../../common/views.js';
 import { toErrorMessage } from '../../../../base/common/errorMessage.js';
 import { ILogService } from '../../../../platform/log/common/log.js';
+import { FONT } from '../../../../base/common/font.js';
 
 const configurationKey = 'workbench.startupEditor';
 const MAX_SESSIONS = 6;
@@ -824,12 +824,12 @@ export class AgentSessionsWelcomePage extends EditorPane {
 			this.agentSessionsService.model.sessions.filter(s => !s.isArchived()).length,
 			MAX_SESSIONS
 		);
-		const sessionsHeight = visibleSessions * AgentSessionsListDelegate.ITEM_HEIGHT;
+		const sessionsHeight = visibleSessions * FONT.sidebarSize22;
 		this.sessionsControl.layout(sessionsHeight, sessionsWidth);
 
 		// Set margin offset for 2-column layout: actual height - visual height
 		// Visual height = ceil(n/2) * ITEM_HEIGHT, so offset = floor(n/2) * ITEM_HEIGHT
-		const marginOffset = Math.floor(visibleSessions / 2) * AgentSessionsListDelegate.ITEM_HEIGHT;
+		const marginOffset = Math.floor(visibleSessions / 2) * FONT.sidebarSize22;
 		this.sessionsControl.element!.style.marginBottom = `-${marginOffset}px`;
 	}
 

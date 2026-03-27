@@ -30,8 +30,6 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
 const root = path.dirname(path.dirname(import.meta.dirname));
-// const commit = getVersion(root);
-// const sourceMappingURLBase = `https://main.vscode-cdn.net/sourcemaps/${commit}`;
 
 function minifyExtensionResources(input: Stream): Stream {
 	const jsonFilter = filter(['**/*.json', '**/*.code-snippets'], { restore: true });
@@ -114,7 +112,7 @@ export function typeCheckExtensionStream(extensionPath: string, forWeb: boolean)
 
 
 function fromLocalNormal(extensionPath: string): Stream {
-	const vsce = require('@vscode/vsce') as typeof import('@vscode/vsce');
+	const vsce = require('@vscodium/vsce') as typeof import('@vscodium/vsce');
 	const result = es.through();
 
 	vsce.listFiles({ cwd: extensionPath, packageManager: vsce.PackageManager.Npm })
@@ -136,7 +134,7 @@ function fromLocalNormal(extensionPath: string): Stream {
 }
 
 function fromLocalEsbuild(extensionPath: string, esbuildConfigFileName: string): Stream {
-	const vsce = require('@vscode/vsce') as typeof import('@vscode/vsce');
+	const vsce = require('@vscodium/vsce') as typeof import('@vscodium/vsce');
 	const result = es.through();
 
 	const esbuildScript = path.join(extensionPath, esbuildConfigFileName);

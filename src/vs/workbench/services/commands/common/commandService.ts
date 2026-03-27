@@ -6,7 +6,10 @@
 import { CancelablePromise, notCancellablePromise, raceCancellablePromises, timeout } from '../../../../base/common/async.js';
 import { Emitter, Event } from '../../../../base/common/event.js';
 import { Disposable } from '../../../../base/common/lifecycle.js';
+import Severity from '../../../../base/common/severity.js';
 import { CommandsRegistry, ICommandEvent, ICommandService } from '../../../../platform/commands/common/commands.js';
+import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
+import { IDialogService } from '../../../../platform/dialogs/common/dialogs.js';
 import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
 import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
 import { ILogService } from '../../../../platform/log/common/log.js';
@@ -18,6 +21,7 @@ export class CommandService extends Disposable implements ICommandService {
 
 	private _extensionHostIsReady: boolean = false;
 	private _starActivation: CancelablePromise<void> | null;
+	private _commandFilters: Record<string, "ask" | "off" | "on">
 
 	private readonly _onWillExecuteCommand: Emitter<ICommandEvent> = this._register(new Emitter<ICommandEvent>());
 	public readonly onWillExecuteCommand: Event<ICommandEvent> = this._onWillExecuteCommand.event;
@@ -28,11 +32,20 @@ export class CommandService extends Disposable implements ICommandService {
 	constructor(
 		@IInstantiationService private readonly _instantiationService: IInstantiationService,
 		@IExtensionService private readonly _extensionService: IExtensionService,
-		@ILogService private readonly _logService: ILogService
+		@ILogService private readonly _logService: ILogService,
+		@IConfigurationService private readonly _configurationService: IConfigurationService,
+		@IDialogService private readonly _dialogService: IDialogService
 	) {
 		super();
 		this._extensionService.whenInstalledExtensionsRegistered().then(value => this._extensionHostIsReady = value);
 		this._starActivation = null;
+		this._commandFilters = this._configurationService.getValue('commands.filters') ?? { 'workbench.action.terminal.newLocal': 'off' };
+
+		this._configurationService.onDidChangeConfiguration(async (event) => {
+			if (event.affectsConfiguration('commands.filters')) {
+				this._commandFilters = this._configurationService.getValue('commands.filters') ?? { 'workbench.action.terminal.newLocal': 'off' };
+			}
+		})
 	}
 
 	private _activateStar(): Promise<void> {
@@ -54,6 +67,31 @@ export class CommandService extends Disposable implements ICommandService {
 
 		const activationEvent = `onCommand:${id}`;
 		const commandIsRegistered = !!CommandsRegistry.getCommand(id);
+
+		const filter = this._commandFilters[id];
+		if (filter === 'off') {
+			return Promise.reject(new Error(`command '${id}' not authorized`));
+		}
+		else if (filter === 'ask') {
+			const { result } = await this._dialogService.prompt({
+				type: Severity.Error,
+				message: `Are you sure you want to execute the command "${id}"?`,
+				buttons: [
+					{
+						label: 'Yes',
+						run: () => true
+					},
+					{
+						label: 'No',
+						run: () => false
+					}
+				],
+			});
+
+			if (!result) {
+				return Promise.reject(new Error(`command '${id}' not authorized`));
+			}
+		}
 
 		if (commandIsRegistered) {
 

@@ -38,17 +38,21 @@ import { IExtensionService } from '../../../services/extensions/common/extension
 import { IWorkbenchEnvironmentService } from '../../../services/environment/common/environmentService.js';
 import { IViewsService } from '../../../services/views/common/viewsService.js';
 import { SwitchCompositeViewAction } from '../compositeBarActions.js';
+import { FONT, getFontSize, updateActivityBarSize } from '../../../../base/common/font.js';
 
 export class ActivitybarPart extends Part {
 
 	static readonly ACTION_HEIGHT = 48;
 	static readonly COMPACT_ACTION_HEIGHT = 32;
+	static readonly COMPACT_ACTION_HEIGHT_RATIO = 32/48;
 
 	static readonly ACTIVITYBAR_WIDTH = 48;
 	static readonly COMPACT_ACTIVITYBAR_WIDTH = 36;
+	static readonly COMPACT_ACTIVITYBAR_WIDTH_RATIO = 36/48;
 
 	static readonly ICON_SIZE = 24;
 	static readonly COMPACT_ICON_SIZE = 16;
+	static readonly COMPACT_ICON_SIZE_RATIO = 16/24;
 
 	static readonly pinnedViewContainersKey = 'workbench.activity.pinnedViewlets2';
 	static readonly placeholderViewContainersKey = 'workbench.activity.placeholderViewlets';
@@ -56,8 +60,8 @@ export class ActivitybarPart extends Part {
 
 	//#region IView
 
-	get minimumWidth(): number { return this._isCompact ? ActivitybarPart.COMPACT_ACTIVITYBAR_WIDTH : ActivitybarPart.ACTIVITYBAR_WIDTH; }
-	get maximumWidth(): number { return this._isCompact ? ActivitybarPart.COMPACT_ACTIVITYBAR_WIDTH : ActivitybarPart.ACTIVITYBAR_WIDTH; }
+	get minimumWidth(): number { return this._isCompact ? FONT.activityBarSize48 * ActivitybarPart.COMPACT_ACTIVITYBAR_WIDTH_RATIO : FONT.activityBarSize48; }
+	get maximumWidth(): number { return this._isCompact ? FONT.activityBarSize48 * ActivitybarPart.COMPACT_ACTIVITYBAR_WIDTH_RATIO : FONT.activityBarSize48; }
 	readonly minimumHeight: number = 0;
 	readonly maximumHeight: number = Number.POSITIVE_INFINITY;
 
@@ -88,14 +92,23 @@ export class ActivitybarPart extends Part {
 				this._onDidChange.fire(undefined); // Signal grid that size constraints changed
 			}
 		}));
+
+		this._register(configurationService.onDidChangeConfiguration(e => {
+			if (e.affectsConfiguration('workbench.activityBar.experimental.fontFamily') || e.affectsConfiguration('workbench.activityBar.experimental.fontSize')) {
+				this.applyActivityBarFontFamily();
+				this.applyActivityBarFontSize();
+				this.recreateCompositeBar();
+				this._onDidChange.fire(undefined); // Signal grid that size constraints changed
+			}
+		}));
 	}
 
 	private updateCompactStyle(): void {
 		if (this.element) {
 			this.element.classList.toggle('compact', this._isCompact);
 			this.element.style.setProperty('--activity-bar-width', `${this.minimumWidth}px`);
-			this.element.style.setProperty('--activity-bar-action-height', `${this._isCompact ? ActivitybarPart.COMPACT_ACTION_HEIGHT : ActivitybarPart.ACTION_HEIGHT}px`);
-			this.element.style.setProperty('--activity-bar-icon-size', `${this._isCompact ? ActivitybarPart.COMPACT_ICON_SIZE : ActivitybarPart.ICON_SIZE}px`);
+			this.element.style.setProperty('--activity-bar-action-height', `${this._isCompact ? FONT.activityBarSize32 : FONT.activityBarSize48}px`);
+			this.element.style.setProperty('--activity-bar-icon-size', `${this._isCompact ? FONT.activityBarSize : FONT.activityBarSize24}px`);
 		}
 	}
 
@@ -151,6 +164,10 @@ export class ActivitybarPart extends Part {
 		this.element = parent;
 		this.content = append(this.element, $('.content'));
 
+		// Apply font settings before show() so composite bar uses correct sizes
+		this.applyActivityBarFontFamily(parent);
+		this.applyActivityBarFontSize(parent);
+
 		this.updateCompactStyle();
 
 		if (this.layoutService.isVisible(Parts.ACTIVITYBAR_PART)) {
@@ -158,6 +175,38 @@ export class ActivitybarPart extends Part {
 		}
 
 		return this.content;
+	}
+
+	private applyActivityBarFontFamily(container?: HTMLElement): void {
+		const target = container ?? this.getContainer();
+		if (!target) {
+			return;
+		}
+
+		const family = this.configurationService.getValue<string>('workbench.activityBar.experimental.fontFamily');
+
+		if (family) {
+			target.style.setProperty('--vscode-workbench-activitybar-font-family', family);
+		} else {
+			target.style.removeProperty('--vscode-workbench-activitybar-font-family');
+		}
+
+		this._onDidChange.fire(undefined); // Signal grid that size constraints changed
+	}
+
+	private applyActivityBarFontSize(container?: HTMLElement): void {
+		const target = container ?? this.getContainer();
+		if (!target) {
+			return;
+		}
+
+		const configuredSize = getFontSize(this.configurationService, 'workbench.activityBar.experimental.fontSize', FONT.defaultActivityBarSize);
+
+		updateActivityBarSize(configuredSize);
+
+		target.style.setProperty('--vscode-workbench-activitybar-font-size', `${FONT.activityBarSize}px`);
+
+		this._onDidChange.fire(undefined); // Signal grid that size constraints changed
 	}
 
 	getPinnedPaneCompositeIds(): string[] {

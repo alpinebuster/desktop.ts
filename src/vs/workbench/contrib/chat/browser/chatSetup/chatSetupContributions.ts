@@ -226,6 +226,7 @@ export class ChatSetupContribution extends Disposable implements IWorkbenchContr
 						ChatContextKeys.Setup.hidden,
 						ChatContextKeys.Setup.disabled,
 						ChatContextKeys.Setup.untrusted,
+						ContextKeyExpr.has('config.chat.disableAIFeatures').negate(),
 						ChatContextKeys.Setup.installed.negate(),
 						ChatContextKeys.Entitlement.canSignUp
 					)
@@ -344,6 +345,7 @@ export class ChatSetupContribution extends Disposable implements IWorkbenchContr
 						group: '2_copilot',
 						when: ContextKeyExpr.and(
 							ChatContextKeys.Setup.hidden.negate(),
+							ContextKeyExpr.has('config.chat.disableAIFeatures').negate(),
 							ChatContextKeys.Setup.installed.negate(),
 							ChatContextKeys.Entitlement.signedOut
 						)
@@ -516,6 +518,7 @@ export class ChatSetupContribution extends Disposable implements IWorkbenchContr
 		const internalGenerateCodeContext = ContextKeyExpr.and(
 			ChatContextKeys.Setup.hidden.negate(),
 			ChatContextKeys.Setup.disabled.negate(),
+			ContextKeyExpr.has('config.chat.disableAIFeatures').negate(),
 			ChatContextKeys.Setup.installed.negate(),
 		);
 

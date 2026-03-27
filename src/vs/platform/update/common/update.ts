@@ -52,7 +52,8 @@ export const enum StateType {
 export const enum UpdateType {
 	Setup,
 	Archive,
-	Snap
+	Snap,
+	WindowsInstaller,
 }
 
 export const enum DisablementReason {
@@ -118,3 +119,40 @@ export interface IUpdateService {
 	_applySpecificUpdate(packagePath: string): Promise<void>;
 	setInternalOrg(internalOrg: string | undefined): Promise<void>;
 }
+
+export type Architecture =
+	| "arm"
+	| "arm64"
+	| "ia32"
+	| "loong64"
+	| "mips"
+	| "mipsel"
+	| "ppc"
+	| "ppc64"
+	| "riscv64"
+	| "s390"
+	| "s390x"
+	| "x64";
+
+export type Platform =
+	| "aix"
+	| "android"
+	| "darwin"
+	| "freebsd"
+	| "haiku"
+	| "linux"
+	| "openbsd"
+	| "sunos"
+	| "win32"
+	| "cygwin"
+	| "netbsd";
+
+export type Quality =
+	| "insider"
+	| "stable";
+
+export type Target =
+	| "archive"
+	| "msi"
+	| "system"
+	| "user";

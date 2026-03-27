@@ -110,6 +110,7 @@ export class Extension implements IExtension {
 		@ITelemetryService private readonly telemetryService: ITelemetryService,
 		@ILogService private readonly logService: ILogService,
 		@IFileService private readonly fileService: IFileService,
+		// @ts-ignore
 		@IProductService private readonly productService: IProductService
 	) {
 	}
@@ -339,7 +340,7 @@ export class Extension implements IExtension {
 				return false;
 			}
 			// Do not allow updating system extensions in stable
-			if (this.type === ExtensionType.System && this.productService.quality === 'stable') {
+			if (this.type === ExtensionType.System) {
 				return false;
 			}
 			if (!this.local.preRelease && this.gallery.properties.isPreReleaseVersion) {
@@ -476,7 +477,7 @@ export class Extension implements IExtension {
 
 		if (this.type === ExtensionType.System) {
 			return Promise.resolve(`# ${this.displayName || this.name}
-**Notice:** This extension is bundled with Visual Studio Code. It can be disabled but not uninstalled.
+**Notice:** This extension is bundled with VSCodium. It can be disabled but not uninstalled.
 ## Features
 ${this.description}
 `);
@@ -514,7 +515,7 @@ ${this.description}
 		}
 
 		if (this.type === ExtensionType.System) {
-			return Promise.resolve(`Please check the [VS Code Release Notes](command:${ShowCurrentReleaseNotesActionId}) for changes to the built-in extensions.`);
+			return Promise.resolve(`Please check the [VSCodium Release Notes](command:${ShowCurrentReleaseNotesActionId}) for changes to the built-in extensions.`);
 		}
 
 		return Promise.reject(new Error('not available'));

@@ -9,6 +9,7 @@
 	width: 100%;
 	height: 22px;
 	font-size: 12px;
+	font-family: var(--vscode-workbench-statusbar-font-family, inherit);
 	display: flex;
 	overflow: hidden;
 }
@@ -236,4 +237,73 @@
 .monaco-workbench .part.statusbar > .items-container > .statusbar-item.offline-kind a:hover:not(.disabled) {
 	color: var(--vscode-statusBarItem-offlineHoverForeground);
 	background-color: var(--vscode-statusBarItem-offlineHoverBackground) !important;
+}
+
+
+
+/*** Handcrafted for Custom Font Size ***/
+
+.monaco-workbench .part.statusbar .codicon[class*='codicon-'] {
+    font-size: calc(var(--vscode-workbench-statusbar-font-size) * 1.333333);
+}
+
+
+
+/*** Generated for Custom Font Size ***/
+
+.monaco-workbench .part.statusbar {
+    height: calc(var(--vscode-workbench-statusbar-font-size) * 1.833333);
+    font-size: calc(var(--vscode-workbench-statusbar-font-size) * 1)
+}
+.monaco-workbench .part.statusbar:not(:focus).status-border-top::after {
+    height: 1px
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item {
+    line-height: calc(var(--vscode-workbench-statusbar-font-size) * 1.833333)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item.has-beak > .status-bar-item-beak-container {
+    left: calc(50% - calc(var(--vscode-workbench-statusbar-font-size) * 0.416667));
+    top: calc(var(--vscode-workbench-statusbar-font-size) * -0.416667);
+    width: calc(var(--vscode-workbench-statusbar-font-size) * 0.833333);
+    height: calc(var(--vscode-workbench-statusbar-font-size) * 0.416667)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item.left.first-visible-item {
+    padding-left: calc(var(--vscode-workbench-statusbar-font-size) * 0.166667)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item.right.last-visible-item {
+    padding-right: calc(var(--vscode-workbench-statusbar-font-size) * 0.166667)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item > .statusbar-item-label {
+    margin-right: calc(var(--vscode-workbench-statusbar-font-size) * 0.25);
+    margin-left: calc(var(--vscode-workbench-statusbar-font-size) * 0.25);
+    padding: 0 calc(var(--vscode-workbench-statusbar-font-size) * 0.416667);
+    outline-width: calc(var(--vscode-workbench-statusbar-font-size) * 0)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item.compact-left > .statusbar-item-label {
+    margin-right: calc(var(--vscode-workbench-statusbar-font-size) * 0.416667);
+    padding: 0 calc(var(--vscode-workbench-statusbar-font-size) * 0.25)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item.compact-right > .statusbar-item-label {
+    margin-left: calc(var(--vscode-workbench-statusbar-font-size) * 0.416667);
+    padding: 0 calc(var(--vscode-workbench-statusbar-font-size) * 0.25)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item.left.first-visible-item > .statusbar-item-label, .monaco-workbench .part.statusbar > .items-container > .statusbar-item.right.last-visible-item > .statusbar-item-label, .monaco-workbench .part.statusbar > .items-container > .statusbar-item.has-background-color > .statusbar-item-label {
+    padding-left: calc(var(--vscode-workbench-statusbar-font-size) * 0.666667);
+    padding-right: calc(var(--vscode-workbench-statusbar-font-size) * 0.666667)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item.compact-left.has-background-color > .statusbar-item-label {
+    padding-left: calc(var(--vscode-workbench-statusbar-font-size) * 0.25);
+    padding-right: calc(var(--vscode-workbench-statusbar-font-size) * 0.833333)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item.compact-right.has-background-color > .statusbar-item-label {
+    padding-left: calc(var(--vscode-workbench-statusbar-font-size) * 0.833333);
+    padding-right: calc(var(--vscode-workbench-statusbar-font-size) * 0.25)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item a:active:not(.disabled) {
+    outline: 1px solid var(--vscode-contrastActiveBorder);
+    outline-offset: calc(var(--vscode-workbench-statusbar-font-size) * -0.083333)
+}
+.monaco-workbench .part.statusbar > .items-container > .statusbar-item a:hover:not(.disabled) {
+    outline: 1px dashed var(--vscode-contrastActiveBorder);
+    outline-offset: calc(var(--vscode-workbench-statusbar-font-size) * -0.083333)
 }

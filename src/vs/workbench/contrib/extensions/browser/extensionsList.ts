@@ -25,8 +25,7 @@ import { IContextMenuService } from '../../../../platform/contextview/browser/co
 import { HoverPosition } from '../../../../base/browser/ui/hover/hoverWidget.js';
 import { IActionViewItemOptions } from '../../../../base/browser/ui/actionbar/actionViewItems.js';
 import { extensionVerifiedPublisherIconColor, verifiedPublisherIcon } from '../../../services/extensionManagement/common/extensionsIcons.js';
-
-const EXTENSION_LIST_ELEMENT_HEIGHT = 72;
+import { FONT } from '../../../../base/common/font.js';
 
 export interface ITemplateData {
 	root: HTMLElement;
@@ -42,7 +41,7 @@ export interface ITemplateData {
 }
 
 export class Delegate implements IListVirtualDelegate<IExtension> {
-	getHeight() { return EXTENSION_LIST_ELEMENT_HEIGHT; }
+	getHeight() { return FONT.sidebarSize72; }
 	getTemplateId() { return 'extension'; }
 }
 

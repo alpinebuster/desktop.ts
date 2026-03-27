@@ -30,6 +30,10 @@ function getDebPackageArch(arch: string): string {
 		case 'x64': return 'amd64';
 		case 'armhf': return 'armhf';
 		case 'arm64': return 'arm64';
+		case 'ppc64le': return 'ppc64el';
+		case 'riscv64': return 'riscv64';
+		case 'loong64': return 'loong64';
+		case 's390x': return 's390x';
 		default: throw new Error(`Unknown arch: ${arch}`);
 	}
 }
@@ -88,7 +92,7 @@ function prepareDebPackage(arch: string) {
 				const that = this;
 				gulp.src('resources/linux/debian/control.template', { base: '.' })
 					.pipe(replace('@@NAME@@', product.applicationName))
-					.pipe(replace('@@VERSION@@', packageJson.version + '-' + linuxPackageRevision))
+					.pipe(replace('@@VERSION@@', packageJson.version))
 					.pipe(replace('@@ARCHITECTURE@@', debArch))
 					.pipe(replace('@@DEPENDS@@', dependencies.join(', ')))
 					.pipe(replace('@@RECOMMENDS@@', debianRecommendedDependencies.join(', ')))
@@ -140,6 +144,10 @@ function getRpmPackageArch(arch: string): string {
 		case 'x64': return 'x86_64';
 		case 'armhf': return 'armv7hl';
 		case 'arm64': return 'aarch64';
+		case 'ppc64le': return 'ppc64le';
+		case 'riscv64': return 'riscv64';
+		case 'loong64': return 'loong64';
+		case 's390x': return 's390x';
 		default: throw new Error(`Unknown arch: ${arch}`);
 	}
 }
@@ -196,7 +204,6 @@ function prepareRpmPackage(arch: string) {
 			.pipe(replace('@@NAME_LONG@@', product.nameLong))
 			.pipe(replace('@@ICON@@', product.linuxIconName))
 			.pipe(replace('@@VERSION@@', packageJson.version))
-			.pipe(replace('@@RELEASE@@', linuxPackageRevision.toString()))
 			.pipe(replace('@@ARCHITECTURE@@', rpmArch))
 			.pipe(replace('@@LICENSE@@', product.licenseName))
 			.pipe(replace('@@QUALITY@@', (product as typeof product & { quality?: string }).quality || '@@QUALITY@@'))
@@ -261,7 +268,7 @@ function prepareSnapPackage(arch: string) {
 
 		const snapcraft = gulp.src('resources/linux/snap/snapcraft.yaml', { base: '.' })
 			.pipe(replace('@@NAME@@', product.applicationName))
-			.pipe(replace('@@VERSION@@', commit!.substr(0, 8)))
+			.pipe(replace('@@VERSION@@', packageJson.version))
 			// Possible run-on values https://snapcraft.io/docs/architectures
 			.pipe(replace('@@ARCHITECTURE@@', arch === 'x64' ? 'amd64' : arch))
 			.pipe(rename('snap/snapcraft.yaml'));
@@ -284,6 +291,10 @@ const BUILD_TARGETS = [
 	{ arch: 'x64' },
 	{ arch: 'armhf' },
 	{ arch: 'arm64' },
+	{ arch: 'ppc64le' },
+	{ arch: 'riscv64' },
+	{ arch: 'loong64' },
+	{ arch: 's390x' },
 ];
 
 BUILD_TARGETS.forEach(({ arch }) => {

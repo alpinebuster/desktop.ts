@@ -46,6 +46,10 @@ export function TargetPlatformToString(targetPlatform: TargetPlatform) {
 		case TargetPlatform.LINUX_X64: return 'Linux 64 bit';
 		case TargetPlatform.LINUX_ARM64: return 'Linux ARM 64';
 		case TargetPlatform.LINUX_ARMHF: return 'Linux ARM';
+		case TargetPlatform.LINUX_PPC64LE: return 'Linux PowerPC64';
+		case TargetPlatform.LINUX_RISCV64: return 'Linux RISC-V 64';
+		case TargetPlatform.LINUX_LOONG64: return 'Linux Loong64';
+		case TargetPlatform.LINUX_S390X: return 'Linux S390X';
 
 		case TargetPlatform.ALPINE_X64: return 'Alpine Linux 64 bit';
 		case TargetPlatform.ALPINE_ARM64: return 'Alpine ARM 64';
@@ -69,6 +73,10 @@ export function toTargetPlatform(targetPlatform: string): TargetPlatform {
 		case TargetPlatform.LINUX_X64: return TargetPlatform.LINUX_X64;
 		case TargetPlatform.LINUX_ARM64: return TargetPlatform.LINUX_ARM64;
 		case TargetPlatform.LINUX_ARMHF: return TargetPlatform.LINUX_ARMHF;
+		case TargetPlatform.LINUX_PPC64LE: return TargetPlatform.LINUX_PPC64LE;
+		case TargetPlatform.LINUX_RISCV64: return TargetPlatform.LINUX_RISCV64;
+		case TargetPlatform.LINUX_LOONG64: return TargetPlatform.LINUX_LOONG64;
+		case TargetPlatform.LINUX_S390X: return TargetPlatform.LINUX_S390X;
 
 		case TargetPlatform.ALPINE_X64: return TargetPlatform.ALPINE_X64;
 		case TargetPlatform.ALPINE_ARM64: return TargetPlatform.ALPINE_ARM64;
@@ -103,6 +111,18 @@ export function getTargetPlatform(platform: Platform | 'alpine', arch: string | 
 			}
 			if (arch === 'arm') {
 				return TargetPlatform.LINUX_ARMHF;
+			}
+			if (arch === 'ppc64le') {
+				return TargetPlatform.LINUX_PPC64LE;
+			}
+			if (arch === 'riscv64') {
+				return TargetPlatform.LINUX_RISCV64;
+			}
+			if (arch === 'loong64') {
+				return TargetPlatform.LINUX_LOONG64;
+			}
+			if (arch === 's390x') {
+				return TargetPlatform.LINUX_S390X;
 			}
 			return TargetPlatform.UNKNOWN;
 

@@ -34,6 +34,8 @@ import { getContextMenuActions } from '../../../../platform/actions/browser/menu
 import { IHoverService } from '../../../../platform/hover/browser/hover.js';
 import { VisibleViewContainersTracker } from '../visibleViewContainersTracker.js';
 import { Extensions } from '../../panecomposite.js';
+import { FONT, getFontSize, updateSidebarSize } from '../../../../base/common/font.js';
+import { SidebarPart } from '../sidebar/sidebarPart.js';
 
 interface IAuxiliaryBarPartConfiguration {
 	position: ActivityBarPosition;
@@ -145,6 +147,12 @@ export class AuxiliaryBarPart extends AbstractPaneCompositePart {
 			} else if (e.affectsConfiguration(LayoutSettings.ACTIVITY_BAR_AUTO_HIDE)) {
 				this.onDidChangeActivityBarLocation();
 			}
+			if (e.affectsConfiguration(SidebarPart.fontSizeSettingsKey)) {
+				this.applyAuxiliaryBarFontSize();
+			}
+			if (e.affectsConfiguration('workbench.sideBar.experimental.fontFamily')) {
+				this.applyAuxiliaryBarFontFamily();
+			}
 		}));
 	}
 
@@ -196,6 +204,41 @@ export class AuxiliaryBarPart extends AbstractPaneCompositePart {
 
 		container.style.borderLeftWidth = borderColor && !isPositionLeft ? '1px' : '0px';
 		container.style.borderRightWidth = borderColor && isPositionLeft ? '1px' : '0px';
+
+		this.applyAuxiliaryBarFontSize(container);
+		this.applyAuxiliaryBarFontFamily(container);
+	}
+
+	private applyAuxiliaryBarFontFamily(container?: HTMLElement): void {
+		const target = container ?? this.getContainer();
+		if (!target) {
+			return;
+		}
+
+		const family = this.configurationService.getValue<string>('workbench.sideBar.experimental.fontFamily');
+
+		if (family) {
+			target.style.setProperty('--vscode-workbench-sidebar-font-family', family);
+		} else {
+			target.style.removeProperty('--vscode-workbench-sidebar-font-family');
+		}
+
+		this._onDidChange.fire(undefined); // Signal grid that size constraints changed
+	}
+
+	private applyAuxiliaryBarFontSize(container?: HTMLElement): void {
+		const target = container ?? this.getContainer();
+		if (!target) {
+			return;
+		}
+
+		const configuredSize = getFontSize(this.configurationService, SidebarPart.fontSizeSettingsKey, FONT.defaultSidebarSize);
+
+		updateSidebarSize(configuredSize);
+
+		target.style.setProperty('--vscode-workbench-sidebar-font-size', `${FONT.sidebarSize}px`);
+
+		this._onDidChange.fire(undefined); // Signal grid that size constraints changed
 	}
 
 	protected getCompositeBarOptions(): IPaneCompositeBarOptions {

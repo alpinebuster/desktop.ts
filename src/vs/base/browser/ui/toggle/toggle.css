@@ -67,3 +67,29 @@
 .monaco-action-bar .checkbox-action-item > .checkbox-label {
 	font-size: 12px;
 }
+
+
+
+.monaco-workbench .part.sidebar .monaco-custom-toggle, .monaco-workbench .part.auxiliarybar .monaco-custom-toggle {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846);
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.538462);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.538462);
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0.076923)
+}
+.monaco-workbench .part.sidebar .monaco-custom-toggle.monaco-checkbox, .monaco-workbench .part.auxiliarybar .monaco-custom-toggle.monaco-checkbox {
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.384615);
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.384615);
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.692308);
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0);
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0);
+    background-size: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769)
+}
+.monaco-workbench .part.sidebar .monaco-action-bar .checkbox-action-item, .monaco-workbench .part.auxiliarybar .monaco-action-bar .checkbox-action-item {
+    padding-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .part.sidebar .monaco-action-bar .checkbox-action-item > .monaco-custom-toggle.monaco-checkbox, .monaco-workbench .part.auxiliarybar .monaco-action-bar .checkbox-action-item > .monaco-custom-toggle.monaco-checkbox {
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .monaco-action-bar .checkbox-action-item > .checkbox-label, .monaco-workbench .part.auxiliarybar .monaco-action-bar .checkbox-action-item > .checkbox-label {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.923077)
+}

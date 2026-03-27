@@ -38,6 +38,7 @@ import { ColorIdentifier, asCssVariable, asCssVariableWithDefault, inputBackgrou
 import { MenuPreventer } from '../menuPreventer.js';
 import { SelectionClipboardContributionID } from '../selectionClipboard.js';
 import { getSimpleEditorOptions, setupSimpleEditorSelectionStyling } from '../simpleEditorOptions.js';
+import { FONT } from '../../../../../base/common/font.js';
 
 export interface SuggestResultsProvider {
 	/**
@@ -466,8 +467,8 @@ setupSimpleEditorSelectionStyling('.suggest-input-container');
 
 function getSuggestEnabledInputOptions(ariaLabel?: string): IEditorOptions {
 	return {
-		fontSize: 13,
-		lineHeight: 20,
+		fontSize: FONT.sidebarSize,
+		lineHeight: FONT.sidebarSize20,
 		wordWrap: 'off',
 		scrollbar: { vertical: 'hidden', },
 		roundedSelection: false,

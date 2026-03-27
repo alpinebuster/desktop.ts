@@ -544,7 +544,7 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
 	}
 
 	private async getShellCommandLink(): Promise<{ readonly source: string; readonly target: string }> {
-		const target = resolve(this.environmentMainService.appRoot, 'bin', 'code');
+		const target = resolve(this.environmentMainService.appRoot, 'bin', this.productService.applicationName);
 		const source = `/usr/local/bin/${this.productService.applicationName}`;
 
 		// Ensure source exists
@@ -813,7 +813,7 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
 
 		// macOS
 		if (this.environmentMainService.isBuilt) {
-			return join(this.environmentMainService.appRoot, 'bin', 'code');
+			return join(this.environmentMainService.appRoot, 'bin', `${this.productService.applicationName}`);
 		}
 
 		return join(this.environmentMainService.appRoot, 'scripts', 'code-cli.sh');

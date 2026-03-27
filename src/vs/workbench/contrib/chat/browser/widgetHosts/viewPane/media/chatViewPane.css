@@ -167,3 +167,70 @@
 		}
 	}
 }
+
+
+
+.monaco-workbench .part.sidebar .chat-viewpane.has-sessions-control .agent-sessions-container, .monaco-workbench .part.auxiliarybar .chat-viewpane.has-sessions-control .agent-sessions-container {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.846154);
+    letter-spacing: calc(var(--vscode-workbench-sidebar-font-size) * 0.038462);
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .agent-sessions-title-container, .monaco-workbench .part.auxiliarybar .agent-sessions-title-container {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.846154);
+    letter-spacing: calc(var(--vscode-workbench-sidebar-font-size) * 0.038462)
+}
+.monaco-workbench .part.sidebar .agent-sessions-toolbar, .monaco-workbench .part.auxiliarybar .agent-sessions-toolbar {
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .action-item, .monaco-workbench .part.auxiliarybar .action-item {
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .chat-viewpane.has-sessions-control.sessions-control-orientation-stacked, .monaco-workbench .part.auxiliarybar .chat-viewpane.has-sessions-control.sessions-control-orientation-stacked {
+    max-width: calc(var(--vscode-workbench-sidebar-font-size) * 73.076923)
+}
+.monaco-workbench .part.sidebar .agent-sessions-container, .monaco-workbench .part.auxiliarybar .agent-sessions-container {
+    max-width: calc(var(--vscode-workbench-sidebar-font-size) * 73.076923)
+}
+.monaco-workbench .part.sidebar .chat-viewpane.has-sessions-control.sessions-control-orientation-sidebyside, .monaco-workbench .part.auxiliarybar .chat-viewpane.has-sessions-control.sessions-control-orientation-sidebyside {
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .part.sidebar .agent-sessions-new-button-container, .monaco-workbench .part.auxiliarybar .agent-sessions-new-button-container {
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .part.sidebar .chat-viewpane.has-sessions-control, .monaco-workbench .part.auxiliarybar .chat-viewpane.has-sessions-control {
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.615385) 0 calc(var(--vscode-workbench-sidebar-font-size) * 1.538462);
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.461538) 0 calc(var(--vscode-workbench-sidebar-font-size) * 1.076923);
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.615385);
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.461538) 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.615385);
+    padding-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692);
+    padding-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .part.sidebar .agent-sessions-title-container, .monaco-workbench .part.auxiliarybar .agent-sessions-title-container {
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.615385) 0 calc(var(--vscode-workbench-sidebar-font-size) * 1.538462)
+}
+.monaco-workbench .part.sidebar .agent-session-section, .monaco-workbench .part.auxiliarybar .agent-session-section {
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.461538) 0 calc(var(--vscode-workbench-sidebar-font-size) * 1.076923)
+}
+.monaco-workbench .part.sidebar &.sessions-control-orientation-sidebyside.chat-view-position-right, .monaco-workbench .part.auxiliarybar &.sessions-control-orientation-sidebyside.chat-view-position-right {
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.615385);
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.461538) 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .part.sidebar .agent-sessions-title-container, .monaco-workbench .part.auxiliarybar .agent-sessions-title-container {
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .part.sidebar .agent-session-section, .monaco-workbench .part.auxiliarybar .agent-session-section {
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.461538) 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .part.sidebar &.activity-bar-location-other.chat-view-location-auxiliarybar, .monaco-workbench .part.auxiliarybar &.activity-bar-location-other.chat-view-location-auxiliarybar {
+    padding-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692);
+    padding-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .part.sidebar .agent-sessions-title-container, .monaco-workbench .part.auxiliarybar .agent-sessions-title-container {
+    padding-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar &.sessions-control-orientation-sidebyside.chat-view-position-right, .monaco-workbench .part.auxiliarybar &.sessions-control-orientation-sidebyside.chat-view-position-right {
+    padding-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .part.sidebar .agent-sessions-title-container, .monaco-workbench .part.sidebar .agent-session-section, .monaco-workbench .part.auxiliarybar .agent-sessions-title-container, .monaco-workbench .part.auxiliarybar .agent-session-section {
+    padding-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}

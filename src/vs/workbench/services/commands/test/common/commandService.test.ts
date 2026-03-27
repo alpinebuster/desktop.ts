@@ -10,12 +10,29 @@ import { InstantiationService } from '../../../../../platform/instantiation/comm
 import { NullLogService } from '../../../../../platform/log/common/log.js';
 import { NullExtensionService } from '../../../extensions/common/extensions.js';
 import { CommandService } from '../../common/commandService.js';
+import { NullPolicyService } from '../../../../../platform/policy/common/policy.js';
+import { FileService } from '../../../../../platform/files/common/fileService.js';
+import { URI } from '../../../../../base/common/uri.js';
+import { ConfigurationService } from '../../../../../platform/configuration/common/configurationService.js';
+import { TestDialogService } from '../../../../../platform/dialogs/test/common/testDialogService.js';
 
 suite('CommandService', function () {
 
 	const store = ensureNoDisposablesAreLeakedInTestSuite();
+	const testDisposables = ensureNoDisposablesAreLeakedInTestSuite();
+	let nullConfigService: ConfigurationService
 
 	setup(function () {
+		const nullPolicyService = new NullPolicyService();
+		const nullLogService = testDisposables.add(new NullLogService());
+		const nullFileService = testDisposables.add(new FileService(nullLogService));
+		nullConfigService = testDisposables.add(new ConfigurationService(
+			URI.file('/config.json'),
+			nullFileService,
+			nullPolicyService,
+			nullLogService,
+		));
+
 		store.add(CommandsRegistry.registerCommand('foo', function () { }));
 	});
 
@@ -28,7 +45,7 @@ suite('CommandService', function () {
 				lastEvent = activationEvent;
 				return super.activateByEvent(activationEvent);
 			}
-		}, new NullLogService()));
+		}, new NullLogService(), nullConfigService, new TestDialogService()));
 
 		return service.executeCommand('foo').then(() => {
 			assert.ok(lastEvent, 'onCommand:foo');
@@ -48,7 +65,7 @@ suite('CommandService', function () {
 			}
 		};
 
-		const service = store.add(new CommandService(new InstantiationService(), extensionService, new NullLogService()));
+		const service = store.add(new CommandService(new InstantiationService(), extensionService, new NullLogService(), nullConfigService, new TestDialogService()));
 
 		await extensionService.whenInstalledExtensionsRegistered();
 
@@ -66,7 +83,7 @@ suite('CommandService', function () {
 			override whenInstalledExtensionsRegistered() {
 				return new Promise<boolean>(_resolve => { /*ignore*/ });
 			}
-		}, new NullLogService()));
+		}, new NullLogService(), nullConfigService, new TestDialogService()));
 
 		service.executeCommand('bar');
 		assert.strictEqual(callCounter, 1);
@@ -83,7 +100,7 @@ suite('CommandService', function () {
 			override whenInstalledExtensionsRegistered() {
 				return whenInstalledExtensionsRegistered;
 			}
-		}, new NullLogService()));
+		}, new NullLogService(), nullConfigService, new TestDialogService()));
 
 		const r = service.executeCommand('bar');
 		assert.strictEqual(callCounter, 0);
@@ -123,7 +140,7 @@ suite('CommandService', function () {
 				return Promise.resolve();
 			}
 
-		}, new NullLogService()));
+		}, new NullLogService(), nullConfigService, new TestDialogService()));
 
 		return service.executeCommand('farboo').then(() => {
 			assert.strictEqual(callCounter, 1);
@@ -164,7 +181,7 @@ suite('CommandService', function () {
 				return Promise.resolve();
 			}
 
-		}, new NullLogService()));
+		}, new NullLogService(), nullConfigService, new TestDialogService()));
 
 		return service.executeCommand('farboo2').then(() => {
 			assert.deepStrictEqual(actualOrder, expectedOrder);
@@ -185,7 +202,7 @@ suite('CommandService', function () {
 				return true;
 			}
 		};
-		const service = store.add(new CommandService(new InstantiationService(), extensionService, new NullLogService()));
+		const service = store.add(new CommandService(new InstantiationService(), extensionService, new NullLogService(), nullConfigService, new TestDialogService()));
 
 		await extensionService.whenInstalledExtensionsRegistered();
 

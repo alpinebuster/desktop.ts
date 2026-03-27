@@ -8,33 +8,8 @@ import { RefType } from './typings/git.constants.js';
 import type { API as GitAPI, Repository } from './typings/git.d.ts';
 import { publishRepository } from './publish.js';
 import { DisposableStore, getRepositoryFromUrl } from './util.js';
-import { LinkContext, getCommitLink, getLink, getVscodeDevHost } from './links.js';
+import { getCommitLink } from './links.js';
 import { getOctokit } from './auth.js';
-
-async function copyVscodeDevLink(gitAPI: GitAPI, useSelection: boolean, context: LinkContext, includeRange = true) {
-	try {
-		const permalink = await getLink(gitAPI, useSelection, true, getVscodeDevHost(), 'headlink', context, includeRange);
-		if (permalink) {
-			return vscode.env.clipboard.writeText(permalink);
-		}
-	} catch (err) {
-		if (!(err instanceof vscode.CancellationError)) {
-			vscode.window.showErrorMessage(err.message);
-		}
-	}
-}
-
-async function openVscodeDevLink(gitAPI: GitAPI): Promise<vscode.Uri | undefined> {
-	try {
-		const headlink = await getLink(gitAPI, true, false, getVscodeDevHost(), 'headlink');
-		return headlink ? vscode.Uri.parse(headlink) : undefined;
-	} catch (err) {
-		if (!(err instanceof vscode.CancellationError)) {
-			vscode.window.showErrorMessage(err.message);
-		}
-		return undefined;
-	}
-}
 
 interface ResolvedSessionRepo {
 	repository: Repository;
@@ -187,18 +162,6 @@ export function registerCommands(gitAPI: GitAPI): vscode.Disposable {
 		}
 	}));
 
-	disposables.add(vscode.commands.registerCommand('github.copyVscodeDevLink', async (context: LinkContext) => {
-		return copyVscodeDevLink(gitAPI, true, context);
-	}));
-
-	disposables.add(vscode.commands.registerCommand('github.copyVscodeDevLinkFile', async (context: LinkContext) => {
-		return copyVscodeDevLink(gitAPI, false, context);
-	}));
-
-	disposables.add(vscode.commands.registerCommand('github.copyVscodeDevLinkWithoutRange', async (context: LinkContext) => {
-		return copyVscodeDevLink(gitAPI, true, context, false);
-	}));
-
 	disposables.add(vscode.commands.registerCommand('github.openOnGitHub', async (url: string, historyItemId: string) => {
 		const link = getCommitLink(url, historyItemId);
 		vscode.env.openExternal(vscode.Uri.parse(link));
@@ -228,10 +191,6 @@ export function registerCommands(gitAPI: GitAPI): vscode.Disposable {
 		}
 
 		await openOnGitHub(apiRepository, item.id);
-	}));
-
-	disposables.add(vscode.commands.registerCommand('github.openOnVscodeDev', async () => {
-		return openVscodeDevLink(gitAPI);
 	}));
 
 	disposables.add(vscode.commands.registerCommand('github.createPullRequest', async (sessionResource: vscode.Uri | undefined, sessionMetadata: { worktreePath?: string } | undefined) => {

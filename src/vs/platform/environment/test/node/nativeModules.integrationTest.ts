@@ -42,12 +42,12 @@ flakySuite('Native Modules (all platforms)', () => {
 	});
 
 	test('native-keymap', async () => {
-		const keyMap = await import('native-keymap');
-		assert.ok(typeof keyMap.onDidChangeKeyboardLayout === 'function', testErrorMessage('native-keymap'));
-		assert.ok(typeof keyMap.getCurrentKeyboardLayout === 'function', testErrorMessage('native-keymap'));
+		const keyMap = await import('@vscodium/native-keymap');
+		assert.ok(typeof keyMap.onDidChangeKeyboardLayout === 'function', testErrorMessage('@vscodium/native-keymap'));
+		assert.ok(typeof keyMap.getCurrentKeyboardLayout === 'function', testErrorMessage('@vscodium/native-keymap'));
 
 		const result = keyMap.getCurrentKeyboardLayout();
-		assert.ok(result, testErrorMessage('native-keymap'));
+		assert.ok(result, testErrorMessage('@vscodium/native-keymap'));
 	});
 
 	test('@vscode/native-watchdog', async () => {
@@ -60,9 +60,9 @@ flakySuite('Native Modules (all platforms)', () => {
 		assert.ok(typeof prompt.exec === 'function', testErrorMessage('@vscode/sudo-prompt'));
 	});
 
-	test('@vscode/policy-watcher', async () => {
-		const watcher = await import('@vscode/policy-watcher');
-		assert.ok(typeof watcher.createWatcher === 'function', testErrorMessage('@vscode/policy-watcher'));
+	test('@vscodium/policy-watcher', async () => {
+		const watcher = await import('@vscodium/policy-watcher');
+		assert.ok(typeof watcher.createWatcher === 'function', testErrorMessage('@vscodium/policy-watcher'));
 	});
 
 	test('node-pty', async () => {

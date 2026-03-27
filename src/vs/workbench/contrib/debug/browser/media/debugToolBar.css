@@ -53,3 +53,27 @@
 	align-items: center;
 	justify-content: center;
 }
+
+
+
+/*** Generated for Custom Font Size ***/
+
+.monaco-workbench .debug-toolbar .part.sidebar, .monaco-workbench .debug-toolbar .part.auxiliarybar {
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 2.153846);
+    padding-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .debug-toolbar .part.sidebar .monaco-action-bar .action-item, .monaco-workbench .debug-toolbar .part.auxiliarybar .monaco-action-bar .action-item {
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .debug-toolbar .part.sidebar .monaco-action-bar .action-item.select-container, .monaco-workbench .debug-toolbar .part.auxiliarybar .monaco-action-bar .action-item.select-container {
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .debug-toolbar .part.sidebar .monaco-action-bar .action-item.select-container .monaco-select-box, .monaco-workbench .start-debug-action-item .part.sidebar .select-container .monaco-select-box, .monaco-workbench .debug-toolbar .part.auxiliarybar .monaco-action-bar .action-item.select-container .monaco-select-box, .monaco-workbench .start-debug-action-item .part.auxiliarybar .select-container .monaco-select-box {
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 1.846154) 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .debug-toolbar .part.sidebar .drag-area, .monaco-workbench .debug-toolbar .part.auxiliarybar .drag-area {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.538462)
+}
+.monaco-workbench  .part.sidebar .debug-toolbar .monaco-action-bar .action-item .action-label, .monaco-workbench  .part.auxiliarybar .debug-toolbar .monaco-action-bar .action-item .action-label {
+    background-size: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769)
+}

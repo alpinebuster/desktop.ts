@@ -125,3 +125,74 @@
 .monaco-action-bar .action-item.action-dropdown-item > .action-dropdown-item-separator > div {
 	width: 1px;
 }
+
+
+
+/*** Generated for Custom Font Size ***/
+
+.monaco-workbench .part.panel .monaco-action-bar .actions-container {
+    padding: 0
+}
+.monaco-workbench .part.panel .monaco-action-bar .action-item .codicon {
+    width: calc(var(--vscode-workbench-bottompane-font-size) * 1.230769);
+    height: calc(var(--vscode-workbench-bottompane-font-size) * 1.230769)
+}
+.monaco-workbench .part.panel .monaco-action-bar .action-label, .monaco-workbench .part.panel .monaco-action-bar .action-item .keybinding {
+    font-size: calc(var(--vscode-workbench-bottompane-font-size) * 0.846154);
+    padding: calc(var(--vscode-workbench-bottompane-font-size) * 0.230769)
+}
+.monaco-workbench .part.panel .monaco-action-bar.vertical .action-item .action-label.separator {
+    padding-top: 1px;
+    margin: calc(var(--vscode-workbench-bottompane-font-size) * 0.307692) .8em
+}
+.monaco-workbench .part.panel .monaco-action-bar .action-item .action-label.separator {
+    width: 1px;
+    height: calc(var(--vscode-workbench-bottompane-font-size) * 1.230769);
+    margin: calc(var(--vscode-workbench-bottompane-font-size) * 0.384615) calc(var(--vscode-workbench-bottompane-font-size) * 0.307692);
+    min-width: 1px;
+    padding: 0
+}
+.monaco-workbench .part.panel .secondary-actions .monaco-action-bar .action-label {
+    margin-left: calc(var(--vscode-workbench-bottompane-font-size) * 0.461538)
+}
+.monaco-workbench .part.panel .monaco-action-bar .action-item.select-container {
+    max-width: calc(var(--vscode-workbench-bottompane-font-size) * 13.076923);
+    min-width: calc(var(--vscode-workbench-bottompane-font-size) * 4.615385);
+    margin-right: calc(var(--vscode-workbench-bottompane-font-size) * 0.769231)
+}
+.monaco-workbench .part.panel .monaco-action-bar .action-item.action-dropdown-item > .action-dropdown-item-separator > div {
+    width: 1px
+}
+.monaco-workbench .part.sidebar .monaco-action-bar .actions-container, .monaco-workbench .part.auxiliarybar .monaco-action-bar .actions-container {
+    padding: 0
+}
+.monaco-workbench .part.sidebar .monaco-action-bar .action-item .codicon, .monaco-workbench .part.auxiliarybar .monaco-action-bar .action-item .codicon {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769)
+}
+.monaco-workbench .part.sidebar .monaco-action-bar .action-label, .monaco-workbench .part.sidebar .monaco-action-bar .action-item .keybinding, .monaco-workbench .part.auxiliarybar .monaco-action-bar .action-label, .monaco-workbench .part.auxiliarybar .monaco-action-bar .action-item .keybinding {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.846154);
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0.230769)
+}
+.monaco-workbench .part.sidebar .monaco-action-bar.vertical .action-item .action-label.separator, .monaco-workbench .part.auxiliarybar .monaco-action-bar.vertical .action-item .action-label.separator {
+    padding-top: 1px;
+    margin: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692) .8em
+}
+.monaco-workbench .part.sidebar .monaco-action-bar .action-item .action-label.separator, .monaco-workbench .part.auxiliarybar .monaco-action-bar .action-item .action-label.separator {
+    width: 1px;
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    margin: calc(var(--vscode-workbench-sidebar-font-size) * 0.384615) calc(var(--vscode-workbench-sidebar-font-size) * 0.307692);
+    min-width: 1px;
+    padding: 0
+}
+.monaco-workbench .part.sidebar .secondary-actions .monaco-action-bar .action-label, .monaco-workbench .part.auxiliarybar .secondary-actions .monaco-action-bar .action-label {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.461538)
+}
+.monaco-workbench .part.sidebar .monaco-action-bar .action-item.select-container, .monaco-workbench .part.auxiliarybar .monaco-action-bar .action-item.select-container {
+    max-width: calc(var(--vscode-workbench-sidebar-font-size) * 13.076923);
+    min-width: calc(var(--vscode-workbench-sidebar-font-size) * 4.615385);
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.769231)
+}
+.monaco-workbench .part.sidebar .monaco-action-bar .action-item.action-dropdown-item > .action-dropdown-item-separator > div, .monaco-workbench .part.auxiliarybar .monaco-action-bar .action-item.action-dropdown-item > .action-dropdown-item-separator > div {
+    width: 1px
+}

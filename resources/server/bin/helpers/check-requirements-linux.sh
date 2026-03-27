@@ -53,6 +53,10 @@ case $ARCH in
 			LDCONFIG_ARCH="AArch64"
 		fi
 		;;
+    ppc64le) LDCONFIG_ARCH="64bit";;
+	riscv64) LDCONFIG_ARCH="RISC-V";;
+    loongarch64) LDCONFIG_ARCH="double-float";;
+    s390x)   LDCONFIG_ARCH="64bit";;
 esac
 
 if [ "$OS_ID" != "alpine" ]; then

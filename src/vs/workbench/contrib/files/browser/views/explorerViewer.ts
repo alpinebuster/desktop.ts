@@ -74,13 +74,16 @@ import { IContextKey, IContextKeyService } from '../../../../../platform/context
 import { CountBadge } from '../../../../../base/browser/ui/countBadge/countBadge.js';
 import { listFilterMatchHighlight, listFilterMatchHighlightBorder } from '../../../../../platform/theme/common/colorRegistry.js';
 import { asCssVariable } from '../../../../../platform/theme/common/colorUtils.js';
+import { FONT } from '../../../../../base/common/font.js';
 
 export class ExplorerDelegate implements IListVirtualDelegate<ExplorerItem> {
 
-	static readonly ITEM_HEIGHT = 22;
+	static getHeight(): number {
+		return FONT.sidebarSize22;
+	}
 
 	getHeight(element: ExplorerItem): number {
-		return ExplorerDelegate.ITEM_HEIGHT;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: ExplorerItem): string {
@@ -850,7 +853,7 @@ export class FilesRenderer implements ICompressibleTreeRenderer<ExplorerItem, Fu
 
 		const updateOffsetStyles = () => {
 			const indent = this.configurationService.getValue<number>('workbench.tree.indent');
-			const offset = Math.max(22 - indent, 0); // derived via inspection
+			const offset = Math.max(39 - indent, 0); // derived via inspection
 			container.style.setProperty(`--vscode-explorer-align-offset-margin-left`, `${offset}px`);
 		};
 

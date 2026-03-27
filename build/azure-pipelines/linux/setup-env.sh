@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 SYSROOT_ARCH=$VSCODE_ARCH
 if [ "$SYSROOT_ARCH" == "x64" ]; then
@@ -20,7 +20,7 @@ if [ -d "$VSCODE_REMOTE_SYSROOT_DIR" ]; then
   echo "Using cached remote sysroot"
 else
   echo "Downloading remote sysroot"
-  SYSROOT_ARCH="$SYSROOT_ARCH" VSCODE_SYSROOT_DIR="$VSCODE_REMOTE_SYSROOT_DIR" VSCODE_SYSROOT_PREFIX="-glibc-2.28-gcc-8.5.0" node -e 'import { getVSCodeSysroot } from "./build/linux/debian/install-sysroot.ts"; (async () => { await getVSCodeSysroot(process.env["SYSROOT_ARCH"]); })()'
+  SYSROOT_ARCH="$SYSROOT_ARCH" VSCODE_SYSROOT_DIR="$VSCODE_REMOTE_SYSROOT_DIR" node -e 'import { getVSCodeSysroot } from "./build/linux/debian/install-sysroot.ts"; (async () => { await getVSCodeSysroot(process.env["SYSROOT_ARCH"]); })()'
 fi
 
 if [ "$npm_config_arch" == "x64" ]; then
@@ -74,4 +74,28 @@ elif [ "$npm_config_arch" == "arm" ]; then
   export VSCODE_REMOTE_CXX=$VSCODE_REMOTE_SYSROOT_DIR/arm-rpi-linux-gnueabihf/bin/arm-rpi-linux-gnueabihf-g++
   export VSCODE_REMOTE_CXXFLAGS="--sysroot=$VSCODE_REMOTE_SYSROOT_DIR/arm-rpi-linux-gnueabihf/arm-rpi-linux-gnueabihf/sysroot"
   export VSCODE_REMOTE_LDFLAGS="--sysroot=$VSCODE_REMOTE_SYSROOT_DIR/arm-rpi-linux-gnueabihf/arm-rpi-linux-gnueabihf/sysroot -L$VSCODE_REMOTE_SYSROOT_DIR/arm-rpi-linux-gnueabihf/arm-rpi-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -L$VSCODE_REMOTE_SYSROOT_DIR/arm-rpi-linux-gnueabihf/arm-rpi-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf"
+elif [ "$npm_config_arch" == "ppc64" ]; then
+	# Set compiler toolchain for client native modules
+	export CC=$VSCODE_CLIENT_SYSROOT_DIR/powerpc64le-linux-gnu/bin/powerpc64le-linux-gnu-gcc
+	export CXX=$VSCODE_CLIENT_SYSROOT_DIR/powerpc64le-linux-gnu/bin/powerpc64le-linux-gnu-g++
+	export CXXFLAGS="--sysroot=$VSCODE_CLIENT_SYSROOT_DIR/powerpc64le-linux-gnu/powerpc64le-linux-gnu/sysroot"
+	export LDFLAGS="--sysroot=$VSCODE_CLIENT_SYSROOT_DIR/powerpc64le-linux-gnu/powerpc64le-linux-gnu/sysroot -L$VSCODE_CLIENT_SYSROOT_DIR/powerpc64le-linux-gnu/powerpc64le-linux-gnu/sysroot/usr/lib/powerpc64le-linux-gnu -L$VSCODE_CLIENT_SYSROOT_DIR/powerpc64le-linux-gnu/powerpc64le-linux-gnu/sysroot/lib/powerpc64le-linux-gnu"
+
+	# Set compiler toolchain for remote server
+	export VSCODE_REMOTE_CC=$VSCODE_REMOTE_SYSROOT_DIR/powerpc64le-linux-gnu/bin/powerpc64le-linux-gnu-gcc
+	export VSCODE_REMOTE_CXX=$VSCODE_REMOTE_SYSROOT_DIR/powerpc64le-linux-gnu/bin/powerpc64le-linux-gnu-g++
+	export VSCODE_REMOTE_CXXFLAGS="--sysroot=$VSCODE_REMOTE_SYSROOT_DIR/powerpc64le-linux-gnu/powerpc64le-linux-gnu/sysroot"
+	export VSCODE_REMOTE_LDFLAGS="--sysroot=$VSCODE_REMOTE_SYSROOT_DIR/powerpc64le-linux-gnu/powerpc64le-linux-gnu/sysroot -L$VSCODE_REMOTE_SYSROOT_DIR/powerpc64le-linux-gnu/powerpc64le-linux-gnu/sysroot/usr/lib/powerpc64le-linux-gnu -L$VSCODE_REMOTE_SYSROOT_DIR/powerpc64le-linux-gnu/powerpc64le-linux-gnu/sysroot/lib/powerpc64le-linux-gnu"
+elif [ "$npm_config_arch" == "s390x" ]; then
+	# Set compiler toolchain for client native modules
+	export CC=$VSCODE_CLIENT_SYSROOT_DIR/s390x-linux-gnu/bin/s390x-linux-gnu-gcc
+	export CXX=$VSCODE_CLIENT_SYSROOT_DIR/s390x-linux-gnu/bin/s390x-linux-gnu-g++
+	export CXXFLAGS="--sysroot=$VSCODE_CLIENT_SYSROOT_DIR/s390x-linux-gnu/s390x-linux-gnu/sysroot"
+	export LDFLAGS="--sysroot=$VSCODE_CLIENT_SYSROOT_DIR/s390x-linux-gnu/s390x-linux-gnu/sysroot -L$VSCODE_CLIENT_SYSROOT_DIR/s390x-linux-gnu/s390x-linux-gnu/sysroot/usr/lib/s390x-linux-gnu -L$VSCODE_CLIENT_SYSROOT_DIR/s390x-linux-gnu/s390x-linux-gnu/sysroot/lib/s390x-linux-gnu"
+
+	# Set compiler toolchain for remote server
+	export VSCODE_REMOTE_CC=$VSCODE_REMOTE_SYSROOT_DIR/s390x-linux-gnu/bin/s390x-linux-gnu-gcc
+	export VSCODE_REMOTE_CXX=$VSCODE_REMOTE_SYSROOT_DIR/s390x-linux-gnu/bin/s390x-linux-gnu-g++
+	export VSCODE_REMOTE_CXXFLAGS="--sysroot=$VSCODE_REMOTE_SYSROOT_DIR/s390x-linux-gnu/s390x-linux-gnu/sysroot"
+	export VSCODE_REMOTE_LDFLAGS="--sysroot=$VSCODE_REMOTE_SYSROOT_DIR/s390x-linux-gnu/s390x-linux-gnu/sysroot -L$VSCODE_REMOTE_SYSROOT_DIR/s390x-linux-gnu/s390x-linux-gnu/sysroot/usr/lib/s390x-linux-gnu -L$VSCODE_REMOTE_SYSROOT_DIR/s390x-linux-gnu/s390x-linux-gnu/sysroot/lib/s390x-linux-gnu"
 fi

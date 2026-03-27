@@ -34,6 +34,7 @@ import { getChatSessionType } from '../../../common/model/chatUri.js';
 import { IChatRendererContent } from '../../../common/model/chatViewModel.js';
 import { ChatTreeItem } from '../../chat.js';
 import { IChatContentPart } from './chatContentParts.js';
+import { FONT } from '../../../../../../base/common/font.js';
 
 const $ = dom.$;
 
@@ -263,7 +264,7 @@ export class ChatMultiDiffContentPart extends Disposable implements IChatContent
 
 class ChatMultiDiffListDelegate implements IListVirtualDelegate<IChatMultiDiffItem> {
 	getHeight(): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(): string {

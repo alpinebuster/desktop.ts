@@ -98,7 +98,7 @@ impl InstalledServer {
 				server_dir
 					.join(SERVER_FOLDER_NAME)
 					.join("bin")
-					.join(self.quality.server_entrypoint())
+					.join(self.quality.server_entrypoint().unwrap())
 			},
 			logfile: server_dir.join("log.txt"),
 			pidfile: server_dir.join("pid.txt"),

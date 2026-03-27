@@ -2,13 +2,14 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+#![allow(unused_imports)]
 
 use std::{fmt, path::Path};
 
 use serde::{Deserialize, Serialize};
 
 use crate::{
-	constants::VSCODE_CLI_UPDATE_ENDPOINT,
+	constants::{VSCODE_CLI_APP_NAME, VSCODE_CLI_DOWNLOAD_ENDPOINT, VSCODE_CLI_UPDATE_ENDPOINT},
 	debug, log, options, spanf,
 	util::{
 		errors::{wrap, AnyError, CodeError, WrappedError},
@@ -16,7 +17,7 @@ use crate::{
 		io::ReportCopyProgress,
 		tar::{self, has_gzip_header},
 		zipper,
-	},
+	}
 };
 
 /// Implementation of the VS Code Update service for use in the CLI.
@@ -56,6 +57,14 @@ fn quality_download_segment(quality: options::Quality) -> &'static str {
 	}
 }
 
+fn get_app_name() -> Result<&'static str, CodeError> {
+	VSCODE_CLI_APP_NAME.ok_or_else(|| CodeError::UpdatesNotConfigured("no app name"))
+}
+
+fn get_download_endpoint() -> Result<&'static str, CodeError> {
+	VSCODE_CLI_DOWNLOAD_ENDPOINT.ok_or_else(|| CodeError::UpdatesNotConfigured("no download url"))
+}
+
 fn get_update_endpoint() -> Result<String, CodeError> {
 	if let Ok(url) = std::env::var("VSCODE_CLI_UPDATE_URL") {
 		if !url.is_empty() {
@@ -64,53 +73,12 @@ fn get_update_endpoint() -> Result<String, CodeError> {
 	}
 	VSCODE_CLI_UPDATE_ENDPOINT
 		.map(|s| s.to_string())
-		.ok_or_else(|| CodeError::UpdatesNotConfigured("no service url"))
+		.ok_or_else(|| CodeError::UpdatesNotConfigured("no update url"))
 }
 
 impl UpdateService {
 	pub fn new(log: log::Logger, http: BoxedHttp) -> Self {
 		UpdateService { client: http, log }
-	}
-
-	pub async fn get_release_by_semver_version(
-		&self,
-		platform: Platform,
-		target: TargetKind,
-		quality: options::Quality,
-		version: &str,
-	) -> Result<Release, AnyError> {
-		let update_endpoint = get_update_endpoint()?;
-		let download_segment = target
-			.download_segment(platform)
-			.ok_or_else(|| CodeError::UnsupportedPlatform(platform.to_string()))?;
-		let download_url = format!(
-			"{}/api/versions/{}/{}/{}",
-			&update_endpoint,
-			version,
-			download_segment,
-			quality_download_segment(quality),
-		);
-
-		let mut response = spanf!(
-			self.log,
-			self.log.span("server.version.resolve"),
-			self.client.make_request("GET", download_url)
-		)?;
-
-		if !response.status_code.is_success() {
-			return Err(response.into_err().await.into());
-		}
-
-		let res = response.json::<UpdateServerVersion>().await?;
-		debug!(self.log, "Resolved version {} to {}", version, res.version);
-
-		Ok(Release {
-			target,
-			platform,
-			quality,
-			name: res.name,
-			commit: res.version,
-		})
 	}
 
 	/// Gets the latest commit for the target of the given quality.
@@ -121,14 +89,12 @@ impl UpdateService {
 		quality: options::Quality,
 	) -> Result<Release, AnyError> {
 		let update_endpoint = get_update_endpoint()?;
-		let download_segment = target
-			.download_segment(platform)
-			.ok_or_else(|| CodeError::UnsupportedPlatform(platform.to_string()))?;
 		let download_url = format!(
-			"{}/api/latest/{}/{}",
+			"{}/{}/{}/{}/latest.json",
 			&update_endpoint,
-			download_segment,
 			quality_download_segment(quality),
+			platform.os(),
+			platform.arch(),
 		);
 
 		let mut response = spanf!(
@@ -153,21 +119,26 @@ impl UpdateService {
 		})
 	}
 
-	/// Gets the download stream for the release.
-	pub async fn get_download_stream(&self, release: &Release) -> Result<SimpleResponse, AnyError> {
-		let update_endpoint = get_update_endpoint()?;
-		let download_segment = release
-			.target
-			.download_segment(release.platform)
-			.ok_or_else(|| CodeError::UnsupportedPlatform(release.platform.to_string()))?;
+	pub fn get_download_url(&self, release: &Release) -> Result<String, AnyError> {
+		let app_name = get_app_name()?;
+		let download_endpoint = get_download_endpoint()?;
 
 		let download_url = format!(
-			"{}/commit:{}/{}/{}",
-			&update_endpoint,
-			release.commit,
-			download_segment,
-			quality_download_segment(release.quality),
+			"{}/download/{}/{}-reh-web-{}-{}-{}.tar.gz",
+			download_endpoint,
+			release.name,
+			app_name,
+			release.platform.os(),
+			release.platform.arch(),
+			release.name,
 		);
+
+		Ok(download_url)
+	}
+
+	/// Gets the download stream for the release.
+	pub async fn get_download_stream(&self, release: &Release) -> Result<SimpleResponse, AnyError> {
+		let download_url = self.get_download_url(release)?;
 
 		let response = self.client.make_request("GET", download_url).await?;
 		if !response.status_code.is_success() {
@@ -201,17 +172,6 @@ pub enum TargetKind {
 	Cli,
 }
 
-impl TargetKind {
-	fn download_segment(&self, platform: Platform) -> Option<String> {
-		match *self {
-			TargetKind::Server => Some(platform.headless()),
-			TargetKind::Archive => platform.archive(),
-			TargetKind::Web => Some(platform.web()),
-			TargetKind::Cli => Some(platform.cli()),
-		}
-	}
-}
-
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub enum Platform {
 	LinuxAlpineX64,
@@ -222,6 +182,9 @@ pub enum Platform {
 	LinuxARM64Legacy,
 	LinuxARM32,
 	LinuxARM32Legacy,
+	LinuxPPC64LE,
+	LinuxRISCV64,
+	LinuxLoong64,
 	DarwinX64,
 	DarwinARM64,
 	WindowsX64,
@@ -230,59 +193,48 @@ pub enum Platform {
 }
 
 impl Platform {
-	pub fn archive(&self) -> Option<String> {
+	pub fn arch(&self) -> String {
 		match self {
-			Platform::LinuxX64 => Some("linux-x64".to_owned()),
-			Platform::LinuxARM64 => Some("linux-arm64".to_owned()),
-			Platform::LinuxARM32 => Some("linux-armhf".to_owned()),
-			Platform::DarwinX64 => Some("darwin".to_owned()),
-			Platform::DarwinARM64 => Some("darwin-arm64".to_owned()),
-			Platform::WindowsX64 => Some("win32-x64-archive".to_owned()),
-			Platform::WindowsX86 => Some("win32-archive".to_owned()),
-			Platform::WindowsARM64 => Some("win32-arm64-archive".to_owned()),
-			_ => None,
-		}
-	}
-	pub fn headless(&self) -> String {
-		match self {
-			Platform::LinuxAlpineARM64 => "server-alpine-arm64",
-			Platform::LinuxAlpineX64 => "server-linux-alpine",
-			Platform::LinuxX64 => "server-linux-x64",
-			Platform::LinuxX64Legacy => "server-linux-legacy-x64",
-			Platform::LinuxARM64 => "server-linux-arm64",
-			Platform::LinuxARM64Legacy => "server-linux-legacy-arm64",
-			Platform::LinuxARM32 => "server-linux-armhf",
-			Platform::LinuxARM32Legacy => "server-linux-legacy-armhf",
-			Platform::DarwinX64 => "server-darwin",
-			Platform::DarwinARM64 => "server-darwin-arm64",
-			Platform::WindowsX64 => "server-win32-x64",
-			Platform::WindowsX86 => "server-win32",
-			Platform::WindowsARM64 => "server-win32-arm64",
+			Platform::LinuxAlpineARM64 => "arm64",
+			Platform::LinuxAlpineX64 => "x64",
+			Platform::LinuxX64 => "x64",
+			Platform::LinuxX64Legacy => "x64",
+			Platform::LinuxARM64 => "arm64",
+			Platform::LinuxARM64Legacy => "arm64",
+			Platform::LinuxARM32 => "armhf",
+			Platform::LinuxARM32Legacy => "armhf",
+			Platform::LinuxPPC64LE => "ppc64le",
+			Platform::LinuxRISCV64 => "riscv64",
+			Platform::LinuxLoong64 => "loong64",
+			Platform::DarwinX64 => "x64",
+			Platform::DarwinARM64 => "arm64",
+			Platform::WindowsX64 => "x64",
+			Platform::WindowsX86 => "ia42",
+			Platform::WindowsARM64 => "arm64",
 		}
 		.to_owned()
 	}
 
-	pub fn cli(&self) -> String {
+	pub fn os(&self) -> String {
 		match self {
-			Platform::LinuxAlpineARM64 => "cli-alpine-arm64",
-			Platform::LinuxAlpineX64 => "cli-alpine-x64",
-			Platform::LinuxX64 => "cli-linux-x64",
-			Platform::LinuxX64Legacy => "cli-linux-x64",
-			Platform::LinuxARM64 => "cli-linux-arm64",
-			Platform::LinuxARM64Legacy => "cli-linux-arm64",
-			Platform::LinuxARM32 => "cli-linux-armhf",
-			Platform::LinuxARM32Legacy => "cli-linux-armhf",
-			Platform::DarwinX64 => "cli-darwin-x64",
-			Platform::DarwinARM64 => "cli-darwin-arm64",
-			Platform::WindowsARM64 => "cli-win32-arm64",
-			Platform::WindowsX64 => "cli-win32-x64",
-			Platform::WindowsX86 => "cli-win32",
+			Platform::LinuxAlpineARM64 => "alpine",
+			Platform::LinuxAlpineX64 => "alpine",
+			Platform::LinuxX64 => "linux",
+			Platform::LinuxX64Legacy => "linux",
+			Platform::LinuxARM64 => "linux",
+			Platform::LinuxARM64Legacy => "linux",
+			Platform::LinuxARM32 => "linux",
+			Platform::LinuxARM32Legacy => "linux",
+			Platform::LinuxPPC64LE => "linux",
+			Platform::LinuxRISCV64 => "linux",
+			Platform::LinuxLoong64 => "linux",
+			Platform::DarwinX64 => "darwin",
+			Platform::DarwinARM64 => "darwin",
+			Platform::WindowsX64 => "win32",
+			Platform::WindowsX86 => "win32",
+			Platform::WindowsARM64 => "win32",
 		}
 		.to_owned()
-	}
-
-	pub fn web(&self) -> String {
-		format!("{}-web", self.headless())
 	}
 
 	pub fn env_default() -> Option<Platform> {
@@ -304,6 +256,12 @@ impl Platform {
 			Some(Platform::LinuxARM32)
 		} else if cfg!(all(target_os = "linux", target_arch = "aarch64")) {
 			Some(Platform::LinuxARM64)
+		} else if cfg!(all(target_os = "linux", target_arch = "powerpc64")) {
+			Some(Platform::LinuxPPC64LE)
+		} else if cfg!(all(target_os = "linux", target_arch = "riscv64")) {
+			Some(Platform::LinuxRISCV64)
+		} else if cfg!(all(target_os = "linux", target_arch = "loongarch64")) {
+			Some(Platform::LinuxLoong64)
 		} else if cfg!(all(target_os = "macos", target_arch = "x86_64")) {
 			Some(Platform::DarwinX64)
 		} else if cfg!(all(target_os = "macos", target_arch = "aarch64")) {
@@ -331,6 +289,9 @@ impl fmt::Display for Platform {
 			Platform::LinuxARM64Legacy => "LinuxARM64Legacy",
 			Platform::LinuxARM32 => "LinuxARM32",
 			Platform::LinuxARM32Legacy => "LinuxARM32Legacy",
+			Platform::LinuxPPC64LE => "LinuxPPC64LE",
+			Platform::LinuxRISCV64 => "LinuxRISCV64",
+			Platform::LinuxLoong64 => "LinuxLoong64",
 			Platform::DarwinX64 => "DarwinX64",
 			Platform::DarwinARM64 => "DarwinARM64",
 			Platform::WindowsX64 => "WindowsX64",

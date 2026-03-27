@@ -48,6 +48,7 @@ import { IDisposableReference, ResourcePool } from './chatCollections.js';
 import { IChatContentPartRenderContext } from './chatContentParts.js';
 import { IHoverService } from '../../../../../../platform/hover/browser/hover.js';
 import { IConfigurationService } from '../../../../../../platform/configuration/common/configuration.js';
+import { FONT } from '../../../../../../base/common/font.js';
 
 const $ = dom.$;
 
@@ -296,7 +297,7 @@ export class CollapsibleListPool extends Disposable {
 
 class CollapsibleListDelegate implements IListVirtualDelegate<IChatCollapsibleListItem> {
 	getHeight(element: IChatCollapsibleListItem): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: IChatCollapsibleListItem): string {

@@ -106,3 +106,26 @@
 .monaco-workbench.context-menu-visible .explorer-folders-view.highlight .monaco-list-row {
 	outline: none !important;
 }
+
+
+
+.monaco-workbench .part.sidebar .explorer-folders-view .explorer-item, .monaco-workbench .part.sidebar .explorer-folders-view .editor-group, .monaco-workbench .part.auxiliarybar .explorer-folders-view .explorer-item, .monaco-workbench .part.auxiliarybar .explorer-folders-view .editor-group {
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308);
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308)
+}
+.monaco-workbench .part.sidebar .explorer-folders-view .monaco-list-row .explorer-item .monaco-count-badge, .monaco-workbench .part.auxiliarybar .explorer-folders-view .monaco-list-row .explorer-item .monaco-count-badge {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.384615)
+}
+.monaco-workbench.linux .part.sidebar .explorer-folders-view .explorer-item .monaco-inputbox, .monaco-workbench.mac .part.sidebar .explorer-folders-view .explorer-item .monaco-inputbox, .monaco-workbench.linux .part.auxiliarybar .explorer-folders-view .explorer-item .monaco-inputbox, .monaco-workbench.mac .part.auxiliarybar .explorer-folders-view .explorer-item .monaco-inputbox {
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308)
+}
+.monaco-workbench .part.sidebar .explorer-folders-view .explorer-item .monaco-inputbox > .ibwrapper > .input, .monaco-workbench .part.auxiliarybar .explorer-folders-view .explorer-item .monaco-inputbox > .ibwrapper > .input {
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.538462)
+}
+.monaco-workbench.hc-black .part.sidebar .explorer-folders-view .explorer-item, .monaco-workbench.hc-light .part.sidebar .explorer-folders-view .explorer-item, .monaco-workbench.hc-black .part.auxiliarybar .explorer-folders-view .explorer-item, .monaco-workbench.hc-light .part.auxiliarybar .explorer-folders-view .explorer-item {
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.538462)
+}
+.monaco-workbench .part.sidebar .explorer-folders-view .explorer-item .monaco-inputbox input[type="text"], .monaco-workbench .part.auxiliarybar .explorer-folders-view .explorer-item .monaco-inputbox input[type="text"] {
+    outline-width: calc(var(--vscode-workbench-sidebar-font-size) * 0.076923);
+    outline-offset: calc(var(--vscode-workbench-sidebar-font-size) * -0.076923)
+}

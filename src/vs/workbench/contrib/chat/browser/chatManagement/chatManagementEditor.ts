@@ -32,6 +32,7 @@ import { PANEL_BORDER } from '../../../../common/theme.js';
 import { DisposableStore, MutableDisposable } from '../../../../../base/common/lifecycle.js';
 import { IContextKey, IContextKeyService } from '../../../../../platform/contextkey/common/contextkey.js';
 import { CONTEXT_MODELS_EDITOR } from '../../common/constants.js';
+import { FONT } from '../../../../../base/common/font.js';
 
 const $ = DOM.$;
 
@@ -437,7 +438,7 @@ export class ChatManagementEditor extends EditorPane {
 
 class SectionItemDelegate implements IListVirtualDelegate<SectionItem> {
 	getHeight(element: SectionItem) {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 	getTemplateId() { return 'sectionItem'; }
 }

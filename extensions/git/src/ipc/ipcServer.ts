@@ -18,7 +18,11 @@ function getIPCHandlePath(id: string): string {
 	}
 
 	if (process.platform !== 'darwin' && process.env['XDG_RUNTIME_DIR']) {
-		return path.join(process.env['XDG_RUNTIME_DIR'] as string, `vscode-git-${id}.sock`);
+		if (!!process.env.FLATPAK_ID) {
+			return path.join(process.env['XDG_RUNTIME_DIR'] as string, 'app', process.env.FLATPAK_ID, `vscode-git-${id}.sock`);
+		} else {
+			return path.join(process.env['XDG_RUNTIME_DIR'] as string, `vscode-git-${id}.sock`);
+		}
 	}
 
 	return path.join(os.tmpdir(), `vscode-git-${id}.sock`);

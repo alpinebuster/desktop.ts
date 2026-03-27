@@ -13,6 +13,7 @@ import { IListAccessibilityProvider } from '../../../../../base/browser/ui/list/
 import { ITreeDragAndDrop, ITreeDragOverReaction, ITreeFilter, ITreeNode, ITreeRenderer } from '../../../../../base/browser/ui/tree/tree.js';
 import { safeIntl } from '../../../../../base/common/date.js';
 import { createMatches, FuzzyScore } from '../../../../../base/common/filters.js';
+import { FONT } from '../../../../../base/common/font.js';
 import { ThemeIcon } from '../../../../../base/common/themables.js';
 import { URI } from '../../../../../base/common/uri.js';
 import { Range } from '../../../../../editor/common/core/range.js';
@@ -158,7 +159,7 @@ class DocumentSymbolTemplate {
 export class DocumentSymbolVirtualDelegate implements IListVirtualDelegate<DocumentSymbolItem> {
 
 	getHeight(_element: DocumentSymbolItem): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: DocumentSymbolItem): string {

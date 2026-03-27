@@ -38,6 +38,7 @@ import { asCssVariable } from '../../../../platform/theme/common/colorUtils.js';
 import { foreground, chartAxis, chartGuide, chartLine } from '../../../../platform/theme/common/colorRegistry.js';
 import { IHoverService } from '../../../../platform/hover/browser/hover.js';
 import { IMarkdownRendererService } from '../../../../platform/markdown/browser/markdownRenderer.js';
+import { FONT } from '../../../../base/common/font.js';
 
 interface IExtensionFeatureElementRenderer extends IExtensionFeatureRenderer {
 	type: 'element';
@@ -472,7 +473,7 @@ interface IExtensionFeatureItemTemplateData {
 }
 
 class ExtensionFeatureItemDelegate implements IListVirtualDelegate<IExtensionFeatureDescriptor> {
-	getHeight() { return 22; }
+	getHeight() { return FONT.sidebarSize22; }
 	getTemplateId() { return 'extensionFeatureDescriptor'; }
 }
 

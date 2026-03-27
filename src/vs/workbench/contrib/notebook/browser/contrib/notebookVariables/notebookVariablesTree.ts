@@ -8,6 +8,7 @@ import { IListVirtualDelegate } from '../../../../../../base/browser/ui/list/lis
 import { IListAccessibilityProvider } from '../../../../../../base/browser/ui/list/listWidget.js';
 import { ITreeNode, ITreeRenderer } from '../../../../../../base/browser/ui/tree/tree.js';
 import { FuzzyScore } from '../../../../../../base/common/filters.js';
+import { FONT } from '../../../../../../base/common/font.js';
 import { DisposableStore } from '../../../../../../base/common/lifecycle.js';
 import { observableValue } from '../../../../../../base/common/observable.js';
 import { ILocalizedString, localize, localize2 } from '../../../../../../nls.js';
@@ -27,7 +28,7 @@ export class NotebookVariablesTree extends WorkbenchObjectTree<INotebookVariable
 export class NotebookVariablesDelegate implements IListVirtualDelegate<INotebookVariableElement> {
 
 	getHeight(element: INotebookVariableElement): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: INotebookVariableElement): string {

@@ -83,6 +83,7 @@ import * as icons from './icons.js';
 import './media/testing.css';
 import { DebugLastRun, ReRunLastRun } from './testExplorerActions.js';
 import { TestingExplorerFilter } from './testingExplorerFilter.js';
+import { FONT } from '../../../../base/common/font.js';
 
 const enum LastFocusState {
 	Input,
@@ -1425,7 +1426,7 @@ class TreeKeyboardNavigationLabelProvider implements IKeyboardNavigationLabelPro
 
 class ListDelegate implements IListVirtualDelegate<TestExplorerTreeElement> {
 	getHeight(element: TestExplorerTreeElement) {
-		return element instanceof TestTreeErrorMessage ? 17 + 10 : 22;
+		return element instanceof TestTreeErrorMessage ? FONT.sidebarSize17 + 10 : FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: TestExplorerTreeElement) {

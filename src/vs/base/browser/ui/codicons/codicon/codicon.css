@@ -23,3 +23,9 @@
 }
 
 /* icon rules are dynamically created by the platform theme service (see iconsStyleSheet.ts) */
+
+
+
+.monaco-workbench .part.sidebar .codicon[class*='codicon-'], .monaco-workbench .part.auxiliarybar .codicon[class*='codicon-'] {
+    font: normal normal normal calc(var(--vscode-workbench-sidebar-font-size) * 1.230769)/1 codicon
+}

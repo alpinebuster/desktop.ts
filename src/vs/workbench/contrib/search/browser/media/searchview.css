@@ -441,3 +441,123 @@
 	user-select: none;
 	-webkit-user-select: none;
 }
+
+
+
+/*** Generated for Custom Font Size ***/
+
+.monaco-workbench .part.sidebar .search-view .search-widgets-container, .monaco-workbench .part.auxiliarybar .search-view .search-widgets-container {
+    margin: calc(var(--vscode-workbench-sidebar-font-size) * 0) calc(var(--vscode-workbench-sidebar-font-size) * 0.923077) 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.153846);
+    padding-top: calc(var(--vscode-workbench-sidebar-font-size) * 0.461538);
+    padding-bottom: calc(var(--vscode-workbench-sidebar-font-size) * 0.461538)
+}
+.monaco-workbench .part.sidebar .search-view .search-widget .toggle-replace-button, .monaco-workbench .part.auxiliarybar .search-view .search-widget .toggle-replace-button {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769)
+}
+.monaco-workbench .part.sidebar .search-view .search-widget .search-container, .monaco-workbench .part.sidebar .search-view .search-widget .replace-container, .monaco-workbench .part.auxiliarybar .search-view .search-widget .search-container, .monaco-workbench .part.auxiliarybar .search-view .search-widget .replace-container {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 1.384615)
+}
+.monaco-workbench .part.sidebar .search-view .search-widget .monaco-inputbox > .ibwrapper > .mirror, .monaco-workbench .part.sidebar .search-view .search-widget .monaco-inputbox > .ibwrapper > textarea.input, .monaco-workbench .part.auxiliarybar .search-view .search-widget .monaco-inputbox > .ibwrapper > .mirror, .monaco-workbench .part.auxiliarybar .search-view .search-widget .monaco-inputbox > .ibwrapper > textarea.input {
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0.230769) calc(var(--vscode-workbench-sidebar-font-size) * 0) calc(var(--vscode-workbench-sidebar-font-size) * 0.230769) calc(var(--vscode-workbench-sidebar-font-size) * 0.461538)
+}
+.monaco-workbench .part.sidebar .search-view .search-widget .monaco-inputbox > .ibwrapper > textarea.input, .monaco-workbench .part.auxiliarybar .search-view .search-widget .monaco-inputbox > .ibwrapper > textarea.input {
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 2)
+}
+.monaco-workbench .part.sidebar .search-view .search-widget .replace-container, .monaco-workbench .part.auxiliarybar .search-view .search-widget .replace-container {
+    margin-top: calc(var(--vscode-workbench-sidebar-font-size) * 0.461538)
+}
+.monaco-workbench .part.sidebar .search-view .search-widget .replace-input, .monaco-workbench .part.auxiliarybar .search-view .search-widget .replace-input {
+    width: auto
+}
+.monaco-workbench .part.sidebar .search-view .search-widget .replace-input > .controls, .monaco-workbench .part.auxiliarybar .search-view .search-widget .replace-input > .controls {
+    top: calc(var(--vscode-workbench-sidebar-font-size) * 0.230769);
+    right: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .part.sidebar .search-view .search-widget .replace-container .monaco-action-bar, .monaco-workbench .part.auxiliarybar .search-view .search-widget .replace-container .monaco-action-bar {
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.923077);
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .search-view .query-details, .monaco-workbench .part.auxiliarybar .search-view .query-details {
+    margin: 0 0 0 calc(var(--vscode-workbench-sidebar-font-size) * 1.384615)
+}
+.monaco-workbench .part.sidebar .search-view .query-details .more, .monaco-workbench .part.auxiliarybar .search-view .query-details .more {
+    right: calc(var(--vscode-workbench-sidebar-font-size) * -0.153846);
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.923077);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769)
+}
+.monaco-workbench .part.sidebar .search-view .query-details .file-types > .monaco-inputbox, .monaco-workbench .part.auxiliarybar .search-view .query-details .file-types > .monaco-inputbox {
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.923077)
+}
+.monaco-workbench .part.sidebar .search-view .query-details.more .file-types:last-child, .monaco-workbench .part.auxiliarybar .search-view .query-details.more .file-types:last-child {
+    padding-bottom: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .search-view .query-details.more h4, .monaco-workbench .part.auxiliarybar .search-view .query-details.more h4 {
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692) 0 0;
+    margin: 0;
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.846154)
+}
+.monaco-workbench .part.sidebar .search-view .messages, .monaco-workbench .part.auxiliarybar .search-view .messages {
+    margin-top: calc(var(--vscode-workbench-sidebar-font-size) * -0.384615)
+}
+.monaco-workbench .part.sidebar .search-view .message, .monaco-workbench .part.auxiliarybar .search-view .message {
+    padding: 0 calc(var(--vscode-workbench-sidebar-font-size) * 1.692308) calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .part.sidebar .search-view .message.ai-keywords, .monaco-workbench .part.auxiliarybar .search-view .message.ai-keywords {
+    margin: 0 calc(var(--vscode-workbench-sidebar-font-size) * 1.692308) calc(var(--vscode-workbench-sidebar-font-size) * 0.615385);
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0)
+}
+.monaco-workbench .part.sidebar .search-view .message p:first-child, .monaco-workbench .part.auxiliarybar .search-view .message p:first-child {
+    margin-top: calc(var(--vscode-workbench-sidebar-font-size) * 0);
+    margin-bottom: calc(var(--vscode-workbench-sidebar-font-size) * 0);
+    padding-bottom: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .search-view .message .keyword-refresh, .monaco-workbench .part.auxiliarybar .search-view .message .keyword-refresh {
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .search-view .foldermatch, .monaco-workbench .part.sidebar .search-view .filematch, .monaco-workbench .part.auxiliarybar .search-view .foldermatch, .monaco-workbench .part.auxiliarybar .search-view .filematch {
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308);
+    padding: 0
+}
+.monaco-workbench .part.sidebar .search-view .textsearchresult, .monaco-workbench .part.auxiliarybar .search-view .textsearchresult {
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308);
+    padding: 0
+}
+.monaco-workbench .part.sidebar .search-view .textsearchresult .monaco-icon-label .codicon, .monaco-workbench .part.auxiliarybar .search-view .textsearchresult .monaco-icon-label .codicon {
+    top: calc(var(--vscode-workbench-sidebar-font-size) * 0.230769);
+    padding-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.230769)
+}
+.monaco-workbench .part.sidebar .pane-body.wide .search-view .foldermatch .badge, .monaco-workbench .part.sidebar .pane-body.wide .search-view .filematch .badge, .monaco-workbench .part.auxiliarybar .pane-body.wide .search-view .foldermatch .badge, .monaco-workbench .part.auxiliarybar .pane-body.wide .search-view .filematch .badge {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.769231)
+}
+.monaco-workbench .part.sidebar .search-view .linematch, .monaco-workbench .part.auxiliarybar .search-view .linematch {
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308)
+}
+.monaco-workbench .part.sidebar .search-view .linematch .matchLineNum, .monaco-workbench .part.auxiliarybar .search-view .linematch .matchLineNum {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.538462);
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .search-view .monaco-list .monaco-list-row .monaco-action-bar .action-item, .monaco-workbench .part.auxiliarybar .search-view .monaco-list .monaco-list-row .monaco-action-bar .action-item {
+    margin: 0
+}
+.monaco-workbench .part.sidebar .search-view .monaco-list .monaco-list-row .monaco-action-bar .action-label, .monaco-workbench .part.auxiliarybar .search-view .monaco-list .monaco-list-row .monaco-action-bar .action-label {
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench.hc-black .search-view .part.sidebar .monaco-list .monaco-list-row .monaco-action-bar .action-label, .monaco-workbench.hc-light .search-view .part.sidebar .monaco-list .monaco-list-row .monaco-action-bar .action-label, .monaco-workbench.hc-black .search-view .part.auxiliarybar .monaco-list .monaco-list-row .monaco-action-bar .action-label, .monaco-workbench.hc-light .search-view .part.auxiliarybar .monaco-list .monaco-list-row .monaco-action-bar .action-label {
+    margin-top: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .part.sidebar .search-view .monaco-count-badge, .monaco-workbench .part.auxiliarybar .search-view .monaco-count-badge {
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.923077)
+}
+.monaco-workbench.hc-black .search-view .part.sidebar .foldermatch, .monaco-workbench.hc-black .search-view .part.sidebar .filematch, .monaco-workbench.hc-black .search-view .part.sidebar .linematch, .monaco-workbench.hc-light .search-view .part.sidebar .foldermatch, .monaco-workbench.hc-light .search-view .part.sidebar .filematch, .monaco-workbench.hc-light .search-view .part.sidebar .linematch, .monaco-workbench.hc-black .search-view .part.auxiliarybar .foldermatch, .monaco-workbench.hc-black .search-view .part.auxiliarybar .filematch, .monaco-workbench.hc-black .search-view .part.auxiliarybar .linematch, .monaco-workbench.hc-light .search-view .part.auxiliarybar .foldermatch, .monaco-workbench.hc-light .search-view .part.auxiliarybar .filematch, .monaco-workbench.hc-light .search-view .part.auxiliarybar .linematch {
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.538462)
+}
+.monaco-workbench .part.sidebar .text-search-provider-messages .providerMessage, .monaco-workbench .part.auxiliarybar .text-search-provider-messages .providerMessage {
+    padding-top: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .text-search-provider-messages .providerMessage .codicon, .monaco-workbench .part.auxiliarybar .text-search-provider-messages .providerMessage .codicon {
+    top: calc(var(--vscode-workbench-sidebar-font-size) * 0.230769);
+    padding-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.230769)
+}
+.monaco-workbench .search-container .part.sidebar .find-filter-button, .monaco-workbench .search-container .part.auxiliarybar .find-filter-button {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}

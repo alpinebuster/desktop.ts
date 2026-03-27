@@ -61,6 +61,7 @@ import * as icons from './debugIcons.js';
 import { DisassemblyView } from './disassemblyView.js';
 import { equals } from '../../../../base/common/arrays.js';
 import { hasKey } from '../../../../base/common/types.js';
+import { FONT } from '../../../../base/common/font.js';
 
 const $ = dom.$;
 
@@ -576,7 +577,7 @@ class BreakpointsDelegate implements IListVirtualDelegate<BreakpointTreeElement>
 	}
 
 	getHeight(_element: BreakpointTreeElement): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: BreakpointTreeElement): string {

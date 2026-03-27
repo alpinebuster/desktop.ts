@@ -6,6 +6,7 @@
 import * as path from 'node:path';
 import * as fs from 'original-fs';
 import * as os from 'node:os';
+import { createRequire } from 'node:module';
 import { performance } from 'node:perf_hooks';
 import { configurePortable } from './bootstrap-node.js';
 import { bootstrapESM } from './bootstrap-esm.js';
@@ -19,6 +20,8 @@ import { resolveNLSConfiguration } from './vs/base/node/nls.js';
 import { getUNCHost, addUNCHostToAllowlist } from './vs/base/node/unc.js';
 import { INLSConfiguration } from './vs/nls.js';
 import { NativeParsedArgs } from './vs/platform/environment/common/argv.js';
+
+const require = createRequire(import.meta.url);
 
 perf.mark('code/didStartMain');
 
@@ -106,6 +109,18 @@ protocol.registerSchemesAsPrivileged([
 
 // Global app listeners
 registerListeners();
+
+function resolveUserProduct() {
+	const userProductPath = path.join(userDataPath, 'product.json');
+
+	try {
+		// Assign the product configuration to the global scope
+		const productJson = require(userProductPath);
+
+		globalThis._VSCODE_USER_PRODUCT_JSON = productJson;
+	} catch (ex) {
+	}
+}
 
 /**
  * We can resolve the NLS configuration early if it is defined
@@ -203,6 +218,7 @@ async function onReady() {
 async function startup(codeCachePath: string | undefined, nlsConfig: INLSConfiguration): Promise<void> {
 	process.env['VSCODE_NLS_CONFIG'] = JSON.stringify(nlsConfig);
 	process.env['VSCODE_CODE_CACHE_PATH'] = codeCachePath || '';
+	resolveUserProduct();
 
 	// Bootstrap ESM
 	await bootstrapESM();
@@ -411,16 +427,16 @@ function createDefaultArgvConfigSync(argvConfigPath: string): void {
 
 		// Default argv content
 		const defaultArgvConfigContent = [
-			'// This configuration file allows you to pass permanent command line arguments to VS Code.',
+			'// This configuration file allows you to pass permanent command line arguments to VSCodium.',
 			'// Only a subset of arguments is currently supported to reduce the likelihood of breaking',
 			'// the installation.',
 			'//',
 			'// PLEASE DO NOT CHANGE WITHOUT UNDERSTANDING THE IMPACT',
 			'//',
-			'// NOTE: Changing this file requires a restart of VS Code.',
+			'// NOTE: Changing this file requires a restart of VSCodium.',
 			'{',
 			'	// Use software rendering instead of hardware accelerated rendering.',
-			'	// This can help in cases where you see rendering issues in VS Code.',
+			'	// This can help in cases where you see rendering issues in VSCodium.',
 			'	// "disable-hardware-acceleration": true',
 			'}'
 		];

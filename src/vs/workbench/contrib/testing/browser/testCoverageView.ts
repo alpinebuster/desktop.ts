@@ -14,6 +14,7 @@ import { assertNever } from '../../../../base/common/assert.js';
 import { Codicon } from '../../../../base/common/codicons.js';
 import { memoize } from '../../../../base/common/decorators.js';
 import { FuzzyScore, createMatches } from '../../../../base/common/filters.js';
+import { FONT } from '../../../../base/common/font.js';
 import { Iterable } from '../../../../base/common/iterator.js';
 import { Disposable, DisposableStore, MutableDisposable } from '../../../../base/common/lifecycle.js';
 import { IObservable, autorun, observableValue } from '../../../../base/common/observable.js';
@@ -427,7 +428,7 @@ class TestCoverageTree extends Disposable {
 
 class TestCoverageTreeListDelegate implements IListVirtualDelegate<CoverageTreeElement> {
 	getHeight(element: CoverageTreeElement): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: CoverageTreeElement): string {

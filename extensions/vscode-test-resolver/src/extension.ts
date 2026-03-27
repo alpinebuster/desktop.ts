@@ -178,7 +178,7 @@ export function activate(context: vscode.ExtensionContext) {
 				let serverLocation = env['VSCODE_REMOTE_SERVER_PATH']; // support environment variable to specify location of server on disk
 				if (!serverLocation) {
 					const serverBin = path.join(remoteDataDir, 'bin');
-					progress.report({ message: 'Installing VSCode Server' });
+					progress.report({ message: 'Installing VSCodium Server' });
 					serverLocation = await downloadAndUnzipVSCodeServer(updateUrl, commit, quality, serverBin, m => outputChannel.appendLine(m));
 				}
 

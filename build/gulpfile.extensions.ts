@@ -24,6 +24,7 @@ import * as tsb from './lib/tsb/index.ts';
 import { createTsgoStream, spawnTsgo } from './lib/tsgo.ts';
 import * as util from './lib/util.ts';
 import watcher from './lib/watch/index.ts';
+import product from '../product.json' with { type: 'json' };
 
 const root = path.dirname(import.meta.dirname);
 const commit = getVersion(root);
@@ -98,7 +99,7 @@ const compilations = [
 	'.vscode/extensions/vscode-extras/tsconfig.json',
 ];
 
-const getBaseUrl = (out: string) => `https://main.vscode-cdn.net/sourcemaps/${commit}/${out}`;
+const getBaseUrl = (out: string) => `https://github.com/VSCodium/sourcemaps/releases/download/${product.quality}-${commit}/extensions-${out.replaceAll('/', '-')}`;
 
 function rewriteTsgoSourceMappingUrlsIfNeeded(build: boolean, out: string, baseUrl: string): Promise<void> {
 	if (!build) {

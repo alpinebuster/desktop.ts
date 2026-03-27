@@ -85,3 +85,32 @@
 .monaco-pane-view .pane:not(.merged-header) .monaco-progress-container {
 	top: 20px;
 }
+
+
+
+.monaco-workbench .part.sidebar .monaco-pane-view .pane > .pane-header.not-collapsible .title, .monaco-workbench .part.auxiliarybar .monaco-pane-view .pane > .pane-header.not-collapsible .title {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.615385)
+}
+.monaco-workbench .part.sidebar .monaco-pane-view .pane > .pane-header > .icon, .monaco-workbench .part.auxiliarybar .monaco-pane-view .pane > .pane-header > .icon {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769)
+}
+.monaco-workbench .part.sidebar .monaco-pane-view .pane.pane.horizontal:not(.expanded) > .pane-header > .icon, .monaco-workbench .part.auxiliarybar .monaco-pane-view .pane.pane.horizontal:not(.expanded) > .pane-header > .icon {
+    margin-top: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .monaco-pane-view .pane > .pane-header h3.title, .monaco-workbench .part.auxiliarybar .monaco-pane-view .pane > .pane-header h3.title {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.846154)
+}
+.monaco-workbench .part.sidebar .monaco-pane-view .pane > .pane-header .description, .monaco-workbench .part.auxiliarybar .monaco-pane-view .pane > .pane-header .description {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.769231)
+}
+.monaco-workbench .part.sidebar .monaco-pane-view .pane > .pane-header .description .codicon, .monaco-workbench .part.auxiliarybar .monaco-pane-view .pane > .pane-header .description .codicon {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.692308);
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .part.sidebar .monaco-pane-view .pane .monaco-progress-container, .monaco-workbench .part.auxiliarybar .monaco-pane-view .pane .monaco-progress-container {
+    top: calc(var(--vscode-workbench-sidebar-font-size) * -0.153846)
+}
+.monaco-workbench .part.sidebar .monaco-pane-view .pane:not(.merged-header) .monaco-progress-container, .monaco-workbench .part.auxiliarybar .monaco-pane-view .pane:not(.merged-header) .monaco-progress-container {
+    top: calc(var(--vscode-workbench-sidebar-font-size) * 1.538462)
+}

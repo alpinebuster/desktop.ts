@@ -54,6 +54,7 @@ import { INotebookCellOutlineDataSourceFactory } from '../../viewModel/notebookO
 import { INotebookExecutionStateService, NotebookExecutionType } from '../../../common/notebookExecutionStateService.js';
 import { ILanguageFeaturesService } from '../../../../../../editor/common/services/languageFeatures.js';
 import { safeIntl } from '../../../../../../base/common/date.js';
+import { FONT } from '../../../../../../base/common/font.js';
 
 class NotebookOutlineTemplate {
 
@@ -275,7 +276,7 @@ class NotebookNavigationLabelProvider implements IKeyboardNavigationLabelProvide
 class NotebookOutlineVirtualDelegate implements IListVirtualDelegate<OutlineEntry> {
 
 	getHeight(_element: OutlineEntry): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(_element: OutlineEntry): string {

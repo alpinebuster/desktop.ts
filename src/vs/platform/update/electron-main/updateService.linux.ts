@@ -11,9 +11,10 @@ import { ILogService } from '../../log/common/log.js';
 import { IMeteredConnectionService } from '../../meteredConnection/common/meteredConnection.js';
 import { INativeHostMainService } from '../../native/electron-main/nativeHostMainService.js';
 import { IProductService } from '../../product/common/productService.js';
-import { asJson, IRequestService } from '../../request/common/request.js';
+import { asJson, IRequestService, NO_FETCH_TELEMETRY } from '../../request/common/request.js';
 import { AvailableForDownload, IUpdate, State, UpdateType } from '../common/update.js';
 import { AbstractUpdateService, createUpdateURL, IUpdateURLOptions } from './abstractUpdateService.js';
+import * as semver from 'semver';
 
 export class LinuxUpdateService extends AbstractUpdateService {
 
@@ -30,8 +31,8 @@ export class LinuxUpdateService extends AbstractUpdateService {
 		super(lifecycleMainService, configurationService, environmentMainService, requestService, logService, productService, meteredConnectionService, false);
 	}
 
-	protected buildUpdateFeedUrl(quality: string, commit: string, options?: IUpdateURLOptions): string {
-		return createUpdateURL(this.productService.updateUrl!, `linux-${process.arch}`, quality, commit, options);
+	protected buildUpdateFeedUrl(quality: string, _commit: string, _options?: IUpdateURLOptions): string {
+		return createUpdateURL(this.productService, quality, process.platform, process.arch);
 	}
 
 	protected doCheckForUpdates(explicit: boolean, _pendingCommit?: string): void {
@@ -44,14 +45,26 @@ export class LinuxUpdateService extends AbstractUpdateService {
 		const url = this.buildUpdateFeedUrl(this.quality, this.productService.commit!, { background, internalOrg });
 		this.setState(State.CheckingForUpdates(explicit));
 
-		this.requestService.request({ url, callSite: 'updateService.linux.checkForUpdates' }, CancellationToken.None)
+		this.requestService.request({ url, callSite: NO_FETCH_TELEMETRY }, CancellationToken.None)
 			.then<IUpdate | null>(asJson)
 			.then(update => {
 				if (!update || !update.url || !update.version || !update.productVersion) {
 					this.setState(State.Idle(UpdateType.Archive, undefined, explicit || undefined));
-				} else {
+
+					return Promise.resolve(null);
+				}
+
+				const fetchedVersion = /\d+\.\d+\.\d+\.\d+/.test(update.productVersion) ? update.productVersion.replace(/(\d+\.\d+\.\d+)\.\d+(\-\w+)?/, '$1$2') : update.productVersion.replace(/(\d+\.\d+\.)0+(\d+)(\-\w+)?/, '$1$2$3')
+				const currentVersion = this.productService.version.replace(/(\d+\.\d+\.)0+(\d+)(\-\w+)?/, '$1$2$3')
+
+				if(semver.compareBuild(currentVersion, fetchedVersion) >= 0) {
+					this.setState(State.Idle(UpdateType.Archive, undefined, explicit || undefined));
+				}
+				else {
 					this.setState(State.AvailableForDownload(update));
 				}
+
+				return Promise.resolve(null);
 			})
 			.then(undefined, err => {
 				this.logService.error(err);

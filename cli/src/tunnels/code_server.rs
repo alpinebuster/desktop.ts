@@ -2,6 +2,8 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+#![allow(unused_imports)]
+
 use super::paths::{InstalledServer, ServerPaths};
 use crate::async_pipe::get_socket_name;
 use crate::constants::{
@@ -460,7 +462,7 @@ impl<'a> ServerBuilder<'a> {
 					let output = capture_command_and_check_status(
 						server_dir
 							.join("bin")
-							.join(self.server_params.release.quality.server_entrypoint()),
+							.join(self.server_params.release.quality.server_entrypoint().unwrap()),
 						&["--version"],
 					)
 					.await

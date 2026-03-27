@@ -26,6 +26,7 @@ import { NullFilesConfigurationService, TestFileService } from '../../../../test
 import { IExplorerService } from '../../browser/files.js';
 import { ExplorerFindProvider, FilesFilter } from '../../browser/views/explorerViewer.js';
 import { ExplorerItem } from '../../common/explorerModel.js';
+import { FONT } from '../../../../../base/common/font.js';
 
 function find(element: ExplorerItem, id: string): ExplorerItem | undefined {
 	if (element.name === id) {
@@ -78,7 +79,7 @@ class IdentityProvider implements IIdentityProvider<ExplorerItem> {
 }
 
 class VirtualDelegate implements IListVirtualDelegate<ExplorerItem> {
-	getHeight() { return 20; }
+	getHeight() { return FONT.sidebarSize20; }
 	getTemplateId(element: ExplorerItem): string { return 'default'; }
 }
 

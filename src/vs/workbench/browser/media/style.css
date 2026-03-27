@@ -9,24 +9,24 @@
 
 /* Font Families (with CJK support) */
 
-.monaco-workbench.mac { font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-.monaco-workbench.mac:lang(zh-Hans) { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif; }
-.monaco-workbench.mac:lang(zh-Hant) { font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", sans-serif; }
-.monaco-workbench.mac:lang(ja) { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic Pro", sans-serif; }
-.monaco-workbench.mac:lang(ko) { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Nanum Gothic", "AppleGothic", sans-serif; }
+.monaco-workbench.mac { --monaco-font: -apple-system, BlinkMacSystemFont, sans-serif; }
+.monaco-workbench.mac:lang(zh-Hans) { --monaco-font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif; }
+.monaco-workbench.mac:lang(zh-Hant) { --monaco-font: -apple-system, BlinkMacSystemFont, "PingFang TC", sans-serif; }
+.monaco-workbench.mac:lang(ja) { --monaco-font: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic Pro", sans-serif; }
+.monaco-workbench.mac:lang(ko) { --monaco-font: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Nanum Gothic", "AppleGothic", sans-serif; }
 
-.monaco-workbench.windows { font-family: "Segoe WPC", "Segoe UI", sans-serif; }
-.monaco-workbench.windows:lang(zh-Hans) { font-family: "Segoe WPC", "Segoe UI", "Microsoft YaHei", sans-serif; }
-.monaco-workbench.windows:lang(zh-Hant) { font-family: "Segoe WPC", "Segoe UI", "Microsoft Jhenghei", sans-serif; }
-.monaco-workbench.windows:lang(ja) { font-family: "Segoe WPC", "Segoe UI", "Yu Gothic UI", "Meiryo UI", sans-serif; }
-.monaco-workbench.windows:lang(ko) { font-family: "Segoe WPC", "Segoe UI", "Malgun Gothic", "Dotom", sans-serif; }
+.monaco-workbench.windows { --monaco-font: "Segoe WPC", "Segoe UI", sans-serif; }
+.monaco-workbench.windows:lang(zh-Hans) { --monaco-font: "Segoe WPC", "Segoe UI", "Microsoft YaHei", sans-serif; }
+.monaco-workbench.windows:lang(zh-Hant) { --monaco-font: "Segoe WPC", "Segoe UI", "Microsoft Jhenghei", sans-serif; }
+.monaco-workbench.windows:lang(ja) { --monaco-font: "Segoe WPC", "Segoe UI", "Yu Gothic UI", "Meiryo UI", sans-serif; }
+.monaco-workbench.windows:lang(ko) { --monaco-font: "Segoe WPC", "Segoe UI", "Malgun Gothic", "Dotom", sans-serif; }
 
 /* Linux: add `system-ui` as first font and not `Ubuntu` to allow other distribution pick their standard OS font */
-.monaco-workbench.linux { font-family: system-ui, "Ubuntu", "Droid Sans", sans-serif; }
-.monaco-workbench.linux:lang(zh-Hans) { font-family: system-ui, "Ubuntu", "Droid Sans", "Source Han Sans SC", "Source Han Sans CN", "Source Han Sans", sans-serif; }
-.monaco-workbench.linux:lang(zh-Hant) { font-family: system-ui, "Ubuntu", "Droid Sans", "Source Han Sans TC", "Source Han Sans TW", "Source Han Sans", sans-serif; }
-.monaco-workbench.linux:lang(ja) { font-family: system-ui, "Ubuntu", "Droid Sans", "Source Han Sans J", "Source Han Sans JP", "Source Han Sans", sans-serif; }
-.monaco-workbench.linux:lang(ko) { font-family: system-ui, "Ubuntu", "Droid Sans", "Source Han Sans K", "Source Han Sans JR", "Source Han Sans", "UnDotum", "FBaekmuk Gulim", sans-serif; }
+.monaco-workbench.linux { --monaco-font: system-ui, "Ubuntu", "Droid Sans", sans-serif; }
+.monaco-workbench.linux:lang(zh-Hans) { --monaco-font: system-ui, "Ubuntu", "Droid Sans", "Source Han Sans SC", "Source Han Sans CN", "Source Han Sans", sans-serif; }
+.monaco-workbench.linux:lang(zh-Hant) { --monaco-font: system-ui, "Ubuntu", "Droid Sans", "Source Han Sans TC", "Source Han Sans TW", "Source Han Sans", sans-serif; }
+.monaco-workbench.linux:lang(ja) { --monaco-font: system-ui, "Ubuntu", "Droid Sans", "Source Han Sans J", "Source Han Sans JP", "Source Han Sans", sans-serif; }
+.monaco-workbench.linux:lang(ko) { --monaco-font: system-ui, "Ubuntu", "Droid Sans", "Source Han Sans K", "Source Han Sans JR", "Source Han Sans", "UnDotum", "FBaekmuk Gulim", sans-serif; }
 
 .monaco-workbench.mac { --monaco-monospace-font: "SF Mono", Monaco, Menlo, Courier, monospace; }
 .monaco-workbench.windows { --monaco-monospace-font: Consolas, "Courier New", monospace; }
@@ -53,6 +53,8 @@ body {
 	z-index: 1;
 	overflow: hidden;
 	color: var(--vscode-foreground);
+	font-family: var(--vscode-workbench-font-family, var(--monaco-font));
+	font-size: var(--vscode-workbench-font-size, 13px);
 
 	/* Elevation shadows */
 	--vscode-shadow-sm: 0 0 4px rgba(0, 0, 0, 0.08);
@@ -332,4 +334,44 @@ body {
 .monaco-workbench .monaco-action-bar:not(.vertical) .action-item .action-label:hover:not(.disabled) {
 	outline: 1px dashed var(--vscode-toolbar-hoverOutline);
 	outline-offset: -1px;
+}
+
+
+
+.monaco-workbench .part.sidebar body, .monaco-workbench .part.auxiliarybar body {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.846154)
+}
+.monaco-workbench .part.sidebar, .monaco-workbench .part.auxiliarybar {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 1)
+}
+.monaco-workbench .part.sidebar .codicon[class*='codicon-'], .monaco-workbench .part.auxiliarybar .codicon[class*='codicon-'] {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769)
+}
+.monaco-workbench .part.sidebar .predefined-file-icon[class*='codicon-']::before, .monaco-workbench .part.auxiliarybar .predefined-file-icon[class*='codicon-']::before {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    padding-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.230769);
+    padding-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.230769)
+}
+.monaco-workbench .part.sidebar .select-container:after, .monaco-workbench .part.auxiliarybar .select-container:after {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    right: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar [tabindex="0"]:focus, .monaco-workbench .part.sidebar [tabindex="-1"]:focus, .monaco-workbench .part.sidebar .synthetic-focus, .monaco-workbench .part.sidebar select:focus, .monaco-workbench .part.sidebar input[type="button"]:focus, .monaco-workbench .part.sidebar input[type="text"]:focus, .monaco-workbench .part.sidebar button:focus, .monaco-workbench .part.sidebar textarea:focus, .monaco-workbench .part.sidebar input[type="search"]:focus, .monaco-workbench .part.sidebar input[type="checkbox"]:focus, .monaco-workbench .part.auxiliarybar [tabindex="0"]:focus, .monaco-workbench .part.auxiliarybar [tabindex="-1"]:focus, .monaco-workbench .part.auxiliarybar .synthetic-focus, .monaco-workbench .part.auxiliarybar select:focus, .monaco-workbench .part.auxiliarybar input[type="button"]:focus, .monaco-workbench .part.auxiliarybar input[type="text"]:focus, .monaco-workbench .part.auxiliarybar button:focus, .monaco-workbench .part.auxiliarybar textarea:focus, .monaco-workbench .part.auxiliarybar input[type="search"]:focus, .monaco-workbench .part.auxiliarybar input[type="checkbox"]:focus {
+    outline-width: calc(var(--vscode-workbench-sidebar-font-size) * 0.076923);
+    outline-offset: calc(var(--vscode-workbench-sidebar-font-size) * -0.076923)
+}
+.monaco-workbench .part.sidebar input[type="checkbox"]:focus, .monaco-workbench .part.auxiliarybar input[type="checkbox"]:focus {
+    outline-offset: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .part.sidebar .monaco-list:not(.element-focused):not(:active):focus:before, .monaco-workbench .part.auxiliarybar .monaco-list:not(.element-focused):not(:active):focus:before {
+    outline: calc(var(--vscode-workbench-sidebar-font-size) * 0.076923) solid;
+    outline-width: calc(var(--vscode-workbench-sidebar-font-size) * 0.076923);
+    outline-offset: calc(var(--vscode-workbench-sidebar-font-size) * -0.076923)
+}
+.monaco-workbench .part.sidebar .monaco-action-bar:not(.vertical) .action-item .action-label:hover:not(.disabled), .monaco-workbench .part.auxiliarybar .monaco-action-bar:not(.vertical) .action-item .action-label:hover:not(.disabled) {
+    outline: calc(var(--vscode-workbench-sidebar-font-size) * 0.076923) dashed var(--vscode-toolbar-hoverOutline);
+    outline-offset: calc(var(--vscode-workbench-sidebar-font-size) * -0.076923)
 }

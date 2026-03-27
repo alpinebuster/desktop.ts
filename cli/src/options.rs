@@ -7,7 +7,7 @@ use std::fmt;
 
 use serde::{Deserialize, Serialize};
 
-use crate::constants::SERVER_NAME_MAP;
+use crate::{constants::VSCODE_CLI_BINARY_NAME, util::errors::CodeError};
 
 #[derive(clap::ValueEnum, Copy, Clone, Debug, Hash, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Quality {
@@ -17,6 +17,10 @@ pub enum Quality {
 	Exploration,
 	#[serde(other)]
 	Insiders,
+}
+
+fn get_binary_name() -> Result<&'static str, CodeError> {
+	VSCODE_CLI_BINARY_NAME.ok_or_else(|| CodeError::UpdatesNotConfigured("no binary name"))
 }
 
 impl Quality {
@@ -39,19 +43,14 @@ impl Quality {
 	}
 
 	/// Server application name
-	pub fn server_entrypoint(&self) -> String {
-		let mut server_name = SERVER_NAME_MAP
-			.as_ref()
-			.and_then(|m| m.get(self))
-			.map(|s| s.server_application_name.as_str())
-			.unwrap_or("code-server-oss")
-			.to_string();
+	pub fn server_entrypoint(&self) -> Result<String, CodeError> {
+		let mut server_name = get_binary_name()?.to_string();
 
 		if cfg!(windows) {
 			server_name.push_str(".cmd");
 		}
 
-		server_name
+		Ok(server_name)
 	}
 }
 

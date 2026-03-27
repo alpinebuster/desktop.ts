@@ -13,6 +13,7 @@ import { AsyncDataTree } from '../../../../base/browser/ui/tree/asyncDataTree.js
 import { ITreeContextMenuEvent } from '../../../../base/browser/ui/tree/tree.js';
 import { coalesce } from '../../../../base/common/arrays.js';
 import { CancellationToken, CancellationTokenSource } from '../../../../base/common/cancellation.js';
+import { FONT } from '../../../../base/common/font.js';
 import { KeyCode } from '../../../../base/common/keyCodes.js';
 import * as lifecycle from '../../../../base/common/lifecycle.js';
 import { clamp } from '../../../../base/common/numbers.js';
@@ -444,7 +445,7 @@ class DebugHoverDataSource extends AbstractExpressionDataSource<IExpression, IEx
 
 class DebugHoverDelegate implements IListVirtualDelegate<IExpression> {
 	getHeight(element: IExpression): number {
-		return 18;
+		return FONT.sidebarSize18;
 	}
 
 	getTemplateId(element: IExpression): string {

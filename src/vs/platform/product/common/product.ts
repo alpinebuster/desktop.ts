@@ -29,6 +29,42 @@ else if (globalThis._VSCODE_PRODUCT_JSON && globalThis._VSCODE_PACKAGE_JSON) {
 	// Obtain values from product.json and package.json-data
 	product = globalThis._VSCODE_PRODUCT_JSON as unknown as IProductConfiguration;
 
+	// Merge user-customized product.json
+	try {
+		const merge = (...objects: any[]) =>
+			objects.reduce((result, current) => {
+				Object.keys(current).forEach((key) => {
+					if (Array.isArray(result[key]) && Array.isArray(current[key])) {
+						result[key] = current[key];
+					} else if (typeof result[key] === 'object' && typeof current[key] === 'object') {
+						result[key] = merge(result[key], current[key]);
+					} else {
+						result[key] = current[key];
+					}
+				});
+
+				return result;
+			}, {}) as any;
+
+		const userProduct = globalThis._VSCODE_USER_PRODUCT_JSON || {};
+
+		product = merge(product, userProduct);
+	} catch (ex) {
+	}
+
+	const { serviceUrl, controlUrl, itemUrl, latestUrlTemplate, extensionUrlTemplate, resourceUrlTemplate } = product.extensionsGallery || {};
+
+	Object.assign(product, {
+		extensionsGallery: {
+			serviceUrl: env['VSCODE_GALLERY_SERVICE_URL'] || serviceUrl,
+			controlUrl: env['VSCODE_GALLERY_CONTROL_URL'] || controlUrl,
+			itemUrl: env['VSCODE_GALLERY_ITEM_URL'] || itemUrl,
+			latestUrlTemplate: env['VSCODE_GALLERY_LATEST_URL_TEMPLATE'] || latestUrlTemplate,
+			extensionUrlTemplate: env['VSCODE_GALLERY_EXTENSION_URL_TEMPLATE'] || extensionUrlTemplate,
+			resourceUrlTemplate: env['VSCODE_GALLERY_RESOURCE_URL_TEMPLATE'] || resourceUrlTemplate,
+		}
+	});
+
 	// Running out of sources
 	if (env['VSCODE_DEV']) {
 		Object.assign(product, {

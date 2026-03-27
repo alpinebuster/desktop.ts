@@ -34,6 +34,7 @@ import { IHoverService } from '../../../../platform/hover/browser/hover.js';
 import { Codicon } from '../../../../base/common/codicons.js';
 import { ISearchTreeMatch, isSearchTreeMatch, RenderableMatch, ITextSearchHeading, ISearchTreeFolderMatch, ISearchTreeFileMatch, isSearchTreeFileMatch, isSearchTreeFolderMatch, isTextSearchHeading, ISearchModel, isSearchTreeFolderMatchWorkspaceRoot, isSearchTreeFolderMatchNoRoot, isPlainTextSearchHeading } from './searchTreeModel/searchTreeCommon.js';
 import { isSearchTreeAIFileMatch } from './AISearch/aiSearchModelBase.js';
+import { FONT } from '../../../../base/common/font.js';
 
 interface IFolderMatchTemplate {
 	label: IResourceLabel;
@@ -75,10 +76,12 @@ interface IMatchTemplate {
 
 export class SearchDelegate implements IListVirtualDelegate<RenderableMatch> {
 
-	public static ITEM_HEIGHT = 22;
+	static getHeight(): number {
+		return FONT.sidebarSize22;
+	}
 
 	getHeight(element: RenderableMatch): number {
-		return SearchDelegate.ITEM_HEIGHT;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: RenderableMatch): string {

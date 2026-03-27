@@ -46,6 +46,8 @@ import { ServiceCollection } from '../../../../platform/instantiation/common/ser
 import { IBaseActionViewItemOptions } from '../../../../base/browser/ui/actionbar/actionViewItems.js';
 import { MarkdownString } from '../../../../base/common/htmlContent.js';
 import { IManagedHoverTooltipMarkdownString } from '../../../../base/browser/ui/hover/hover.js';
+import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
+import { FONT, getFontSize, updateTabsSize } from '../../../../base/common/font.js';
 import { applyDragImage } from '../../../../base/browser/ui/dnd/dnd.js';
 
 export class EditorCommandsContextActionRunner extends ActionRunner {
@@ -99,10 +101,12 @@ export abstract class EditorTabsControl extends Themable implements IEditorTabsC
 	protected readonly groupTransfer = LocalSelectionTransfer.getInstance<DraggedEditorGroupIdentifier>();
 	protected readonly treeItemsTransfer = LocalSelectionTransfer.getInstance<DraggedTreeItemsIdentifier>();
 
-	private static readonly EDITOR_TAB_HEIGHT = {
-		normal: 35 as const,
-		compact: 22 as const
-	};
+	private static get EDITOR_TAB_HEIGHT() {
+		return {
+			normal: FONT.tabsSize35,
+			compact: FONT.tabsSize22
+		};
+	}
 
 	protected editorActionsToolbarContainer: HTMLElement | undefined;
 	private editorActionsToolbar: WorkbenchToolBar | undefined;
@@ -140,12 +144,24 @@ export abstract class EditorTabsControl extends Themable implements IEditorTabsC
 		@IThemeService themeService: IThemeService,
 		@IEditorResolverService private readonly editorResolverService: IEditorResolverService,
 		@IHostService private readonly hostService: IHostService,
+		@IConfigurationService protected readonly configurationService: IConfigurationService,
 	) {
 		super(themeService);
 
 		this.renderDropdownAsChildElement = false;
 
 		const container = this.create(parent);
+
+		this._register(configurationService.onDidChangeConfiguration(e => {
+			if (e.affectsConfiguration('workbench.tabs.experimental.fontFamily')) {
+				this.applyTabsFontFamily();
+			}
+			if (e.affectsConfiguration('workbench.tabs.experimental.fontSize')) {
+				this.applyTabsFontSize();
+				this.updateTabHeight();
+				this.groupView.relayout();
+			}
+		}));
 
 		// Context Keys
 		this.contextMenuContextKeyService = this._register(this.contextKeyService.createScoped(container));
@@ -168,8 +184,38 @@ export abstract class EditorTabsControl extends Themable implements IEditorTabsC
 	}
 
 	protected create(parent: HTMLElement): HTMLElement {
+		this.applyTabsFontSize(parent);
+		this.applyTabsFontFamily(parent);
 		this.updateTabHeight();
 		return parent;
+	}
+
+	private applyTabsFontFamily(container?: HTMLElement): void {
+		const target = container ?? this.parent;
+		if (!target) {
+			return;
+		}
+
+		const family = this.configurationService.getValue<string>('workbench.tabs.experimental.fontFamily');
+
+		if (family) {
+			target.style.setProperty('--vscode-workbench-tabs-font-family', family);
+		} else {
+			target.style.removeProperty('--vscode-workbench-tabs-font-family');
+		}
+	}
+
+	private applyTabsFontSize(container?: HTMLElement): void {
+		const target = container ?? this.parent;
+		if (!target) {
+			return;
+		}
+
+		const configuredSize = getFontSize(this.configurationService, 'workbench.tabs.experimental.fontSize', FONT.defaultTabsSize);
+
+		updateTabsSize(configuredSize);
+
+		target.style.setProperty('--vscode-workbench-tabs-font-size', `${FONT.tabsSize}px`);
 	}
 
 	private get editorActionsEnabled(): boolean {

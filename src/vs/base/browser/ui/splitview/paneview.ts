@@ -19,6 +19,7 @@ import './paneview.css';
 import { localize } from '../../../../nls.js';
 import { IView, Sizing, SplitView } from './splitview.js';
 import { applyDragImage } from '../dnd/dnd.js';
+import { FONT } from '../../../common/font.js';
 
 export interface IPaneOptions {
 	minimumBodySize?: number;
@@ -47,8 +48,6 @@ export interface IPaneStyles {
  * before the `render()` call, thus forbidding their use.
  */
 export abstract class Pane extends Disposable implements IView {
-
-	private static readonly HEADER_SIZE = 22;
 
 	readonly element: HTMLElement;
 	private header: HTMLElement | undefined;
@@ -119,7 +118,7 @@ export abstract class Pane extends Disposable implements IView {
 	}
 
 	private get headerSize(): number {
-		return this.headerVisible ? Pane.HEADER_SIZE : 0;
+		return this.headerVisible ? FONT.sidebarSize22 : 0;
 	}
 
 	get minimumSize(): number {
@@ -298,7 +297,7 @@ export abstract class Pane extends Disposable implements IView {
 	}
 
 	layout(size: number): void {
-		const headerSize = this.headerVisible ? Pane.HEADER_SIZE : 0;
+		const headerSize = this.headerSize;
 
 		const width = this._orientation === Orientation.VERTICAL ? this.orthogonalSize : size;
 		const height = this._orientation === Orientation.VERTICAL ? size - headerSize : this.orthogonalSize - headerSize;

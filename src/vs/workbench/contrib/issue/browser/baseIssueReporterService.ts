@@ -798,7 +798,7 @@ export class BaseIssueReporterService extends Disposable {
 
 	public searchVSCodeIssues(title: string, issueDescription?: string): void {
 		if (title) {
-			this.searchDuplicates(title, issueDescription);
+			this.searchGitHub('VSCodium/vscodium', title);
 		} else {
 			this.clearSearchResults();
 		}
@@ -874,37 +874,6 @@ export class BaseIssueReporterService extends Disposable {
 			});
 		}).catch(_ => {
 			console.warn('Error fetching GitHub issues');
-		});
-	}
-
-	@debounce(300)
-	private searchDuplicates(title: string, body?: string): void {
-		const url = 'https://vscode-probot.westus.cloudapp.azure.com:7890/duplicate_candidates';
-		const init = {
-			method: 'POST',
-			body: JSON.stringify({
-				title,
-				body
-			}),
-			headers: new Headers({
-				'Content-Type': 'application/json'
-			})
-		};
-
-		fetch(url, init).then((response) => {
-			response.json().then(result => {
-				this.clearSearchResults();
-
-				if (result && result.candidates) {
-					this.displaySearchResults(result.candidates);
-				} else {
-					throw new Error('Unexpected response, no candidates property');
-				}
-			}).catch(_ => {
-				// Ignore
-			});
-		}).catch(_ => {
-			// Ignore
 		});
 	}
 
@@ -998,8 +967,8 @@ export class BaseIssueReporterService extends Disposable {
 
 		sourceSelect.innerText = '';
 		sourceSelect.append(this.makeOption('', localize('selectSource', "Select source"), true));
-		sourceSelect.append(this.makeOption(IssueSource.VSCode, localize('vscode', "Visual Studio Code"), false));
-		sourceSelect.append(this.makeOption(IssueSource.Extension, localize('extension', "A VS Code extension"), false));
+		sourceSelect.append(this.makeOption(IssueSource.VSCode, localize('vscode', "VSCodium"), false));
+		sourceSelect.append(this.makeOption(IssueSource.Extension, localize('extension', "A VSCodium extension"), false));
 		if (this.product.reportMarketplaceIssueUrl) {
 			sourceSelect.append(this.makeOption(IssueSource.Marketplace, localize('marketplace', "Extensions Marketplace"), false));
 		}
@@ -1102,7 +1071,7 @@ export class BaseIssueReporterService extends Disposable {
 		if (selectedExtension && this.nonGitHubIssueUrl) {
 			hide(titleTextArea);
 			hide(descriptionTextArea);
-			reset(descriptionTitle, localize('handlesIssuesElsewhere', "This extension handles issues outside of VS Code"));
+			reset(descriptionTitle, localize('handlesIssuesElsewhere', "This extension handles issues outside of VSCodium"));
 			reset(descriptionSubtitle, localize('elsewhereDescription', "The '{0}' extension prefers to use an external issue reporter. To be taken to that issue reporting experience, click the button below.", selectedExtension.displayName));
 			this.publicGithubButton.label = localize('openIssueReporter', "Open External Issue Reporter");
 			return;

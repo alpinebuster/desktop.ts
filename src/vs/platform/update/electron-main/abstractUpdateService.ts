@@ -15,24 +15,20 @@ import { IEnvironmentMainService } from '../../environment/electron-main/environ
 import { ILifecycleMainService, LifecycleMainPhase } from '../../lifecycle/electron-main/lifecycleMainService.js';
 import { ILogService } from '../../log/common/log.js';
 import { IProductService } from '../../product/common/productService.js';
-import { IRequestService } from '../../request/common/request.js';
-import { AvailableForDownload, DisablementReason, IUpdateService, State, StateType, UpdateType } from '../common/update.js';
+import { IRequestService, NO_FETCH_TELEMETRY } from '../../request/common/request.js';
+import { Architecture, AvailableForDownload, DisablementReason, IUpdateService, Platform, State, StateType, Target, UpdateType } from '../common/update.js';
 
 export interface IUpdateURLOptions {
 	readonly background?: boolean;
 	readonly internalOrg?: string;
 }
 
-export function createUpdateURL(baseUpdateUrl: string, platform: string, quality: string, commit: string, options?: IUpdateURLOptions): string {
-	const url = new URL(`${baseUpdateUrl}/api/update/${platform}/${quality}/${commit}`);
-
-	if (options?.background) {
-		url.searchParams.set('bg', 'true');
+export function createUpdateURL(productService: IProductService, quality: string, platform: Platform, architecture: Architecture, target?: Target): string {
+	if (target) {
+		return `${productService.updateUrl}/${quality}/${platform}/${architecture}/${target}/latest.json`;
+	} else {
+		return `${productService.updateUrl}/${quality}/${platform}/${architecture}/latest.json`;
 	}
-
-	url.searchParams.set('u', options?.internalOrg ?? 'none');
-
-	return url.toString();
 }
 
 /**
@@ -67,7 +63,7 @@ export function getUpdateRequestHeaders(productVersion: string): Record<string, 
 export type UpdateErrorClassification = {
 	owner: 'joaomoreno';
 	messageHash: { classification: 'SystemMetaData'; purpose: 'FeatureInsight'; comment: 'The hash of the error message.' };
-	comment: 'This is used to know how often VS Code updates have failed.';
+	comment: 'This is used to know how often VSCodium updates have failed.';
 };
 
 export abstract class AbstractUpdateService implements IUpdateService {
@@ -320,7 +316,7 @@ export abstract class AbstractUpdateService implements IUpdateService {
 
 		const mode = this.configurationService.getValue<'none' | 'manual' | 'start' | 'default'>('update.mode');
 
-		if (mode === 'none') {
+		if (mode === 'none' || mode === 'manual') {
 			return undefined;
 		}
 
@@ -334,7 +330,7 @@ export abstract class AbstractUpdateService implements IUpdateService {
 		this.logService.trace('update#isLatestVersion() - checking update server', { url, headers });
 
 		try {
-			const context = await this.requestService.request({ url, headers, callSite: 'updateService.isLatestVersion' }, token);
+			const context = await this.requestService.request({ url, headers, callSite: NO_FETCH_TELEMETRY }, token);
 			const statusCode = context.res.statusCode;
 			this.logService.trace('update#isLatestVersion() - response', { statusCode });
 			// The update server replies with 204 (No Content) when no

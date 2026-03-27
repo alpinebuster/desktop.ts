@@ -55,6 +55,7 @@ import { IWalkthroughsService } from '../../welcomeGettingStarted/browser/gettin
 import { Schemas } from '../../../../base/common/network.js';
 import { mainWindow } from '../../../../base/browser/window.js';
 import { IHoverService } from '../../../../platform/hover/browser/hover.js';
+import { FONT } from '../../../../base/common/font.js';
 
 interface IViewModel {
 	readonly onDidChangeHelpInformation: Event<void>;
@@ -63,7 +64,7 @@ interface IViewModel {
 
 class HelpTreeVirtualDelegate implements IListVirtualDelegate<IHelpItem> {
 	getHeight(element: IHelpItem): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: IHelpItem): string {

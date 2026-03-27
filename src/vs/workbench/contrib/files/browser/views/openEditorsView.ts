@@ -56,6 +56,7 @@ import { mainWindow } from '../../../../../base/browser/window.js';
 import { EditorGroupView } from '../../../../browser/parts/editor/editorGroupView.js';
 import { IHoverService } from '../../../../../platform/hover/browser/hover.js';
 import { IFileService } from '../../../../../platform/files/common/files.js';
+import { FONT } from '../../../../../base/common/font.js';
 
 const $ = dom.$;
 
@@ -517,7 +518,7 @@ export class OpenEditorsView extends ViewPane {
 			return Number.POSITIVE_INFINITY;
 		}
 
-		return (Math.max(this.elementCount, minVisibleOpenEditors)) * OpenEditorsDelegate.ITEM_HEIGHT;
+		return (Math.max(this.elementCount, minVisibleOpenEditors)) * FONT.sidebarSize22;
 	}
 
 	private getMinExpandedBodySize(): number {
@@ -531,7 +532,7 @@ export class OpenEditorsView extends ViewPane {
 
 	private computeMinExpandedBodySize(visibleOpenEditors = OpenEditorsView.DEFAULT_VISIBLE_OPEN_EDITORS): number {
 		const itemsToShow = Math.min(Math.max(visibleOpenEditors, 1), this.elementCount);
-		return itemsToShow * OpenEditorsDelegate.ITEM_HEIGHT;
+		return itemsToShow * FONT.sidebarSize22;
 	}
 
 	setStructuralRefreshDelay(delay: number): void {
@@ -579,10 +580,8 @@ class OpenEditorActionRunner extends ActionRunner {
 
 class OpenEditorsDelegate implements IListVirtualDelegate<OpenEditor | IEditorGroup> {
 
-	public static readonly ITEM_HEIGHT = 22;
-
 	getHeight(_element: OpenEditor | IEditorGroup): number {
-		return OpenEditorsDelegate.ITEM_HEIGHT;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: OpenEditor | IEditorGroup): string {

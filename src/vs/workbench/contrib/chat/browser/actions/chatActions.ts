@@ -204,7 +204,8 @@ abstract class OpenChatGlobalAction extends Action2 {
 			category: CHAT_CATEGORY,
 			precondition: ContextKeyExpr.and(
 				ChatContextKeys.Setup.hidden.negate(),
-				ChatContextKeys.Setup.disabled.negate()
+				ChatContextKeys.Setup.disabled.negate(),
+				ContextKeyExpr.has('config.chat.disableAIFeatures').negate()
 			)
 		});
 	}
@@ -1140,7 +1141,7 @@ export function registerChatActions() {
 				id: 'workbench.action.chat.configureCodeCompletions',
 				title: localize2('configureCompletions', "Configure Inline Suggestions..."),
 				precondition: ContextKeyExpr.and(
-					ChatContextKeys.Setup.installed,
+					ContextKeyExpr.has('config.chat.disableAIFeatures').negate(),
 					ChatContextKeys.Setup.disabled.negate(),
 					ChatContextKeys.Setup.untrusted.negate()
 				),
@@ -1713,7 +1714,8 @@ MenuRegistry.appendMenuItem(MenuId.EditorContext, {
 	title: localize('generateCode', "Generate Code"),
 	when: ContextKeyExpr.and(
 		ChatContextKeys.Setup.hidden.negate(),
-		ChatContextKeys.Setup.disabled.negate()
+		ChatContextKeys.Setup.disabled.negate(),
+		ContextKeyExpr.has('config.chat.disableAIFeatures').negate()
 	)
 });
 

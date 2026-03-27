@@ -754,7 +754,7 @@ impl ConnectionManager {
 		let release_for_fut = args.release.clone();
 		let log_for_fut = args.log.clone();
 		let dir_fut = cache.create(&args.release.commit, |target_dir| async move {
-			info!(log_for_fut, "Downloading server {}", release_for_fut.commit);
+			info!(log_for_fut, "Downloading server {}/{}", release_for_fut.commit, release_for_fut.name);
 			let tmpdir = tempfile::tempdir().unwrap();
 			let response = update_service.get_download_stream(&release_for_fut).await?;
 
@@ -782,7 +782,7 @@ impl ConnectionManager {
 
 		let executable = path
 			.join("bin")
-			.join(args.release.quality.server_entrypoint());
+			.join(args.release.quality.server_entrypoint().unwrap());
 
 		let socket_path = get_socket_name();
 

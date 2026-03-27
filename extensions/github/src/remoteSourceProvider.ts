@@ -8,7 +8,7 @@ import { RemoteSourceProvider, RemoteSource, RemoteSourceAction } from './typing
 import { getOctokit } from './auth.js';
 import { Octokit } from '@octokit/rest';
 import { getRepositoryFromQuery, getRepositoryFromUrl } from './util.js';
-import { getBranchLink, getVscodeDevHost } from './links.js';
+import { getBranchLink } from './links.js';
 
 type RemoteSourceResponse = {
 	readonly full_name: string;
@@ -133,13 +133,6 @@ export class GithubRemoteSourceProvider implements RemoteSourceProvider {
 			icon: 'github',
 			run(branch: string) {
 				const link = getBranchLink(url, branch);
-				env.openExternal(Uri.parse(link));
-			}
-		}, {
-			label: l10n.t('Checkout on vscode.dev'),
-			icon: 'globe',
-			run(branch: string) {
-				const link = getBranchLink(url, branch, getVscodeDevHost());
 				env.openExternal(Uri.parse(link));
 			}
 		}];

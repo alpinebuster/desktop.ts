@@ -41,6 +41,8 @@ declare global {
 	 * @deprecated Avoid using this variable.
 	*/
 	var _VSCODE_USE_RELATIVE_IMPORTS: boolean | undefined;
+
+	var _VSCODE_USER_PRODUCT_JSON: Record<string, any>;
 }
 
 // fake export to make global work

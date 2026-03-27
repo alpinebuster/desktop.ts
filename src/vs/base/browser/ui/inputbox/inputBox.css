@@ -105,3 +105,30 @@
 	height: 16px;
 	color: var(--vscode-icon-foreground);
 }
+
+
+
+/*** Generated for Custom Font Size ***/
+
+.monaco-workbench .part.sidebar .monaco-inputbox, .monaco-workbench .part.auxiliarybar .monaco-inputbox {
+    padding: 0
+}
+.monaco-workbench .part.sidebar .monaco-inputbox > .ibwrapper > .input, .monaco-workbench .part.sidebar .monaco-inputbox > .ibwrapper > .mirror, .monaco-workbench .part.auxiliarybar .monaco-inputbox > .ibwrapper > .input, .monaco-workbench .part.auxiliarybar .monaco-inputbox > .ibwrapper > .mirror {
+    padding: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692) calc(var(--vscode-workbench-sidebar-font-size) * 0.461538)
+}
+.monaco-workbench .part.sidebar .monaco-inputbox-container .monaco-inputbox-message, .monaco-workbench .part.auxiliarybar .monaco-inputbox-container .monaco-inputbox-message {
+    font-size: calc(var(--vscode-workbench-sidebar-font-size) * 0.923077);
+    line-height: calc(var(--vscode-workbench-sidebar-font-size) * 1.307692);
+    margin-top: calc(var(--vscode-workbench-sidebar-font-size) * -0.076923)
+}
+.monaco-workbench .part.sidebar .monaco-inputbox .monaco-action-bar, .monaco-workbench .part.auxiliarybar .monaco-inputbox .monaco-action-bar {
+    right: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846);
+    top: calc(var(--vscode-workbench-sidebar-font-size) * 0.307692)
+}
+.monaco-workbench .part.sidebar .monaco-inputbox .monaco-action-bar .action-item, .monaco-workbench .part.auxiliarybar .monaco-inputbox .monaco-action-bar .action-item {
+    margin-left: calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .part.sidebar .monaco-inputbox .monaco-action-bar .action-item .codicon, .monaco-workbench .part.auxiliarybar .monaco-inputbox .monaco-action-bar .action-item .codicon {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769)
+}

@@ -38,6 +38,7 @@ import { DelayedPagedModel, IPagedModel } from '../../../../base/common/paging.j
 import { ExtensionIconWidget } from './extensionsWidgets.js';
 import { ILogService } from '../../../../platform/log/common/log.js';
 import { isCancellationError } from '../../../../base/common/errors.js';
+import { FONT } from '../../../../base/common/font.js';
 
 function getAriaLabelForExtension(extension: IExtension | null): string {
 	if (!extension) {
@@ -260,7 +261,7 @@ class AsyncDataSource implements IAsyncDataSource<IExtensionData, any> {
 class VirualDelegate implements IListVirtualDelegate<IExtensionData> {
 
 	public getHeight(element: IExtensionData): number {
-		return 62;
+		return FONT.sidebarSize62;
 	}
 	public getTemplateId({ extension }: IExtensionData): string {
 		return extension ? ExtensionRenderer.TEMPLATE_ID : UnknownExtensionRenderer.TEMPLATE_ID;

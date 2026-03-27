@@ -40,6 +40,7 @@ import { COPY_WATCH_EXPRESSION_COMMAND_ID, setDataBreakpointInfoResponse } from 
 import { DebugExpressionRenderer } from './debugExpressionRenderer.js';
 import { watchExpressionsAdd, watchExpressionsRemoveAll } from './debugIcons.js';
 import { VariablesRenderer, VisualizedVariableRenderer } from './variablesView.js';
+import { FONT } from '../../../../base/common/font.js';
 
 const MAX_VALUE_RENDER_LENGTH_IN_VIEWLET = 1024;
 let ignoreViewUpdates = false;
@@ -238,7 +239,7 @@ export class WatchExpressionsView extends ViewPane implements IDebugViewWithVari
 class WatchExpressionsDelegate implements IListVirtualDelegate<IExpression> {
 
 	getHeight(_element: IExpression): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: IExpression): string {

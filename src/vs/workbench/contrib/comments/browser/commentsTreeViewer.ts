@@ -41,6 +41,7 @@ import { ActionViewItem } from '../../../../base/browser/ui/actionbar/actionView
 import { IKeybindingService } from '../../../../platform/keybinding/common/keybinding.js';
 import { MarshalledCommentThread, MarshalledCommentThreadInternal } from '../../../common/comments.js';
 import { IHoverService } from '../../../../platform/hover/browser/hover.js';
+import { FONT } from '../../../../base/common/font.js';
 
 export const COMMENTS_VIEW_ID = 'workbench.panel.comments';
 export const COMMENTS_VIEW_STORAGE_ID = 'Comments';
@@ -81,9 +82,9 @@ class CommentsModelVirtualDelegate implements IListVirtualDelegate<ResourceWithC
 
 	getHeight(element: any): number {
 		if ((element instanceof CommentNode) && element.hasReply()) {
-			return 44;
+			return FONT.sidebarSize44;
 		}
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	public getTemplateId(element: any): string {

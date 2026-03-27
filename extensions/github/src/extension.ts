@@ -15,7 +15,6 @@ import { GitBaseExtension } from './typings/git-base.js';
 import { GithubRemoteSourcePublisher } from './remoteSourcePublisher.js';
 import { GitHubBranchProtectionProviderManager } from './branchProtection.js';
 import { GitHubCanonicalUriProvider } from './canonicalUriProvider.js';
-import { VscodeDevShareProvider } from './shareProviders.js';
 import { GitHubSourceControlHistoryItemDetailsProvider } from './historyItemDetailsProvider.js';
 import { OctokitService } from './auth.js';
 
@@ -107,7 +106,6 @@ function initializeGitExtension(context: ExtensionContext, octokitService: Octok
 						disposables.add(gitAPI.registerRemoteSourcePublisher(new GithubRemoteSourcePublisher(gitAPI)));
 						disposables.add(gitAPI.registerSourceControlHistoryItemDetailsProvider(new GitHubSourceControlHistoryItemDetailsProvider(gitAPI, octokitService, logger)));
 						disposables.add(new GitHubCanonicalUriProvider(gitAPI));
-						disposables.add(new VscodeDevShareProvider(gitAPI));
 						setGitHubContext(gitAPI, disposables);
 
 						commands.executeCommand('setContext', 'git-base.gitEnabled', true);

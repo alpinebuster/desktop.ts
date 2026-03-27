@@ -80,6 +80,12 @@ impl PreReqChecker {
 					Platform::LinuxX64
 				} else if cfg!(target_arch = "arm") {
 					Platform::LinuxARM32
+				} else if cfg!(target_arch = "powerpc64") {
+					Platform::LinuxPPC64LE
+				} else if cfg!(target_arch = "riscv64") {
+					Platform::LinuxRISCV64
+				} else if cfg!(target_arch = "loongarch64") {
+					Platform::LinuxLoong64
 				} else {
 					Platform::LinuxARM64
 				});

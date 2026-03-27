@@ -12,7 +12,6 @@ import { Delayer, ProcessTimeRunOnceScheduler, timeout } from '../../../base/com
 import { VSBuffer } from '../../../base/common/buffer.js';
 import { CancellationToken, CancellationTokenSource } from '../../../base/common/cancellation.js';
 import { memoize } from '../../../base/common/decorators.js';
-import { hash } from '../../../base/common/hash.js';
 import * as path from '../../../base/common/path.js';
 import { basename } from '../../../base/common/path.js';
 import { transform } from '../../../base/common/stream.js';
@@ -29,11 +28,12 @@ import { ILogService } from '../../log/common/log.js';
 import { IMeteredConnectionService } from '../../meteredConnection/common/meteredConnection.js';
 import { INativeHostMainService } from '../../native/electron-main/nativeHostMainService.js';
 import { IProductService } from '../../product/common/productService.js';
-import { asJson, IRequestService } from '../../request/common/request.js';
+import { asJson, IRequestService, NO_FETCH_TELEMETRY } from '../../request/common/request.js';
 import { ITelemetryService } from '../../telemetry/common/telemetry.js';
-import { AvailableForDownload, DisablementReason, IUpdate, State, StateType, UpdateType } from '../common/update.js';
-import { AbstractUpdateService, createUpdateURL, getUpdateRequestHeaders, IUpdateURLOptions, UpdateErrorClassification } from './abstractUpdateService.js';
+import { AvailableForDownload, DisablementReason, IUpdate, State, StateType, Target, UpdateType } from '../common/update.js';
+import { AbstractUpdateService, createUpdateURL, getUpdateRequestHeaders, IUpdateURLOptions } from './abstractUpdateService.js';
 import { INodeProcess } from '../../../base/common/platform.js';
+import * as semver from 'semver';
 
 interface IAvailableUpdate {
 	packagePath: string;
@@ -47,9 +47,13 @@ interface IAvailableUpdate {
 let _updateType: UpdateType | undefined = undefined;
 function getUpdateType(): UpdateType {
 	if (typeof _updateType === 'undefined') {
-		_updateType = existsSync(path.join(path.dirname(process.execPath), 'unins000.exe'))
-			? UpdateType.Setup
-			: UpdateType.Archive;
+		if (existsSync(path.join(path.dirname(process.execPath), 'unins000.exe'))) {
+			_updateType = UpdateType.Setup;
+		} else if (path.basename(path.normalize(path.join(process.execPath, '..', '..'))) === 'Program Files') {
+			_updateType = UpdateType.WindowsInstaller;
+		} else {
+			_updateType = UpdateType.Archive;
+		}
 	}
 
 	return _updateType;
@@ -62,7 +66,7 @@ export class Win32UpdateService extends AbstractUpdateService implements IRelaun
 
 	@memoize
 	get cachePath(): Promise<string> {
-		const result = path.join(tmpdir(), `vscode-${this.productService.quality}-${this.productService.target}-${process.arch}`);
+		const result = path.join(tmpdir(), `${this.productService.applicationName}-${this.productService.quality}-${this.productService.target}-${process.arch}`);
 		return mkdir(result, { recursive: true }).then(() => result);
 	}
 
@@ -162,7 +166,7 @@ export class Win32UpdateService extends AbstractUpdateService implements IRelaun
 				// updatingVersionPath will be deleted by inno setup.
 			}
 		} else {
-			const fastUpdatesEnabled = this.configurationService.getValue('update.enableWindowsBackgroundUpdates');
+			const fastUpdatesEnabled = getUpdateType() === UpdateType.Setup && this.configurationService.getValue('update.enableWindowsBackgroundUpdates');
 			// GC for background updates in system setup happens via inno_setup since it requires
 			// elevated permissions.
 			if (fastUpdatesEnabled && this.productService.target === 'user' && this.productService.commit) {
@@ -180,16 +184,26 @@ export class Win32UpdateService extends AbstractUpdateService implements IRelaun
 		}
 	}
 
-	protected buildUpdateFeedUrl(quality: string, commit: string, options?: IUpdateURLOptions): string | undefined {
-		let platform = `win32-${process.arch}`;
+	protected buildUpdateFeedUrl(quality: string, _commit: string, _options?: IUpdateURLOptions): string | undefined {
+		let target: Target;
 
-		if (getUpdateType() === UpdateType.Archive) {
-			platform += '-archive';
-		} else if (this.productService.target === 'user') {
-			platform += '-user';
+		switch (getUpdateType()) {
+			case UpdateType.Archive:
+				target = "archive"
+				break;
+			case UpdateType.WindowsInstaller:
+				target = "msi"
+				break;
+			default:
+				if (this.productService.target === 'user') {
+					target = "user"
+				}
+				else {
+					target = "system"
+				}
 		}
 
-		return createUpdateURL(this.productService.updateUrl!, platform, quality, commit, options);
+		return createUpdateURL(this.productService, quality, process.platform, process.arch, target);
 	}
 
 	protected doCheckForUpdates(explicit: boolean, pendingCommit?: string): void {
@@ -207,7 +221,7 @@ export class Win32UpdateService extends AbstractUpdateService implements IRelaun
 		}
 
 		const headers = getUpdateRequestHeaders(this.productService.version);
-		this.requestService.request({ url, headers, callSite: 'updateService.win32.checkForUpdates' }, CancellationToken.None)
+		this.requestService.request({ url, headers, callSite: NO_FETCH_TELEMETRY }, CancellationToken.None)
 			.then<IUpdate | null>(asJson)
 			.then(update => {
 				const updateType = getUpdateType();
@@ -221,6 +235,14 @@ export class Win32UpdateService extends AbstractUpdateService implements IRelaun
 					} else {
 						this.setState(State.Idle(updateType, undefined, explicit || undefined));
 					}
+					return Promise.resolve(null);
+				}
+
+				const fetchedVersion = /\d+\.\d+\.\d+\.\d+/.test(update.productVersion) ? update.productVersion.replace(/(\d+\.\d+\.\d+)\.\d+(\-\w+)?/, '$1$2') : update.productVersion.replace(/(\d+\.\d+\.)0+(\d+)(\-\w+)?/, '$1$2$3')
+				const currentVersion = this.productService.version.replace(/(\d+\.\d+\.)0+(\d+)(\-\w+)?/, '$1$2$3')
+
+				if(semver.compareBuild(currentVersion, fetchedVersion) >= 0) {
+					this.setState(State.Idle(updateType, undefined, explicit || undefined));
 					return Promise.resolve(null);
 				}
 
@@ -256,7 +278,7 @@ export class Win32UpdateService extends AbstractUpdateService implements IRelaun
 
 							const downloadPath = `${updatePackagePath}.tmp`;
 
-							return this.requestService.request({ url: update.url, callSite: 'updateService.win32.downloadUpdate' }, CancellationToken.None)
+							return this.requestService.request({ url: update.url, callSite: NO_FETCH_TELEMETRY }, CancellationToken.None)
 								.then(context => {
 									// Get total size from Content-Length header
 									const contentLengthHeader = context.res.headers['content-length'];
@@ -302,7 +324,6 @@ export class Win32UpdateService extends AbstractUpdateService implements IRelaun
 				});
 			})
 			.then(undefined, err => {
-				this.telemetryService.publicLog2<{ messageHash: string }, UpdateErrorClassification>('update:error', { messageHash: String(hash(String(err))) });
 				this.logService.error(err);
 
 				// only show message when explicitly checking for updates
@@ -366,24 +387,35 @@ export class Win32UpdateService extends AbstractUpdateService implements IRelaun
 		this.availableUpdate.cancelFilePath = cancelFilePath;
 
 		await pfs.Promises.writeFile(this.availableUpdate.updateFilePath, 'flag');
-		const child = spawn(this.availableUpdate.packagePath,
-			[
-				'/verysilent',
-				'/log',
-				`/update="${this.availableUpdate.updateFilePath}"`,
-				`/progress="${progressFilePath}"`,
-				`/sessionend="${sessionEndFlagPath}"`,
-				`/cancel="${cancelFilePath}"`,
-				'/nocloseapplications',
-				'/mergetasks=runcode,!desktopicon,!quicklaunchicon'
-			],
-			{
+
+		let child: ChildProcess
+
+		const type = getUpdateType();
+		if (type == UpdateType.WindowsInstaller) {
+			child = spawn('msiexec.exe', ['/i', this.availableUpdate.packagePath], {
 				detached: true,
-				stdio: ['ignore', 'ignore', 'ignore'],
-				windowsVerbatimArguments: true,
-				env: { ...process.env, __COMPAT_LAYER: 'RunAsInvoker' }
-			}
-		);
+				stdio: ['ignore', 'ignore', 'ignore']
+			});
+		} else {
+			child = spawn(this.availableUpdate.packagePath,
+				[
+					'/verysilent',
+					'/log',
+					`/update="${this.availableUpdate.updateFilePath}"`,
+					`/progress="${progressFilePath}"`,
+					`/sessionend="${sessionEndFlagPath}"`,
+					`/cancel="${cancelFilePath}"`,
+					'/nocloseapplications',
+					'/mergetasks=runcode,!desktopicon,!quicklaunchicon'
+				],
+				{
+					detached: true,
+					stdio: ['ignore', 'ignore', 'ignore'],
+					windowsVerbatimArguments: true,
+					env: { ...process.env, __COMPAT_LAYER: 'RunAsInvoker' }
+				}
+			);
+		}
 
 		// Track the process so we can cancel it if needed
 		this.availableUpdate.updateProcess = child;

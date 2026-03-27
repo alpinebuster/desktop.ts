@@ -341,6 +341,10 @@ export const enum TargetPlatform {
 	LINUX_X64 = 'linux-x64',
 	LINUX_ARM64 = 'linux-arm64',
 	LINUX_ARMHF = 'linux-armhf',
+	LINUX_PPC64LE = 'linux-ppc64le',
+	LINUX_RISCV64 = 'linux-riscv64',
+	LINUX_LOONG64 = 'linux-loong64',
+	LINUX_S390X = 'linux-s390x',
 
 	ALPINE_X64 = 'alpine-x64',
 	ALPINE_ARM64 = 'alpine-arm64',

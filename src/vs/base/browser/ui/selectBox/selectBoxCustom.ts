@@ -6,6 +6,7 @@
 import { localize } from '../../../../nls.js';
 import * as arrays from '../../../common/arrays.js';
 import { Emitter, Event } from '../../../common/event.js';
+import { FONT } from '../../../common/font.js';
 import { KeyCode, KeyCodeUtils } from '../../../common/keyCodes.js';
 import { Disposable, DisposableStore, IDisposable } from '../../../common/lifecycle.js';
 import { isMacintosh } from '../../../common/platform.js';
@@ -170,7 +171,7 @@ export class SelectBoxList extends Disposable implements ISelectBoxDelegate, ILi
 	// IDelegate - List renderer
 
 	getHeight(): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(): string {

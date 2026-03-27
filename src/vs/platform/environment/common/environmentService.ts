@@ -26,6 +26,8 @@ export interface INativeEnvironmentPaths {
 	 */
 	userDataDir: string;
 
+	userStateDir: string;
+
 	/**
 	 * The user home directory mainly used for persisting extensions
 	 * and global configuration that should be shared across all
@@ -53,6 +55,9 @@ export abstract class AbstractNativeEnvironmentService implements INativeEnviron
 	get userDataPath(): string { return this.paths.userDataDir; }
 
 	@memoize
+	get userStatePath(): string { return this.paths.userStateDir; }
+
+	@memoize
 	get appSettingsHome(): URI { return URI.file(join(this.userDataPath, 'User')); }
 
 	@memoize
@@ -73,7 +78,7 @@ export abstract class AbstractNativeEnvironmentService implements INativeEnviron
 	get logsHome(): URI {
 		if (!this.args.logsPath) {
 			const key = toLocalISOString(new Date()).replace(/-|:|\.\d+Z$/g, '');
-			this.args.logsPath = join(this.userDataPath, 'logs', key);
+			this.args.logsPath = join(this.userStatePath, key);
 		}
 
 		return URI.file(this.args.logsPath);

@@ -33,7 +33,10 @@ pub const VSCODE_CLI_AI_ENDPOINT: Option<&'static str> = option_env!("VSCODE_CLI
 pub const VSCODE_CLI_QUALITY: Option<&'static str> = option_env!("VSCODE_CLI_QUALITY");
 pub const DOCUMENTATION_URL: Option<&'static str> = option_env!("VSCODE_CLI_DOCUMENTATION_URL");
 pub const VSCODE_CLI_COMMIT: Option<&'static str> = option_env!("VSCODE_CLI_COMMIT");
-pub const VSCODE_CLI_UPDATE_ENDPOINT: Option<&'static str> = option_env!("VSCODE_CLI_UPDATE_URL");
+pub const VSCODE_CLI_UPDATE_ENDPOINT: Option<&'static str> = option_env!("VSCODE_CLI_UPDATE_ENDPOINT");
+pub const VSCODE_CLI_DOWNLOAD_ENDPOINT: Option<&'static str> = option_env!("VSCODE_CLI_DOWNLOAD_ENDPOINT");
+pub const VSCODE_CLI_APP_NAME: Option<&'static str> = option_env!("VSCODE_CLI_APP_NAME");
+pub const VSCODE_CLI_BINARY_NAME: Option<&'static str> = option_env!("VSCODE_CLI_BINARY_NAME");
 
 /// Windows lock name for the running tunnel service. Used by the setup script
 /// to detect a tunnel process. See #179265.

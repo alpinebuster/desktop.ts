@@ -11,6 +11,7 @@ import { assertNever } from '../../../../base/common/assert.js';
 import { CancellationToken, CancellationTokenSource } from '../../../../base/common/cancellation.js';
 import { Codicon } from '../../../../base/common/codicons.js';
 import { Emitter, Event } from '../../../../base/common/event.js';
+import { FONT } from '../../../../base/common/font.js';
 import { Disposable, DisposableStore, IDisposable, toDisposable } from '../../../../base/common/lifecycle.js';
 import { autorun, autorunWithStore, derived, IObservable, ISettableObservable, observableValue, transaction } from '../../../../base/common/observable.js';
 import { ThemeIcon } from '../../../../base/common/themables.js';
@@ -82,7 +83,7 @@ class WrappedCallStackFrame extends CallStackFrame implements IFrameLikeItem {
 	public readonly collapsed = observableValue('WrappedCallStackFrame.collapsed', false);
 
 	public readonly height = derived(reader => {
-		return this.collapsed.read(reader) ? CALL_STACK_WIDGET_HEADER_HEIGHT : CALL_STACK_WIDGET_HEADER_HEIGHT + this.editorHeight.read(reader);
+		return this.collapsed.read(reader) ? FONT.sidebarSize24 : FONT.sidebarSize24 + this.editorHeight.read(reader);
 	});
 
 	constructor(original: CallStackFrame) {
@@ -94,7 +95,7 @@ class WrappedCustomStackFrame implements IFrameLikeItem {
 	public readonly collapsed = observableValue('WrappedCallStackFrame.collapsed', false);
 
 	public readonly height = derived(reader => {
-		const headerHeight = this.original.showHeader.read(reader) ? CALL_STACK_WIDGET_HEADER_HEIGHT : 0;
+		const headerHeight = this.original.showHeader.read(reader) ? FONT.sidebarSize24 : 0;
 		return this.collapsed.read(reader) ? headerHeight : headerHeight + this.original.height.read(reader);
 	});
 
@@ -265,7 +266,7 @@ class StackDelegate implements IListVirtualDelegate<ListItem> {
 			return element.height.get();
 		}
 		if (element instanceof SkippedCallFrames) {
-			return CALL_STACK_WIDGET_HEADER_HEIGHT;
+			return FONT.sidebarSize24;
 		}
 
 		assertNever(element);
@@ -319,8 +320,6 @@ const makeFrameElements = () => dom.h('div.multiCallStackFrame', [
 		dom.h('div.editorContainer@editor'),
 	])
 ]);
-
-export const CALL_STACK_WIDGET_HEADER_HEIGHT = 24;
 
 interface IAbstractFrameRendererTemplateData {
 	container: HTMLElement;

@@ -6,6 +6,8 @@
 .monaco-workbench .part.activitybar {
 	width: var(--activity-bar-width, 48px);
 	height: 100%;
+	font-family: var(--vscode-workbench-activitybar-font-family, inherit);
+	font-size: var(--vscode-workbench-activitybar-font-size);
 }
 
 /* Activity Bar - shadow when sidebar is hidden or on the right */
@@ -65,10 +67,10 @@
 
 .monaco-workbench .activitybar .menubar {
 	width: 100%;
-	height: 35px;
+	height: calc(var(--vscode-workbench-activitybar-font-size) * 2.1875);
 }
 
 .monaco-workbench .activitybar .menubar.compact .toolbar-toggle-more {
 	width: 100%;
-	height: 35px;
+	height: calc(var(--vscode-workbench-activitybar-font-size) * 2.1875);
 }

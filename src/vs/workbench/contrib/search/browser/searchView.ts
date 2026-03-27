@@ -85,6 +85,7 @@ import { searchMatchComparer } from './searchCompare.js';
 import { AIFolderMatchWorkspaceRootImpl } from './AISearch/aiSearchModel.js';
 import { ITelemetryService } from '../../../../platform/telemetry/common/telemetry.js';
 import { forcedExpandRecursively } from './searchActionsTopBar.js';
+import { FONT } from '../../../../base/common/font.js';
 
 const $ = dom.$;
 
@@ -124,6 +125,7 @@ interface ISearchViewState {
 
 const SEARCH_CANCELLED_MESSAGE = nls.localize('searchCanceled', "Search was canceled before any results could be found - ");
 const DEBOUNCE_DELAY = 75;
+
 export class SearchView extends ViewPane {
 
 	private static readonly ACTIONS_RIGHT_CLASS_NAME = 'actions-right';
@@ -961,7 +963,7 @@ export class SearchView extends ViewPane {
 				multipleSelectionSupport: true,
 				selectionNavigation: true,
 				overrideStyles: this.getLocationBasedColors().listOverrideStyles,
-				paddingBottom: SearchDelegate.ITEM_HEIGHT,
+				paddingBottom: SearchDelegate.getHeight(),
 				collapseByDefault: (e: RenderableMatch) => {
 					if (isTextSearchHeading(e)) {
 						// always collapse the ai text search result, but always expand the text result
@@ -1339,14 +1341,14 @@ export class SearchView extends ViewPane {
 		const actionsPosition = this.searchConfig.actionsPosition;
 		this.getContainer().classList.toggle(SearchView.ACTIONS_RIGHT_CLASS_NAME, actionsPosition === 'right');
 
-		this.searchWidget.setWidth(this.size.width - 28 /* container margin */);
+		this.searchWidget.setWidth(this.size.width - FONT.sidebarSize28);
 
-		this.inputPatternExcludes.setWidth(this.size.width - 28 /* container margin */);
-		this.inputPatternIncludes.setWidth(this.size.width - 28 /* container margin */);
+		this.inputPatternExcludes.setWidth(this.size.width - FONT.sidebarSize28);
+		this.inputPatternIncludes.setWidth(this.size.width - FONT.sidebarSize28);
 
 		const widgetHeight = dom.getTotalHeight(this.searchWidgetsContainerElement);
 		const messagesHeight = dom.getTotalHeight(this.messagesElement);
-		this.tree.layout(this.size.height - widgetHeight - messagesHeight, this.size.width - 28);
+		this.tree.layout(this.size.height - widgetHeight - messagesHeight, this.size.width - FONT.sidebarSize28);
 	}
 
 	protected override layoutBody(height: number, width: number): void {

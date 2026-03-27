@@ -50,6 +50,7 @@ import { defaultButtonStyles } from '../../../../../platform/theme/browser/defau
 import { AgentSessionApprovalModel } from './agentSessionApprovalModel.js';
 import { BugIndicatingError } from '../../../../../base/common/errors.js';
 import { ILogService } from '../../../../../platform/log/common/log.js';
+import { FONT } from '../../../../../base/common/font.js';
 
 
 export type AgentSessionListItem = IAgentSession | IAgentSessionSection;
@@ -636,17 +637,14 @@ export class AgentSessionSectionRenderer implements ICompressibleTreeRenderer<IA
 
 export class AgentSessionsListDelegate implements IListVirtualDelegate<AgentSessionListItem> {
 
-	static readonly ITEM_HEIGHT = 54;
-	static readonly SECTION_HEIGHT = 26;
-
 	constructor(private readonly _approvalModel?: AgentSessionApprovalModel) { }
 
 	getHeight(element: AgentSessionListItem): number {
 		if (isAgentSessionSection(element)) {
-			return AgentSessionsListDelegate.SECTION_HEIGHT;
+			return FONT.sidebarSize26;
 		}
 
-		let height = AgentSessionsListDelegate.ITEM_HEIGHT;
+		let height = FONT.sidebarSize54;
 		const approval = this._approvalModel?.getApproval(element.resource).get();
 		if (approval) {
 			height += AgentSessionRenderer.getApprovalRowHeight(approval.label);

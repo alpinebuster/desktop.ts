@@ -848,6 +848,7 @@ registerAction2(class extends Action2 {
 				when: ContextKeyExpr.and(
 					ChatContextKeys.Setup.hidden.negate(),
 					ChatContextKeys.Setup.disabled.negate(),
+					ContextKeyExpr.has('config.chat.disableAIFeatures').negate(),
 					ChatContextKeys.Setup.installed.negate(),
 					ContextKeyExpr.equals('scmProvider', 'git')
 				)

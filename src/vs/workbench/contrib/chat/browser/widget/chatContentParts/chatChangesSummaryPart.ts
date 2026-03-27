@@ -31,6 +31,7 @@ import { IChatChangesSummaryPart as IChatFileChangesSummaryPart, IChatRendererCo
 import { ChatTreeItem } from '../../chat.js';
 import { ResourcePool } from './chatCollections.js';
 import { IChatContentPart, IChatContentPartRenderContext } from './chatContentParts.js';
+import { FONT } from '../../../../../../base/common/font.js';
 
 export class ChatCheckpointFileChangesSummaryContentPart extends Disposable implements IChatContentPart {
 
@@ -242,7 +243,7 @@ interface ICollapsibleChangesSummaryListTemplate extends IDisposable {
 class CollapsibleChangesSummaryListDelegate implements IListVirtualDelegate<IEditSessionEntryDiff> {
 
 	getHeight(element: IEditSessionEntryDiff): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: IEditSessionEntryDiff): string {

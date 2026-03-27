@@ -8,6 +8,7 @@ import { URI } from '../../../../base/common/uri.js';
 import { createDecorator } from '../../../../platform/instantiation/common/instantiation.js';
 import { ILinkDescriptor } from '../../../../platform/opener/browser/link.js';
 import { ThemeIcon } from '../../../../base/common/themables.js';
+import { INeverShowAgainOptions } from '../../../../platform/notification/common/notification.js';
 
 export interface IBannerItem {
 	readonly id: string;
@@ -16,6 +17,7 @@ export interface IBannerItem {
 	readonly actions?: ReadonlyArray<ILinkDescriptor>;
 	readonly ariaLabel?: string;
 	readonly onClose?: () => void;
+	readonly neverShowAgain?: INeverShowAgainOptions;
 	readonly closeLabel?: string;
 }
 

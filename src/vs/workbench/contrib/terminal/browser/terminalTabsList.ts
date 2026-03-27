@@ -56,11 +56,11 @@ import { ICommandService } from '../../../../platform/commands/common/commands.j
 import { IStorageService, StorageScope } from '../../../../platform/storage/common/storage.js';
 import { TerminalStorageKeys } from '../common/terminalStorageKeys.js';
 import { isObject } from '../../../../base/common/types.js';
+import { FONT } from '../../../../base/common/font.js';
 
 const $ = DOM.$;
 
 export const enum TerminalTabsListSizes {
-	TabHeight = 22,
 	NarrowViewWidth = 46,
 	WideViewMinimumWidth = 80,
 	DefaultWidth = 120,
@@ -97,7 +97,7 @@ export class TerminalTabList extends WorkbenchList<ITerminalInstance> {
 	) {
 		super('TerminalTabsList', container,
 			{
-				getHeight: () => TerminalTabsListSizes.TabHeight,
+				getHeight: () => FONT.bottomPaneSize22,
 				getTemplateId: () => 'terminal.tabs'
 			},
 			[instantiationService.createInstance(TerminalTabsRenderer, container, instantiationService.createInstance(ResourceLabels, DEFAULT_LABELS_CONTAINER), () => this.getSelectedElements(), () => this.hasText, () => this.hasActionBar)],
@@ -111,7 +111,7 @@ export class TerminalTabList extends WorkbenchList<ITerminalInstance> {
 				accessibilityProvider: instantiationService.createInstance(TerminalTabsAccessibilityProvider),
 				smoothScrolling: _configurationService.getValue<boolean>('workbench.list.smoothScrolling'),
 				multipleSelectionSupport: true,
-				paddingBottom: TerminalTabsListSizes.TabHeight,
+				paddingBottom: FONT.bottomPaneSize22,
 				dnd: instantiationService.createInstance(TerminalTabsDragAndDrop),
 				openOnSingleClick: true
 			},
@@ -456,7 +456,7 @@ class TerminalTabsRenderer implements IListRenderer<ITerminalInstance, ITerminal
 			ariaLabel: localize('terminalInputAriaLabel', "Type terminal name. Press Enter to confirm or Escape to cancel."),
 			inputBoxStyles: defaultInputBoxStyles
 		});
-		inputBox.element.style.height = '22px';
+		inputBox.element.style.height = `${FONT.bottomPaneSize22}px`;
 		inputBox.value = value;
 		inputBox.focus();
 		inputBox.select({ start: 0, end: value.length });

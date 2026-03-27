@@ -75,6 +75,7 @@ import { AccessibilityVerbositySettingId } from '../../accessibility/browser/acc
 import { IAccessibilityService } from '../../../../platform/accessibility/common/accessibility.js';
 import { AccessibilityCommandId } from '../../accessibility/common/accessibilityCommands.js';
 import { SCMInputWidget } from './scmInput.js';
+import { FONT } from '../../../../base/common/font.js';
 
 type TreeElement = ISCMRepository | ISCMInput | ISCMActionButton | ISCMResourceGroup | ISCMResource | IResourceNode<ISCMResource, ISCMResourceGroup>;
 
@@ -141,8 +142,6 @@ interface ActionButtonTemplate {
 }
 
 export class ActionButtonRenderer implements ICompressibleTreeRenderer<ISCMActionButton, FuzzyScore, ActionButtonTemplate> {
-	static readonly DEFAULT_HEIGHT = 28;
-
 	static readonly TEMPLATE_ID = 'actionButton';
 	get templateId(): string { return ActionButtonRenderer.TEMPLATE_ID; }
 
@@ -259,8 +258,6 @@ interface InputTemplate {
 
 class InputRenderer implements ICompressibleTreeRenderer<ISCMInput, FuzzyScore, InputTemplate> {
 
-	static readonly DEFAULT_HEIGHT = 26;
-
 	static readonly TEMPLATE_ID = 'input';
 	get templateId(): string { return InputRenderer.TEMPLATE_ID; }
 
@@ -284,7 +281,7 @@ class InputRenderer implements ICompressibleTreeRenderer<ISCMInput, FuzzyScore, 
 		const inputWidget = this.instantiationService.createInstance(SCMInputWidget, inputElement, this.overflowWidgetsDomNode);
 		templateDisposable.add(inputWidget);
 
-		return { inputWidget, inputWidgetHeight: InputRenderer.DEFAULT_HEIGHT, elementDisposables: new DisposableStore(), templateDisposable };
+		return { inputWidget, inputWidgetHeight: FONT.sidebarSize26, elementDisposables: new DisposableStore(), templateDisposable };
 	}
 
 	renderElement(node: ITreeNode<ISCMInput, FuzzyScore>, index: number, templateData: InputTemplate): void {
@@ -313,7 +310,7 @@ class InputRenderer implements ICompressibleTreeRenderer<ISCMInput, FuzzyScore, 
 		}));
 
 		// Reset widget height so it's recalculated
-		templateData.inputWidgetHeight = InputRenderer.DEFAULT_HEIGHT;
+		templateData.inputWidgetHeight = FONT.sidebarSize26;
 
 		// Rerender the element whenever the editor content height changes
 		const onDidChangeContentHeight = () => {
@@ -321,7 +318,7 @@ class InputRenderer implements ICompressibleTreeRenderer<ISCMInput, FuzzyScore, 
 			this.contentHeights.set(input, contentHeight);
 
 			if (templateData.inputWidgetHeight !== contentHeight) {
-				this.updateHeight(input, contentHeight + 10);
+				this.updateHeight(input, contentHeight + FONT.sidebarSize8);
 				templateData.inputWidgetHeight = contentHeight;
 				templateData.inputWidget.layout();
 			}
@@ -355,7 +352,7 @@ class InputRenderer implements ICompressibleTreeRenderer<ISCMInput, FuzzyScore, 
 	}
 
 	getHeight(input: ISCMInput): number {
-		return (this.contentHeights.get(input) ?? InputRenderer.DEFAULT_HEIGHT) + 10;
+		return (this.contentHeights.get(input) ?? FONT.sidebarSize26) + FONT.sidebarSize10;
 	}
 
 	getRenderedInputWidget(input: ISCMInput): SCMInputWidget | undefined {
@@ -677,9 +674,9 @@ class ListDelegate implements IListVirtualDelegate<TreeElement> {
 		if (isSCMInput(element)) {
 			return this.inputRenderer.getHeight(element);
 		} else if (isSCMActionButton(element)) {
-			return ActionButtonRenderer.DEFAULT_HEIGHT + 8;
+			return FONT.sidebarSize28 + 8;
 		} else {
-			return 22;
+			return FONT.sidebarSize22;
 		}
 	}
 

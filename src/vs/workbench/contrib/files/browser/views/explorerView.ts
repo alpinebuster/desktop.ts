@@ -509,7 +509,7 @@ export class ExplorerView extends ViewPane implements IExplorerView {
 				}
 				return false;
 			},
-			paddingBottom: ExplorerDelegate.ITEM_HEIGHT,
+			paddingBottom: ExplorerDelegate.getHeight(),
 			overrideStyles: this.getLocationBasedColors().listOverrideStyles,
 			findProvider: this.findProvider,
 		});

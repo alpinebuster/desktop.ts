@@ -111,6 +111,8 @@ export interface IProductConfiguration {
 		readonly resourceUrlTemplate: string;
 		readonly nlsBaseUrl: string;
 		readonly accessSKUs?: string[];
+		readonly itemUrl: string;
+		readonly latestUrlTemplate?: string;
 	};
 
 	readonly mcpGallery?: {

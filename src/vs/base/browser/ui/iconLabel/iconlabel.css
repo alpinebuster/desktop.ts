@@ -117,3 +117,23 @@
 .monaco-list-row.selected .label-description {
 	opacity: .8;
 }
+
+
+
+.monaco-workbench .part.sidebar .monaco-icon-label::before, .monaco-workbench .part.auxiliarybar .monaco-icon-label::before {
+    background-size: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    padding-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.461538);
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308)
+}
+.monaco-workbench .part.sidebar .monaco-icon-label-iconpath, .monaco-workbench .part.auxiliarybar .monaco-icon-label-iconpath {
+    width: calc(var(--vscode-workbench-sidebar-font-size) * 1.230769);
+    height: calc(var(--vscode-workbench-sidebar-font-size) * 1.692308);
+    margin-right: calc(var(--vscode-workbench-sidebar-font-size) * 0.461538)
+}
+.monaco-workbench .part.sidebar .monaco-icon-label > .monaco-icon-label-container > .monaco-icon-name-container > .label-name > .label-separator, .monaco-workbench .part.auxiliarybar .monaco-icon-label > .monaco-icon-label-container > .monaco-icon-name-container > .label-name > .label-separator {
+    margin: 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.153846)
+}
+.monaco-workbench .part.sidebar .monaco-icon-label::after, .monaco-workbench .part.auxiliarybar .monaco-icon-label::after {
+    margin: auto calc(var(--vscode-workbench-sidebar-font-size) * 1.230769) 0 calc(var(--vscode-workbench-sidebar-font-size) * 0.384615)
+}

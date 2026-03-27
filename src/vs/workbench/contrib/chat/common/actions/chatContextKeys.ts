@@ -161,7 +161,7 @@ export namespace ChatContextKeyExprs {
 	 * Context expression that indicates when the welcome/setup view should be shown
 	 */
 	export const chatSetupTriggerContext = ContextKeyExpr.or(
-		ChatContextKeys.Setup.installed.negate(),
+		ContextKeyExpr.has('config.chat.disableAIFeatures').negate(),
 		ChatContextKeys.Entitlement.canSignUp
 	);
 }

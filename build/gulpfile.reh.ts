@@ -54,6 +54,10 @@ const BUILD_TARGETS = [
 	{ platform: 'linux', arch: 'x64' },
 	{ platform: 'linux', arch: 'armhf' },
 	{ platform: 'linux', arch: 'arm64' },
+	{ platform: 'linux', arch: 'ppc64le' },
+	{ platform: 'linux', arch: 'riscv64' },
+	{ platform: 'linux', arch: 'loong64' },
+	{ platform: 'linux', arch: 's390x' },
 	{ platform: 'alpine', arch: 'arm64' },
 	// legacy: we use to ship only one alpine so it was put in the arch, but now we ship
 	// multiple alpine images and moved to a better model (alpine as the platform)
@@ -238,13 +242,27 @@ function nodejs(platform: string, arch: string): NodeJS.ReadWriteStream | undefi
 				.pipe(rename('node.exe'));
 		case 'darwin':
 		case 'linux':
-			return (product.nodejsRepository !== 'https://nodejs.org' ?
-				fetchGithub(product.nodejsRepository, { version: `${nodeVersion}-${internalNodeVersion}`, name: expectedName!, checksumSha256 }) :
-				fetchUrls(`/dist/v${nodeVersion}/node-v${nodeVersion}-${platform}-${arch}.tar.gz`, { base: 'https://nodejs.org', checksumSha256 })
-			).pipe(flatmap(stream => stream.pipe(gunzip()).pipe(untar())))
-				.pipe(filter('**/node'))
-				.pipe(util.setExecutableBit('**'))
-				.pipe(rename('node'));
+			if (process.env.VSCODE_NODEJS_SITE && process.env.VSCODE_NODEJS_URLROOT) {
+				return fetchUrls(`${process.env.VSCODE_NODEJS_URLROOT}/v${nodeVersion}/node-v${nodeVersion}-${platform}-${arch}${process.env.VSCODE_NODEJS_URLSUFFIX}.tar.gz`, { base: process.env.VSCODE_NODEJS_SITE, checksumSha256 })
+					.pipe(flatmap(stream => stream.pipe(gunzip()).pipe(untar())))
+					.pipe(filter('**/node'))
+					.pipe(util.setExecutableBit('**'))
+					.pipe(rename('node'));
+			}
+			if (product.nodejsRepository !== 'https://nodejs.org') {
+				return fetchGithub(product.nodejsRepository, { version: `${nodeVersion}-${internalNodeVersion}`, name: expectedName!, checksumSha256 })
+					.pipe(flatmap(stream => stream.pipe(gunzip()).pipe(untar())))
+					.pipe(filter('**/node'))
+					.pipe(util.setExecutableBit('**'))
+					.pipe(rename('node'));
+			}
+			else {
+				return fetchUrls(`/dist/v${nodeVersion}/node-v${nodeVersion}-${platform}-${arch}.tar.gz`, { base: 'https://nodejs.org', checksumSha256 })
+					.pipe(flatmap(stream => stream.pipe(gunzip()).pipe(untar())))
+					.pipe(filter('**/node'))
+					.pipe(util.setExecutableBit('**'))
+					.pipe(rename('node'));
+			}
 		case 'alpine':
 			return product.nodejsRepository !== 'https://nodejs.org' ?
 				fetchGithub(product.nodejsRepository, { version: `${nodeVersion}-${internalNodeVersion}`, name: expectedName!, checksumSha256 })
@@ -326,7 +344,7 @@ function packageTask(type: string, platform: string, arch: string, sourceFolderN
 
 		let productJsonContents = '';
 		const productJsonStream = gulp.src(['product.json'], { base: '.' })
-			.pipe(jsonEditor({ commit, date: readISODate(sourceFolderName), version }))
+			.pipe(jsonEditor({ commit, date: readISODate(sourceFolderName), version, serverDownloadUrlTemplate: 'https://github.com/VSCodium/vscodium-insiders/releases/download/1.112.02078-insider/vscodium-reh-${os}-${arch}-1.112.02078-insider.tar.gz' }))
 			.pipe(es.through(function (file) {
 				productJsonContents = file.contents.toString();
 				this.emit('data', file);
@@ -492,7 +510,7 @@ function tweakProductForServerWeb(product: typeof import('../product.json')) {
 	const minifyTask = task.define(`minify-vscode-${type}`, task.series(
 		bundleTask,
 		util.rimraf(`out-vscode-${type}-min`),
-		optimize.minifyTask(`out-vscode-${type}`, `https://main.vscode-cdn.net/sourcemaps/${commit}/core`)
+		optimize.minifyTask(`out-vscode-${type}`, `https://github.com/VSCodium/sourcemaps/releases/download/${product.quality}-${commit}/core`)
 	));
 	gulp.task(minifyTask);
 

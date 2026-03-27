@@ -12,6 +12,7 @@ import { ITreeElement, ITreeFilter, ITreeNode, TreeFilterResult, TreeVisibility 
 import { RunOnceScheduler } from '../../../../base/common/async.js';
 import { Codicon } from '../../../../base/common/codicons.js';
 import { createMatches, FuzzyScore } from '../../../../base/common/filters.js';
+import { FONT } from '../../../../base/common/font.js';
 import { normalizeDriveLetter, tildify } from '../../../../base/common/labels.js';
 import { dispose, DisposableMap, DisposableStore } from '../../../../base/common/lifecycle.js';
 import { isAbsolute, normalize, posix } from '../../../../base/common/path.js';
@@ -650,7 +651,7 @@ export class LoadedScriptsView extends ViewPane {
 class LoadedScriptsDelegate implements IListVirtualDelegate<LoadedScriptsItem> {
 
 	getHeight(element: LoadedScriptsItem): number {
-		return 22;
+		return FONT.sidebarSize22;
 	}
 
 	getTemplateId(element: LoadedScriptsItem): string {

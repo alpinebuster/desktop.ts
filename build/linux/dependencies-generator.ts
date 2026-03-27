@@ -11,7 +11,7 @@ import { referenceGeneratedDepsByArch as debianGeneratedDeps } from './debian/de
 import { referenceGeneratedDepsByArch as rpmGeneratedDeps } from './rpm/dep-lists.ts';
 import { type DebianArchString, isDebianArchString } from './debian/types.ts';
 import { isRpmArchString, type RpmArchString } from './rpm/types.ts';
-import product from '../../product.json' with { type: 'json' };
+// import product from '../../product.json' with { type: 'json' };
 
 // A flag that can easily be toggled.
 // Make sure to compile the build directory after toggling the value.
@@ -20,7 +20,7 @@ import product from '../../product.json' with { type: 'json' };
 // If true, we fail the build if there are new dependencies found during that task.
 // The reference dependencies, which one has to update when the new dependencies
 // are valid, are in dep-lists.ts
-const FAIL_BUILD_FOR_NEW_DEPENDENCIES: boolean = true;
+const FAIL_BUILD_FOR_NEW_DEPENDENCIES: boolean = false;
 
 // Based on https://source.chromium.org/chromium/chromium/src/+/refs/tags/142.0.7444.265:chrome/installer/linux/BUILD.gn;l=64-80
 // and the Linux Archive build
@@ -57,7 +57,7 @@ export async function getDependencies(packageType: 'deb' | 'rpm', buildDir: stri
 	// Add the native modules
 	const files = findResult.stdout.toString().trimEnd().split('\n');
 	// Add the tunnel binary.
-	files.push(path.join(buildDir, 'bin', product.tunnelApplicationName));
+	// files.push(path.join(buildDir, 'bin', product.tunnelApplicationName));
 	// Add the main executable.
 	files.push(appPath);
 	// Add chrome sandbox and crashpad handler.

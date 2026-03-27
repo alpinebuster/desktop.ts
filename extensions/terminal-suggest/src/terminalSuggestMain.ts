@@ -11,6 +11,8 @@ import azdSpec from './completions/azd';
 import cdSpec from './completions/cd';
 import codeCompletionSpec from './completions/code';
 import codeInsidersCompletionSpec from './completions/code-insiders';
+import codiumCompletionSpec from './completions/codium';
+import codiumInsidersCompletionSpec from './completions/codium-insiders';
 import codeTunnelCompletionSpec from './completions/code-tunnel';
 import codeTunnelInsidersCompletionSpec from './completions/code-tunnel-insiders';
 import copilotSpec from './completions/copilot';
@@ -74,6 +76,8 @@ export const availableSpecs: Fig.Spec[] = [
 	ghCompletionSpec,
 	npmCompletionSpec,
 	npxCompletionSpec,
+	codiumInsidersCompletionSpec,
+	codiumCompletionSpec,
 	pnpmCompletionSpec,
 	setLocationSpec,
 	yarnCompletionSpec,

@@ -80,7 +80,9 @@ async function fetchUrl(options: IFetchOptions, retries = 10, retryDelay = 1000)
 		const timeout = setTimeout(() => controller.abort(), 30 * 1000);
 		const version = '20260212-405735';
 		try {
-			const response = await fetch(`https://api.github.com/repos/Microsoft/vscode-linux-build-agent/releases/tags/v${version}`, {
+			const repository = process.env['VSCODE_SYSROOT_REPOSITORY'] ?? 'Microsoft/vscode-linux-build-agent';
+			const actualVersion = process.env['VSCODE_SYSROOT_VERSION'] ?? version;
+			const response = await fetch(`https://api.github.com/repos/${repository}/releases/tags/v${actualVersion}`, {
 				headers: ghApiHeaders,
 				signal: controller.signal
 			});
@@ -89,7 +91,7 @@ async function fetchUrl(options: IFetchOptions, retries = 10, retryDelay = 1000)
 				const contents = Buffer.from(await response.arrayBuffer());
 				const asset = JSON.parse(contents.toString()).assets.find((a: { name: string }) => a.name === options.assetName);
 				if (!asset) {
-					throw new Error(`Could not find asset in release of Microsoft/vscode-linux-build-agent @ ${version}`);
+					throw new Error(`Could not find asset in release of ${repository} @ ${actualVersion}`);
 				}
 				console.log(`Found asset ${options.assetName} @ ${asset.url}.`);
 				const assetResponse = await fetch(asset.url, {
@@ -153,6 +155,18 @@ export async function getVSCodeSysroot(arch: DebianArchString, isMusl: boolean =
 		case 'armhf':
 			expectedName = `arm-rpi-linux-gnueabihf${prefix}.tar.gz`;
 			triple = 'arm-rpi-linux-gnueabihf';
+			break;
+		case 'ppc64le':
+			expectedName = `powerpc64le-linux-gnu${prefix}.tar.gz`;
+			triple = `powerpc64le-linux-gnu`;
+			break;
+		case 'riscv64':
+			expectedName = `riscv64-linux-gnu${prefix}.tar.gz`;
+			triple = 'riscv64-linux-gnu';
+			break;
+		case 's390x':
+			expectedName = `s390x-linux-gnu${prefix}.tar.gz`;
+			triple = 's390x-linux-gnu';
 			break;
 	}
 	console.log(`Fetching ${expectedName} for ${triple}`);
